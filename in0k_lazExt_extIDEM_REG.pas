@@ -20,14 +20,12 @@ var OptionsGroup: Integer;
 
 
 procedure REGISTER;
-var pg:integer;
+var edt:integer;
 begin
-    lazExt_extIDEM_INIT;
     //---
-
-    OptionsGroup := GetFreeIDEOptionsIndex(GroupProject,ProjectOptionsMisc);//();
-    //RegisterIDEOptionsGroup(OptionsGroup,tLazExt_extIDEM_IDEOptions);
-    RegisterIDEOptionsEditor(GroupProject, tLazExt_extIDEM_frmPrjOptionEdit, OptionsGroup);
+    edt := GetFreeIDEOptionsIndex(GroupProject,ProjectOptionsMisc);//();
+    RegisterIDEOptionsEditor(GroupProject, tLazExt_extIDEM_frmPrjOptionEdit, edt);
+    lazExt_extIDEM_INIT(GroupProject,edt);
 
  //   pg:= GetFreeIDEOptionsIndex(GroupProject,OptionsGroup);//();
 //    RegisterIDEOptionsEditor(GroupProject, tLazExt_extIDEM_preSet_frmEdit, pg,OptionsGroup);

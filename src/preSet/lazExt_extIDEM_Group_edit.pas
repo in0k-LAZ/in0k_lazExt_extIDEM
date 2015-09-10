@@ -24,9 +24,14 @@ type
     class function preSet_Desc:string; virtual; {$ifNdef _TSTABS_} abstract; {$endif}
   end;
 
- tLazExt_extIDEM_preSet_frmEdit = class(TAbstractIDEOptionsEditor)
+ tLazExt_extIDEM_preSet_frmEdit=class(TAbstractIDEOptionsEditor)
   private
    _preSet_:tLazExt_extIDEM_preSet_edtNode;
+    procedure _preSet_SET_(preSet:tLazExt_extIDEM_preSet_edtNode);
+    function  _preSet_FND_:tLazExt_extIDEM_preSet_edtNode;
+  private
+    procedure _Rec_set_(value:PIDEOptionsEditorRec);
+    function  _Rec_get_:PIDEOptionsEditorRec;
   public
     class function SupportedOptionsClass: TAbstractIDEOptionsClass; override;
   public
@@ -36,12 +41,19 @@ type
     procedure ReadSettings(AOptions:TAbstractIDEOptions);   override;
     procedure WriteSettings(AOptions:TAbstractIDEOptions);  override;
   public
-    procedure preSet_SET(preSet:tLazExt_extIDEM_preSet_edtNode);
   public
     constructor Create(AOwner: TComponent); override;
+
+
+  public
+    property Rec: PIDEOptionsEditorRec read _Rec_get_ write _Rec_set_;
+
   end;
+ tLazExt_extIDEM_preSet_frmEditTYPE=class of tLazExt_extIDEM_preSet_frmEdit;
+
 
 implementation
+uses lazExt_extIDEM;
 
 {$R *.lfm}
 
@@ -51,11 +63,20 @@ begin
    _preSet_:=nil;
 end;
 
-procedure tLazExt_extIDEM_preSet_frmEdit.preSet_SET(preSet:tLazExt_extIDEM_preSet_edtNode);
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_preSet_frmEdit._preSet_SET_(preSet:tLazExt_extIDEM_preSet_edtNode);
 begin
   _preSet_:=preSet;
-   self.Name:=name+preSet.ClassName;
+   self.Name:=name+preSet.ClassName;//+inttostr();
 end;
+
+function tLazExt_extIDEM_preSet_frmEdit._preSet_FND_:tLazExt_extIDEM_preSet_edtNode;
+begin
+    extIDEM.preSet_FiND(self.Rec^.Index);
+end;
+
+//------------------------------------------------------------------------------
 
 function tLazExt_extIDEM_preSet_frmEdit.GetTitle:string;
 begin
@@ -77,6 +98,19 @@ end;
 procedure tLazExt_extIDEM_preSet_frmEdit.WriteSettings(AOptions:TAbstractIDEOptions);
 begin
 
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_preSet_frmEdit._Rec_set_(value:PIDEOptionsEditorRec);
+begin
+    inherited Rec:=value;
+   _preSet_SET_(_preSet_FND_);
+end;
+
+function tLazExt_extIDEM_preSet_frmEdit._Rec_get_:PIDEOptionsEditorRec;
+begin
+    result:=inherited Rec;
 end;
 
 //------------------------------------------------------------------------------

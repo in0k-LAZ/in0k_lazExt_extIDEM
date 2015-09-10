@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Package Version="4">
+    <PathDelim Value="\"/>
+    <Name Value="in0k_lazExt_ideExtMacros"/>
+    <Type Value="RunAndDesignTime"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <OtherUnitFiles Value="src;src\preSet;src\ideEdit"/>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+    </CompilerOptions>
+    <Files Count="9">
+      <Item1>
+        <Filename Value="src\lazExt_extIDEM_node.pas"/>
+        <UnitName Value="lazExt_extIDEM_node"/>
+      </Item1>
+      <Item2>
+        <Filename Value="src\lazExt_extIDEM_edit.pas"/>
+        <UnitName Value="lazExt_extIDEM_edit"/>
+      </Item2>
+      <Item3>
+        <Filename Value="in0k_lazExt_extIDEM_INI.inc"/>
+        <Type Value="Binary"/>
+      </Item3>
+      <Item4>
+        <Filename Value="src\preSet\lazExt_extIDEM_Group_edit.pas"/>
+        <UnitName Value="lazExt_extIDEM_Group_edit"/>
+      </Item4>
+      <Item5>
+        <Filename Value="src\preSet\lazExt_extIDEM_preSet_node.pas"/>
+        <UnitName Value="lazExt_extIDEM_preSet_node"/>
+      </Item5>
+      <Item6>
+        <Filename Value="src\ideEdit\lazExt_extIDEM_prjOptionEdit.pas"/>
+        <UnitName Value="lazExt_extIDEM_prjOptionEdit"/>
+      </Item6>
+      <Item7>
+        <Filename Value="in0k_lazExt_extIDEM_REG.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="in0k_lazExt_extIDEM_REG"/>
+      </Item7>
+      <Item8>
+        <Filename Value="src\ideEdit\lazExt_extIDEM_prjOptionEdit_node.pas"/>
+        <UnitName Value="lazExt_extIDEM_prjOptionEdit_node"/>
+      </Item8>
+      <Item9>
+        <Filename Value="src\lazExt_extIDEM.pas"/>
+        <UnitName Value="lazExt_extIDEM"/>
+      </Item9>
+    </Files>
+    <RequiredPkgs Count="3">
+      <Item1>
+        <PackageName Value="IDEIntf"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="LCL"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="FCL"/>
+      </Item3>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

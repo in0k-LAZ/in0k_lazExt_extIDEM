@@ -1,0 +1,9 @@
+object lazExt_extIDEM_frmEdit: TlazExt_extIDEM_frmEdit
+  Left = 0
+  Height = 240
+  Top = 0
+  Width = 320
+  TabOrder = 0
+  DesignLeft = 234
+  DesignTop = 142
+end

@@ -3,8 +3,16 @@ unit lazExt_extIDEM_preSet_node;
 {$mode objfpc}{$H+}
 
 interface
+{$I in0k_lazExt_extIDEM_INI.inc}
+{$ifDef lazExt_extIDEM_DEBUG_mode}
+    {$define _DEBUG_}
+    {$define _TSTPRM_}
+    {$define _TSTABS_}
+{$else}
+    {$define _INLINE_}
+{$endIf}
 
-uses lazExt_extIDEM_Group_edit, sysutils;
+uses lazExt_extIDEM_preSet_edit, sysutils;
 
 type
 
@@ -17,6 +25,7 @@ type
     function _node_indxCMP_(const indx:integer):integer;
     function _node_indx_IS_(const indx:integer):boolean;
   public
+    class function defEditor:tLazExt_extIDEM_preSet_frmEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
   end;
  tLazExt_extIDEM_preSet_NodeTYPE=class of tLazExt_extIDEM_preSet_Node;
 
@@ -43,6 +52,15 @@ type
 
 implementation
 
+{$ifDef _TSTABS_}
+class function tLazExt_extIDEM_preSet_Node.defEditor:tLazExt_extIDEM_preSet_frmEditTYPE;
+begin
+    Assert(false,self.ClassName+'.defEditor mast by OVERRIDE');
+    result:=NIL; {todo: вставить НОТ ДЕФ редактор}
+end;
+{$endif}
+
+//------------------------------------------------------------------------------
 
 function tLazExt_extIDEM_preSet_Node._node_nameCMP_(const name:string):integer;
 begin

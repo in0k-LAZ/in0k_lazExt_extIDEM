@@ -3,7 +3,16 @@ object lazExt_extIDEM_preSet_frmEdit: TlazExt_extIDEM_preSet_frmEdit
   Height = 240
   Top = 0
   Width = 320
+  ClientHeight = 240
+  ClientWidth = 320
   TabOrder = 0
   DesignLeft = 276
   DesignTop = 194
+  object StringGrid1: TStringGrid
+    Left = 0
+    Height = 224
+    Top = 8
+    Width = 232
+    TabOrder = 0
+  end
 end

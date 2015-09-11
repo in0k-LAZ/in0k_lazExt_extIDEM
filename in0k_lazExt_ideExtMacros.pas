@@ -7,10 +7,11 @@ unit in0k_lazExt_ideExtMacros;
 interface
 
 uses
-  lazExt_extIDEM_node, lazExt_extIDEM_edit, lazExt_extIDEM_Group_edit, 
-  lazExt_extIDEM_preSet_node, lazExt_extIDEM_prjOptionEdit, 
-  in0k_lazExt_extIDEM_REG, lazExt_extIDEM_prjOptionEdit_node, lazExt_extIDEM, 
-  LazarusPackageIntf;
+  in0k_lazExt_extIDEM_REG, lazExt_extIDEM, lazExt_extIDEM_node, 
+  lazExt_extIDEM_edit, lazExt_extIDEM_prjOptionEdit, 
+  lazExt_extIDEM_prjOptionEdit_node, lazExt_extIDEM_preSet_edit, 
+  lazExt_extIDEM_preSet_node, lazExt_extIDEM_preSet_NDF, 
+  lazExt_extIDEM_preSet_USER, lazExt_extIDEM_preSet_SUB6, LazarusPackageIntf;
 
 implementation
 

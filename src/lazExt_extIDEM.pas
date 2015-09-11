@@ -4,8 +4,10 @@ unit lazExt_extIDEM;
 
 interface
 
-uses lazExt_extIDEM_preSet_node, lazExt_extIDEM_Group_edit,
-  Classes, SysUtils;
+uses IDEOptionsIntf,
+    lazExt_extIDEM_preSet_node,
+    lazExt_extIDEM_preSet_edit,
+     Classes, SysUtils;
 
 
 type
@@ -17,7 +19,7 @@ type
 
   public
     function  preSet_FiND(const INDX:integer):tLazExt_extIDEM_preSet_Node;
-    function PreSETs_ADD_Node(const Node:tLazExt_extIDEM_preSet_NodeTYPE; const EDIT:tLazExt_extIDEM_preSet_frmEditTYPE):tLazExt_extIDEM_preSet_Node; override;
+    function PreSETs_ADD_Node(const Node:tLazExt_extIDEM_preSet_NodeTYPE):tLazExt_extIDEM_preSet_Node;
 
 
   end;
@@ -33,13 +35,13 @@ begin
     result:=_nodes_FND_(INDX);
 end;
 
-function tLazExt_extIDEM.PreSETs_ADD_Node(const Node:tLazExt_extIDEM_preSet_NodeTYPE; const EDIT:tLazExt_extIDEM_preSet_frmEditTYPE):tLazExt_extIDEM_preSet_Node;
+function tLazExt_extIDEM.PreSETs_ADD_Node(const Node:tLazExt_extIDEM_preSet_NodeTYPE):tLazExt_extIDEM_preSet_Node;
 var fIdeOI:integer;
 begin
     result:=_nodes_ADD_(Node);
     if Assigned(result) then begin
         fIdeOI:=GetFreeIDEOptionsIndex(_ideGRP_Index_,_ideGRP_Index_);
-        RegisterIDEOptionsEditor(_ideGRP_Index_, EDIT, fIdeOI,_ideEDT_Index_);
+        RegisterIDEOptionsEditor(_ideGRP_Index_, Node.defEditor, fIdeOI,_ideEDT_Index_);
 
     end;
 end;

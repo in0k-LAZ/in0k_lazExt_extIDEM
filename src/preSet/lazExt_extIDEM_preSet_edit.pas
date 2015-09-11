@@ -1,4 +1,4 @@
-unit lazExt_extIDEM_Group_edit;
+unit lazExt_extIDEM_preSet_edit;
 
 {$mode objfpc}{$H+}
 
@@ -14,7 +14,7 @@ interface
 
 
 uses lazExt_extIDEM_node,  IDEOptionsIntf,
-  Classes, SysUtils, FileUtil, Forms, Controls;
+  Classes, SysUtils, FileUtil, Forms, Controls, Grids;
 
 type
 
@@ -24,7 +24,10 @@ type
     class function preSet_Desc:string; virtual; {$ifNdef _TSTABS_} abstract; {$endif}
   end;
 
+ { tLazExt_extIDEM_preSet_frmEdit }
+
  tLazExt_extIDEM_preSet_frmEdit=class(TAbstractIDEOptionsEditor)
+    StringGrid1: TStringGrid;
   private
    _preSet_:tLazExt_extIDEM_preSet_edtNode;
     procedure _preSet_SET_(preSet:tLazExt_extIDEM_preSet_edtNode);
@@ -35,7 +38,9 @@ type
   public
     class function SupportedOptionsClass: TAbstractIDEOptionsClass; override;
   public
+    {$ifDef _TSTABS_}
     function GetTitle:string; override;
+    {$endif}
   public
     procedure Setup(ADialog:TAbstractOptionsEditorDialog);  override;
     procedure ReadSettings(AOptions:TAbstractIDEOptions);   override;
@@ -78,10 +83,13 @@ end;
 
 //------------------------------------------------------------------------------
 
+{$ifDef _TSTABS_}
 function tLazExt_extIDEM_preSet_frmEdit.GetTitle:string;
 begin
+    Assert(false,self.ClassName+'.GetTitle mast by OVERRIDE');
     result:='preSet';
 end;
+{$endIf}
 
 //------------------------------------------------------------------------------
 

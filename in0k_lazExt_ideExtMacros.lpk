@@ -8,48 +8,60 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <OtherUnitFiles Value="src;src\preSet;src\ideEdit"/>
+        <OtherUnitFiles Value="src;src\preSet;src\ideEdit;src\preSETs\setNDF;src\preSETs\setSUB6;src\preSETs\setUSER"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="9">
+    <Files Count="12">
       <Item1>
-        <Filename Value="src\lazExt_extIDEM_node.pas"/>
-        <UnitName Value="lazExt_extIDEM_node"/>
-      </Item1>
-      <Item2>
-        <Filename Value="src\lazExt_extIDEM_edit.pas"/>
-        <UnitName Value="lazExt_extIDEM_edit"/>
-      </Item2>
-      <Item3>
         <Filename Value="in0k_lazExt_extIDEM_INI.inc"/>
         <Type Value="Binary"/>
+      </Item1>
+      <Item2>
+        <Filename Value="in0k_lazExt_extIDEM_REG.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="in0k_lazExt_extIDEM_REG"/>
+      </Item2>
+      <Item3>
+        <Filename Value="src\lazExt_extIDEM.pas"/>
+        <UnitName Value="lazExt_extIDEM"/>
       </Item3>
       <Item4>
-        <Filename Value="src\preSet\lazExt_extIDEM_Group_edit.pas"/>
-        <UnitName Value="lazExt_extIDEM_Group_edit"/>
+        <Filename Value="src\lazExt_extIDEM_node.pas"/>
+        <UnitName Value="lazExt_extIDEM_node"/>
       </Item4>
       <Item5>
-        <Filename Value="src\preSet\lazExt_extIDEM_preSet_node.pas"/>
-        <UnitName Value="lazExt_extIDEM_preSet_node"/>
+        <Filename Value="src\lazExt_extIDEM_edit.pas"/>
+        <UnitName Value="lazExt_extIDEM_edit"/>
       </Item5>
       <Item6>
         <Filename Value="src\ideEdit\lazExt_extIDEM_prjOptionEdit.pas"/>
         <UnitName Value="lazExt_extIDEM_prjOptionEdit"/>
       </Item6>
       <Item7>
-        <Filename Value="in0k_lazExt_extIDEM_REG.pas"/>
-        <HasRegisterProc Value="True"/>
-        <UnitName Value="in0k_lazExt_extIDEM_REG"/>
-      </Item7>
-      <Item8>
         <Filename Value="src\ideEdit\lazExt_extIDEM_prjOptionEdit_node.pas"/>
         <UnitName Value="lazExt_extIDEM_prjOptionEdit_node"/>
+      </Item7>
+      <Item8>
+        <Filename Value="src\preSet\lazExt_extIDEM_preSet_edit.pas"/>
+        <UnitName Value="lazExt_extIDEM_preSet_edit"/>
       </Item8>
       <Item9>
-        <Filename Value="src\lazExt_extIDEM.pas"/>
-        <UnitName Value="lazExt_extIDEM"/>
+        <Filename Value="src\preSet\lazExt_extIDEM_preSet_node.pas"/>
+        <UnitName Value="lazExt_extIDEM_preSet_node"/>
       </Item9>
+      <Item10>
+        <Filename Value="src\preSETs\setNDF\lazExt_extIDEM_preSet_NDF.pas"/>
+        <UnitName Value="lazExt_extIDEM_preSet_NDF"/>
+      </Item10>
+      <Item11>
+        <Filename Value="src\preSETs\setUSER\lazExt_extIDEM_preSet_USER.pas"/>
+        <UnitName Value="lazExt_extIDEM_preSet_USER"/>
+      </Item11>
+      <Item12>
+        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM_preSet_SUB6.pas"/>
+        <UnitName Value="lazExt_extIDEM_preSet_SUB6"/>
+      </Item12>
     </Files>
     <RequiredPkgs Count="3">
       <Item1>

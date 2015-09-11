@@ -1,4 +1,4 @@
-unit lazExt_extIDEM_node;
+unit lazExt_extIDEM_maCRO_node;
 
 {$mode objfpc}{$H+}
 
@@ -12,7 +12,7 @@ interface
     {$define _INLINE_}
 {$endIf}
 
-uses lazExt_extIDEM_edit,
+uses lazExt_extIDEM_maCRO_edit,
   Classes, SysUtils;
 
 type
@@ -27,6 +27,7 @@ type
     destructor DESTROY; override;
   public
     property Next:tLazExt_extIDEM_node read _next_ write _next_;
+    property maCRO_Name:string read _name_;
   public
     class function defEditor:tLazExt_extIDEM_frmEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
   end;
@@ -48,7 +49,11 @@ type
     destructor DESTROY; override;
   public
     function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tLazExt_extIDEM_frmEditTYPE=nil):boolean;
-  end;
+
+  public
+    function Nodes_First:tLazExt_extIDEM_node;
+    function Nodes_Next(const node:tLazExt_extIDEM_node):tLazExt_extIDEM_node;
+ end;
 
 
 
@@ -104,7 +109,26 @@ begin
        _nodes_INS_(nodeType.Create(prmName,nodeEdit));
         result:=true;
     end
-    else result:=false
+    else result:=false;
+    {$ifDef _TSTPRM_}
+         Assert(result, ClassName+'.ADD('+prmName+','+nodeType.ClassName+')'+'FALSE');
+    {$endIF}
+
+
+
+end;
+
+function tLazExt_extIDEM_nodesList_core.Nodes_First:tLazExt_extIDEM_node;
+begin
+    result:=_nodes_;
+end;
+
+function tLazExt_extIDEM_nodesList_core.Nodes_Next(const node:tLazExt_extIDEM_node):tLazExt_extIDEM_node;
+begin
+    {$ifDef _TSTPRM_}
+        Assert(Assigned(node),'NODE === NIL');
+    {$endIF}
+    result:=_node_getNext(node);
 end;
 
 //------------------------------------------------------------------------------

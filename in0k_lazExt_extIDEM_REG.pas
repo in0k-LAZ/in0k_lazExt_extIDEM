@@ -24,13 +24,15 @@ var OptionsGroup: Integer;
 
 
 
+
 procedure REGISTER;
 var edt:integer;
 begin
     //---
+    lazExt_extIDEM_CRT;
     edt := GetFreeIDEOptionsIndex(GroupProject,ProjectOptionsMisc);//();
     RegisterIDEOptionsEditor(GroupProject, tLazExt_extIDEM_frmPrjOptionEdit, edt);
-    lazExt_extIDEM_INIT(GroupProject,edt);
+    lazExt_extIDEM_INT(GroupProject,edt);
     //---
     extIDEM.PreSETs_ADD_Node(tExtIDEM_preSet_SUB6_node);
     extIDEM.PreSETs_ADD_Node(tExtIDEM_preSet_USER_node);

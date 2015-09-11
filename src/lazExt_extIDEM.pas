@@ -25,7 +25,8 @@ type
   end;
 
 
-procedure lazExt_extIDEM_INIT(const GRP,EDT:integer);
+procedure lazExt_extIDEM_CRT;
+procedure lazExt_extIDEM_INT(const GRP,EDT:integer);
 function  extIDEM:tLazExt_extIDEM;
 
 implementation
@@ -41,8 +42,9 @@ begin
     result:=_nodes_ADD_(Node);
     if Assigned(result) then begin
         fIdeOI:=GetFreeIDEOptionsIndex(_ideGRP_Index_,_ideGRP_Index_);
-        RegisterIDEOptionsEditor(_ideGRP_Index_, Node.defEditor, fIdeOI,_ideEDT_Index_);
-
+       _node_setID_(result,fIdeOI);
+        RegisterIDEOptionsEditor(_ideGRP_Index_, Node.def_frmEdtr, fIdeOI,_ideEDT_Index_);
+        result.set_def_maCROs;
     end;
 end;
 
@@ -50,13 +52,19 @@ end;
 
 var _LazExt_extIDEM_:tLazExt_extIDEM;
 
-procedure lazExt_extIDEM_INIT(const GRP,EDT:integer);
+
+procedure lazExt_extIDEM_CRT;
 begin
     if not Assigned(_LazExt_extIDEM_) then begin
-      _LazExt_extIDEM_:=tLazExt_extIDEM.Create;
-      _LazExt_extIDEM_._ideGRP_Index_:=GRP;
-      _LazExt_extIDEM_._ideEDT_Index_:=EDT;
+       _LazExt_extIDEM_:=tLazExt_extIDEM.Create;
     end;
+end;
+
+procedure lazExt_extIDEM_INT(const GRP,EDT:integer);
+begin
+    if not Assigned(_LazExt_extIDEM_) then lazExt_extIDEM_CRT;
+   _LazExt_extIDEM_._ideGRP_Index_:=GRP;
+   _LazExt_extIDEM_._ideEDT_Index_:=EDT;
 end;
 
 function extIDEM:tLazExt_extIDEM;

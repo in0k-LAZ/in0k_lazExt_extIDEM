@@ -1,4 +1,4 @@
-unit lazExt_extIDEM_edit;
+unit lazExt_extIDEM_maCRO_edit;
 
 {$mode objfpc}{$H+}
 
@@ -45,6 +45,7 @@ implementation
 class function tlazExt_extIDEM_edtNode.NodeTYPE_Name:string;
 begin
     Assert(false,self.ClassName+'.Node_Name mast by OVERRIDE');
+    result:=self.ClassName;
 end;
 {$endif}
 
@@ -52,6 +53,7 @@ end;
 class function tlazExt_extIDEM_edtNode.NodeTYPE_Desc:string;
 begin
     Assert(false,self.ClassName+'.Node_Desc mast by OVERRIDE');
+    result:=self.ClassName;
 end;
 {$endif}
 

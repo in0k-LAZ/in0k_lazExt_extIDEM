@@ -25,7 +25,9 @@ type
     function _node_indxCMP_(const indx:integer):integer;
     function _node_indx_IS_(const indx:integer):boolean;
   public
-    class function defEditor:tLazExt_extIDEM_preSet_frmEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
+    procedure set_def_maCROs; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
+  public
+    class function def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
   end;
  tLazExt_extIDEM_preSet_NodeTYPE=class of tLazExt_extIDEM_preSet_Node;
 
@@ -36,6 +38,7 @@ type
     //function  _node_getNext(const node:tLazExt_extIDEM_preSet_Node):tLazExt_extIDEM_preSet_Node;
     //procedure _node_setNext(const node:tLazExt_extIDEM_preSet_Node; const value:tLazExt_extIDEM_preSet_Node);
   protected
+    procedure _node_setID_(const node:tLazExt_extIDEM_preSet_Node; const INDX:integer);
     procedure _nodes_CLR_;
     function  _nodes_FND_(const IDNT:string):tLazExt_extIDEM_preSet_Node; overload;
     function  _nodes_FND_(const INDX:integer):tLazExt_extIDEM_preSet_Node; overload;
@@ -53,7 +56,14 @@ type
 implementation
 
 {$ifDef _TSTABS_}
-class function tLazExt_extIDEM_preSet_Node.defEditor:tLazExt_extIDEM_preSet_frmEditTYPE;
+procedure tLazExt_extIDEM_preSet_Node.set_def_maCROs;
+begin
+    //Assert(false,self.ClassName+'.set_def_maCROs mast by OVERRIDE');
+end;
+{$endif}
+
+{$ifDef _TSTABS_}
+class function tLazExt_extIDEM_preSet_Node.def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE;
 begin
     Assert(false,self.ClassName+'.defEditor mast by OVERRIDE');
     result:=NIL; {todo: вставить НОТ ДЕФ редактор}
@@ -161,6 +171,17 @@ end;}
 
 //------------------------------------------------------------------------------
 
+procedure tLazExt_extIDEM_preSetsList_core._node_setID_(const node:tLazExt_extIDEM_preSet_Node; const INDX:integer);
+begin
+    {$ifDef _TSTPRM_}
+        Assert(Assigned(node),'node === NIL');
+    {$endIF}
+    node._indx_:=INDX;
+
+end;
+
+//------------------------------------------------------------------------------
+
 // очистка списка узлов (уничтожение)
 procedure tLazExt_extIDEM_preSetsList_core._nodes_CLR_;
 var tmp:tLazExt_extIDEM_preSet_Node;
@@ -217,7 +238,7 @@ begin
     {$ifDef _TSTPRM_}
         Assert(Assigned(preSet),'preSet === NIL');
     {$endIF}
-    if not Assigned(_nodes_FND_(preSet.preSet_Name)) then begin
+    if not Assigned(_nodes_FND_(preSet.preSet_IDNT)) then begin
         result:=preSet.Create;
        _nodes_INS_(result);
     end

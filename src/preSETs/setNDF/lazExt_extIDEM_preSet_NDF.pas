@@ -10,32 +10,55 @@ uses lazExt_extIDEM_preSet_node,
 
 type
 
- tExtIDEM_preSet_NDF_node=class(tLazExt_extIDEM_preSet_Node)
-  public
-    class function defEditor:tLazExt_extIDEM_preSet_frmEditTYPE; override;
-  end;
 
  TextIDEM_preSet_NDF_Edit=class(tLazExt_extIDEM_preSet_frmEdit)
   public
     function GetTitle:string; override;
   end;
 
+ tExtIDEM_preSet_NDF_node=class(tLazExt_extIDEM_preSet_Node)
+  public
+    class function def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE; override;
+    class function preSet_IDNT:string; override;
+    class function preSet_Name:string; override;
+    class function preSet_Desc:string; override;
+  end;
+
+
+
 implementation
 
 {$R *.lfm}
 
-class function tExtIDEM_preSet_NDF_node.defEditor:tLazExt_extIDEM_preSet_frmEditTYPE;
+function TextIDEM_preSet_NDF_Edit.GetTitle:string;
+begin
+    result:=tExtIDEM_preSet_NDF_node.preSet_Name;
+end;
+
+//==============================================================================
+
+class function tExtIDEM_preSet_NDF_node.def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE;
 begin
     result:=TextIDEM_preSet_NDF_Edit;
 end;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//==============================================================================
-
-function TextIDEM_preSet_NDF_Edit.GetTitle:string;
+class function tExtIDEM_preSet_NDF_node.preSet_IDNT:string;
 begin
-    result:='preSet_NDF';
+    result:='extIDEM_NDF';
 end;
+
+class function tExtIDEM_preSet_NDF_node.preSet_Name:string;
+begin
+    result:='NOT define';
+end;
+
+class function tExtIDEM_preSet_NDF_node.preSet_Desc:string;
+begin
+    result:='NOT found or NOT define preSet.';
+end;
+
 
 end.
 

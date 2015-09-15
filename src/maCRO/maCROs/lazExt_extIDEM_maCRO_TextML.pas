@@ -1,4 +1,4 @@
-unit lazExt_extIDEM_maCRO_TextSL;
+unit lazExt_extIDEM_maCRO_TextML;
 
 {$mode objfpc}{$H+}
 
@@ -12,12 +12,12 @@ lazExt_extIDEM_maCRO_node,lazExt_extIDEM_maCRO_edit,
 
 type
 
- { TlazExt_extIDEM_maCRO_TextSL_edit }
+ { TlazExt_extIDEM_maCRO_TextML_edit }
 
- TlazExt_extIDEM_maCRO_TextSL_edit=class(TlazExt_extIDEM_maCRO_Text_edit)
+ TlazExt_extIDEM_maCRO_TextML_edit=class(TlazExt_extIDEM_maCRO_Text_edit)
   end;
 
- tLazExt_extIDEM_maCRO_TextSL_node=class(tLazExt_extIDEM_maCRO_Text_node)
+ tLazExt_extIDEM_maCRO_TextML_node=class(tLazExt_extIDEM_maCRO_Text_node)
   public
     class function defEditor    :tLazExt_extIDEM_frmEditTYPE; override;
     //class function NodeTYPE_Name:string; override;
@@ -31,9 +31,9 @@ implementation
 
 //==============================================================================
 
-class function tLazExt_extIDEM_maCRO_TextSL_node.defEditor:tLazExt_extIDEM_frmEditTYPE;
+class function tLazExt_extIDEM_maCRO_TextML_node.defEditor:tLazExt_extIDEM_frmEditTYPE;
 begin
-    result:=TlazExt_extIDEM_maCRO_TextSL_edit;
+    result:=TlazExt_extIDEM_maCRO_TextML_edit;
 end;
 
 end.

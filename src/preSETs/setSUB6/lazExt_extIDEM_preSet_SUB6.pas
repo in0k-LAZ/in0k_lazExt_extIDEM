@@ -7,7 +7,9 @@ interface
 uses lazExt_extIDEM_preSet_node,
      lazExt_extIDEM_preSet_edit,
      //---
+     lazExt_extIDEM_maCRO_Text,
      lazExt_extIDEM_maCRO_TextSL,
+     lazExt_extIDEM_maCRO_TextML,
   Classes, SysUtils, FileUtil, Forms, Controls;
 
 type
@@ -35,9 +37,9 @@ procedure tExtIDEM_preSet_SUB6_node.set_def_maCROs;
 begin
     Assert(false,'asdf');
 
-    ADD('asd1', tLazExt_extIDEM_maCRO_TextSL_node);
+    ADD('asd1', tLazExt_extIDEM_maCRO_Text_node);
     ADD('asd2', tLazExt_extIDEM_maCRO_TextSL_node);
-    ADD('asd3', tLazExt_extIDEM_maCRO_TextSL_node);
+    ADD('asd3', tLazExt_extIDEM_maCRO_TextML_node);
 end;
 
 //------------------------------------------------------------------------------

@@ -41,8 +41,17 @@ type
     //procedure _Rec_set_(value:PIDEOptionsEditorRec);
     //function  _Rec_get_:PIDEOptionsEditorRec;
   protected
+    function  _nodesList_Present_:boolean;
     function  _nodesList_mstReCrt:boolean;
     procedure _nodesList_ReCreate;
+    procedure _nodesList_settings_read_;
+    procedure _nodesList_settings_write_;
+  protected
+    function  _nodeFrame_CRT_(const node:tLazExt_extIDEM_node):tLazExt_extIDEM_frmEdit;
+    function  _nodeFrame_GET_:tLazExt_extIDEM_frmEdit;
+    procedure _nodeFrame_rePlace_(const oldEdit,newEdit:tLazExt_extIDEM_frmEdit);
+    //procedure _nodeFrame_show_();
+
   public
     class function SupportedOptionsClass:TAbstractIDEOptionsClass; override;
   public
@@ -126,18 +135,22 @@ type
  tASD=class
    _node_:tLazExt_extIDEM_node;
    _edit_:tLazExt_extIDEM_frmEdit;
-
   public
-    constructor Create(const node:tLazExt_extIDEM_node; tEdit:tLazExt_extIDEM_frmEdit);
+    constructor Create(const node:tLazExt_extIDEM_node);
   end;
 
 
-constructor tASD.Create(const node:tLazExt_extIDEM_node; tEdit:tLazExt_extIDEM_frmEdit);
+constructor tASD.Create(const node:tLazExt_extIDEM_node);
 begin
   _node_:=node;
-  _edit_:=tEdit;
+  _edit_:=nil;
 end;
 
+
+function tLazExt_extIDEM_preSet_frmEdit._nodesList_Present_:boolean;
+begin
+    result:=ListBox1.Count>0;
+end;
 
 function tLazExt_extIDEM_preSet_frmEdit._nodesList_mstReCrt:boolean;
 begin
@@ -150,46 +163,98 @@ begin
     if Assigned(_preSet_GET_) then begin
         tmp:=_preSet_GET_.Nodes_First;
         while Assigned(tmp) do begin
-            if tmp.Edit<>nil
-            then self.ListBox1.Items.AddObject(tmp.maCRO_Name,tASD.Create(tmp,tmp.Edit.Create(self)))
-            else  self.ListBox1.Items.AddObject(tmp.maCRO_Name,tASD.Create(tmp,nil));
+            self.ListBox1.Items.AddObject(tmp.maCRO_Name,tASD.Create(tmp));
             //--->
             tmp:=_preSet_GET_.Nodes_Next(tmp);
         end;
     end;
 end;
 
+procedure tLazExt_extIDEM_preSet_frmEdit._nodesList_settings_read_;
+var i:integer;
+  tmp:tASD;
+begin
+    for i:=0 to ListBox1.Count-1 do begin
+        tmp:=tAsd(ListBox1.Items.Objects[i]);
+        if Assigned(tmp)and Assigned(tmp._node_)and Assigned(tmp._edit_) then begin
+            tmp._edit_.Settings_Read(tmp._node_);
+        end;
+    end;
+end;
+
+procedure tLazExt_extIDEM_preSet_frmEdit._nodesList_settings_write_;
+var i:integer;
+  tmp:tASD;
+begin
+    for i:=0 to ListBox1.Count-1 do begin
+        tmp:=tAsd(ListBox1.Items.Objects[i]);
+        if Assigned(tmp)and Assigned(tmp._node_)and Assigned(tmp._edit_) then begin
+            tmp._edit_.Settings_Write(tmp._node_);
+        end;
+    end;
+end;
+
+
 
 procedure tLazExt_extIDEM_preSet_frmEdit.ReadSettings(AOptions:TAbstractIDEOptions);
 begin
     if _nodesList_mstReCrt then _nodesList_ReCreate;
+    //
+    if _nodesList_Present_ then _nodesList_settings_read_;
 end;
 
 procedure tLazExt_extIDEM_preSet_frmEdit.WriteSettings(AOptions:TAbstractIDEOptions);
 begin
+    if _nodesList_Present_ then _nodesList_settings_write_;
+end;
 
+//------------------------------------------------------------------------------
+
+function tLazExt_extIDEM_preSet_frmEdit._nodeFrame_CRT_(const node:tLazExt_extIDEM_node):tLazExt_extIDEM_frmEdit;
+begin
+    result:=nil;
+    if Assigned(node) then result:=node.Edit.Create(SELF);
+    result.Settings_Read(node);
+end;
+
+procedure tLazExt_extIDEM_preSet_frmEdit._nodeFrame_rePlace_(const oldEdit,newEdit:tLazExt_extIDEM_frmEdit);
+begin
+    // готовим новый
+    if Assigned(newEdit) then begin
+        newEdit.Parent:=Panel1;
+        newEdit.Align:=alClient;
+        newEdit.SendToBack;
+        newEdit.Show;
+    end;
+    // убираем старый
+    if Assigned(oldEdit) then oldEdit.Hide;
+end;
+
+function tLazExt_extIDEM_preSet_frmEdit._nodeFrame_GET_:tLazExt_extIDEM_frmEdit;
+var i:integer;
+begin
+    result:=nil;
+    for i:=0 to panel1.ControlCount-1 do begin
+        if panel1.Controls[i] is tLazExt_extIDEM_frmEdit then begin
+            result:=tLazExt_extIDEM_frmEdit(panel1.Controls[i]);
+            break
+        end;
+    end;
 end;
 
 //------------------------------------------------------------------------------
 
 procedure tLazExt_extIDEM_preSet_frmEdit.ListBox1SelectionChange(Sender:TObject; User:boolean);
 var i:integer;
-  var tmp:tASD;
-
+var tmp:tASD;
 begin
     i:=ListBox1.ItemIndex;
-    if i>0 then begin
+    if i>=0 then begin
         tmp:=tASD(ListBox1.Items.Objects[i]);
-        if Assigned(tmp) and Assigned(tmp._edit_) then begin
-            Panel1.HandleNeeded;
-            tmp._edit_.Parent:=Panel1;
-            tmp._edit_.Align:=alClient;
-            tmp._edit_.Visible:=true;
-        end;
-
-
+        if not Assigned(tmp._edit_) then tmp._edit_:=_nodeFrame_CRT_(tmp._node_);
+        //---
+       _nodeFrame_rePlace_(_nodeFrame_GET_,tmp._edit_);
     end;
-  //sdf
 end;
 
 

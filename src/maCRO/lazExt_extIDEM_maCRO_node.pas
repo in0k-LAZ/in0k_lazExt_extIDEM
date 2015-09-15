@@ -19,18 +19,25 @@ type
 
  tLazExt_extIDEM_node=class(tlazExt_extIDEM_edtNode)
   private
+   _isCHANGE_:boolean;
+  protected
+    procedure isChange_SET;
+  private
    _next_:tLazExt_extIDEM_node;
    _edit_:tLazExt_extIDEM_frmEditTYPE; //< выбранный редактор (может отличаться от defEditor)
    _name_:string;
   public
     constructor Create(const prmNAME:string; const EDITor:tLazExt_extIDEM_frmEditTYPE=nil); virtual;
     destructor DESTROY; override;
+  protected
+    //procedure Copy
   public
-    property Next:tLazExt_extIDEM_node read _next_ write _next_;
+    //property Next:tLazExt_extIDEM_node read _next_ write _next_;
     property Edit:tLazExt_extIDEM_frmEditTYPE read _edit_;
     property maCRO_Name:string read _name_;
   public
     class function defEditor:tLazExt_extIDEM_frmEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
+    class function is_Public:boolean; virtual;
   end;
  tLazExt_extIDEM_nodeTYPE=class of tLazExt_extIDEM_node;
 
@@ -85,6 +92,18 @@ begin
     result:=NIL; {todo: вставить НОТ ДЕФ редактор}
 end;
 {$endif}
+
+class function tLazExt_extIDEM_node.is_Public:boolean;
+begin
+    result:=true;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_node.isChange_SET;
+begin
+   _isCHANGE_:=TRUE;
+end;
 
 //==============================================================================
 

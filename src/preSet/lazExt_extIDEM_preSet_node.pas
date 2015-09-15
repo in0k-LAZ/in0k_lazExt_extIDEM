@@ -35,10 +35,8 @@ type
   protected
    _nodes_:tLazExt_extIDEM_preSet_Node;
   protected
-    //function  _node_getNext(const node:tLazExt_extIDEM_preSet_Node):tLazExt_extIDEM_preSet_Node;
-    //procedure _node_setNext(const node:tLazExt_extIDEM_preSet_Node; const value:tLazExt_extIDEM_preSet_Node);
-  protected
     procedure _node_setID_(const node:tLazExt_extIDEM_preSet_Node; const INDX:integer);
+    function  _nodes_LST_:tLazExt_extIDEM_preSet_Node;
     procedure _nodes_CLR_;
     function  _nodes_FND_(const IDNT:string):tLazExt_extIDEM_preSet_Node; overload;
     function  _nodes_FND_(const INDX:integer):tLazExt_extIDEM_preSet_Node; overload;
@@ -178,6 +176,15 @@ begin
     {$endIF}
     node._indx_:=INDX;
 
+end;
+
+//------------------------------------------------------------------------------
+
+// получить указатель на последний элемент
+function tLazExt_extIDEM_preSetsList_core._nodes_LST_:tLazExt_extIDEM_preSet_Node;
+begin //< тупо проходим по всем и останавливаемся на последнем
+    result:=_nodes_;
+    while Assigned(result)and Assigned(result._next_) do result:=result._next_;
 end;
 
 //------------------------------------------------------------------------------

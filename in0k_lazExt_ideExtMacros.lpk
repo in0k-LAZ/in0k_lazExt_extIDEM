@@ -12,7 +12,7 @@
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="13">
+    <Files Count="16">
       <Item1>
         <Filename Value="in0k_lazExt_extIDEM_INI.inc"/>
         <Type Value="Binary"/>
@@ -63,9 +63,21 @@
         <UnitName Value="lazExt_extIDEM_preSet_SUB6"/>
       </Item12>
       <Item13>
+        <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_maCRO_Text.pas"/>
+        <UnitName Value="lazExt_extIDEM_maCRO_Text"/>
+      </Item13>
+      <Item14>
+        <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_maCRO_TextML.pas"/>
+        <UnitName Value="lazExt_extIDEM_maCRO_TextML"/>
+      </Item14>
+      <Item15>
         <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_maCRO_TextSL.pas"/>
         <UnitName Value="lazExt_extIDEM_maCRO_TextSL"/>
-      </Item13>
+      </Item15>
+      <Item16>
+        <Filename Value="src\lazExt_extIDEM_prjResource.pas"/>
+        <UnitName Value="lazExt_extIDEM_prjResource"/>
+      </Item16>
     </Files>
     <RequiredPkgs Count="3">
       <Item1>

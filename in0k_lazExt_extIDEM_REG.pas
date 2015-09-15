@@ -35,7 +35,6 @@ begin
     lazExt_extIDEM_INT(GroupProject,edt);
     //---
     extIDEM.PreSETs_ADD_Node(tExtIDEM_preSet_SUB6_node);
-    extIDEM.PreSETs_ADD_Node(tExtIDEM_preSet_USER_node);
     extIDEM.PreSETs_ADD_Node(tExtIDEM_preSet_NDF_node);
 
    // lazExt_extIDEM_preSet_SUB6

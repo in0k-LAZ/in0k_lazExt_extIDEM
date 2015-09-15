@@ -5,6 +5,7 @@ unit lazExt_extIDEM;
 interface
 
 uses IDEOptionsIntf,
+    lazExt_extIDEM_preSet_USER,
     lazExt_extIDEM_preSet_node,
     lazExt_extIDEM_preSet_edit,
      Classes, SysUtils;
@@ -16,12 +17,11 @@ type
   private
     _ideGRP_Index_:integer;
     _ideEDT_Index_:integer;
+  protected
 
   public
-    function  preSet_FiND(const INDX:integer):tLazExt_extIDEM_preSet_Node;
+    function preSet_FiND(const INDX:integer):tLazExt_extIDEM_preSet_Node;
     function PreSETs_ADD_Node(const Node:tLazExt_extIDEM_preSet_NodeTYPE):tLazExt_extIDEM_preSet_Node;
-
-
   end;
 
 
@@ -45,6 +45,7 @@ begin
        _node_setID_(result,fIdeOI);
         RegisterIDEOptionsEditor(_ideGRP_Index_, Node.def_frmEdtr, fIdeOI,_ideEDT_Index_);
         result.set_def_maCROs;
+        {todo: копирование как для шаблона в UserSET}
     end;
 end;
 
@@ -57,6 +58,8 @@ procedure lazExt_extIDEM_CRT;
 begin
     if not Assigned(_LazExt_extIDEM_) then begin
        _LazExt_extIDEM_:=tLazExt_extIDEM.Create;
+       _LazExt_extIDEM_.PreSETs_ADD_Node(tExtIDEM_preSet_USER_node);
+
     end;
 end;
 

@@ -1,21 +1,5 @@
-object lazExt_extIDEM_maCRO_TextSL_edit: TlazExt_extIDEM_maCRO_TextSL_edit
-  Left = 0
-  Height = 240
-  Top = 0
-  Width = 320
-  ClientHeight = 240
-  ClientWidth = 320
-  TabOrder = 0
-  DesignLeft = 341
-  DesignTop = 142
-  object Memo1: TMemo
-    Left = 29
-    Height = 90
-    Top = 50
-    Width = 150
-    Lines.Strings = (
-      'Memo1'
-    )
-    TabOrder = 0
+inherited lazExt_extIDEM_maCRO_TextSL_edit: TlazExt_extIDEM_maCRO_TextSL_edit
+  inherited Memo1: TMemo
+    Left = 136
   end
 end

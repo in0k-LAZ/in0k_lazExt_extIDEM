@@ -32,6 +32,10 @@ type
     { private declarations }
   public
     constructor Create(TheOwner:TComponent); override;
+  public
+    //procedure Settings_Setup;  override;
+    procedure Settings_Read (const node:tlazExt_extIDEM_edtNode);  virtual;
+    procedure Settings_Write(const node:tlazExt_extIDEM_edtNode);  virtual;
   end;
  tLazExt_extIDEM_frmEditTYPE=class of TlazExt_extIDEM_frmEdit;
 
@@ -44,6 +48,18 @@ begin
     inherited Create(TheOwner);
     sleep(100);
     self.Name:=self.Name+inttostr(GetTickCount64);
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_frmEdit.Settings_Read(const node:tlazExt_extIDEM_edtNode);
+begin
+    //
+end;
+
+procedure tLazExt_extIDEM_frmEdit.Settings_Write(const node:tlazExt_extIDEM_edtNode);
+begin
+    //
 end;
 
 //==============================================================================

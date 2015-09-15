@@ -8,19 +8,23 @@ object lazExt_extIDEM_preSet_frmEdit: TlazExt_extIDEM_preSet_frmEdit
   TabOrder = 0
   DesignLeft = 276
   DesignTop = 194
-  object StringGrid1: TStringGrid
+  object ListBox1: TListBox
     Left = 0
-    Height = 224
-    Top = 8
-    Width = 232
+    Height = 240
+    Top = 0
+    Width = 224
+    Align = alLeft
+    ItemHeight = 0
+    OnSelectionChange = ListBox1SelectionChange
     TabOrder = 0
   end
-  object ListBox1: TListBox
-    Left = 258
-    Height = 185
-    Top = 31
-    Width = 100
-    ItemHeight = 0
+  object Panel1: TPanel
+    Left = 224
+    Height = 240
+    Top = 0
+    Width = 406
+    Align = alClient
+    Caption = 'Panel1'
     TabOrder = 1
   end
 end

@@ -15,7 +15,7 @@ interface
 
 
 
-uses
+uses windows,
   Classes, SysUtils, FileUtil, Forms, Controls;
 
 type
@@ -31,13 +31,20 @@ type
   private
     { private declarations }
   public
-    { public declarations }
+    constructor Create(TheOwner:TComponent); override;
   end;
  tLazExt_extIDEM_frmEditTYPE=class of TlazExt_extIDEM_frmEdit;
 
 implementation
 
 {$R *.lfm}
+
+constructor tLazExt_extIDEM_frmEdit.Create(TheOwner:TComponent);
+begin
+    inherited Create(TheOwner);
+    sleep(100);
+    self.Name:=self.Name+inttostr(GetTickCount64);
+end;
 
 //==============================================================================
 

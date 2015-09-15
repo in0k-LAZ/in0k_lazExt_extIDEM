@@ -27,6 +27,7 @@ type
     destructor DESTROY; override;
   public
     property Next:tLazExt_extIDEM_node read _next_ write _next_;
+    property Edit:tLazExt_extIDEM_frmEditTYPE read _edit_;
     property maCRO_Name:string read _name_;
   public
     class function defEditor:tLazExt_extIDEM_frmEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
@@ -48,7 +49,8 @@ type
     constructor Create; virtual;
     destructor DESTROY; override;
   public
-    function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tLazExt_extIDEM_frmEditTYPE=nil):boolean;
+    function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tLazExt_extIDEM_frmEditTYPE):boolean;
+    function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
 
   public
     function Nodes_First:tLazExt_extIDEM_node;
@@ -116,6 +118,11 @@ begin
 
 
 
+end;
+
+function tLazExt_extIDEM_nodesList_core.ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
+begin
+    result:=ADD(prmName,nodeType,nodeType.defEditor)
 end;
 
 function tLazExt_extIDEM_nodesList_core.Nodes_First:tLazExt_extIDEM_node;

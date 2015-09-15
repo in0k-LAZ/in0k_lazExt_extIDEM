@@ -13,8 +13,8 @@ interface
 {$endIf}
 
 
-uses lazExt_extIDEM_maCRO_node,  IDEOptionsIntf,
-  Classes, SysUtils, FileUtil, Forms, Controls, Grids, StdCtrls;
+uses lazExt_extIDEM_maCRO_node,  IDEOptionsIntf, lazExt_extIDEM_maCRO_edit,
+  Classes, SysUtils, FileUtil, Forms, Controls, Grids, StdCtrls, ExtCtrls;
 
 type
 
@@ -29,16 +29,20 @@ type
 
  tLazExt_extIDEM_preSet_frmEdit=class(TAbstractIDEOptionsEditor)
     ListBox1: TListBox;
-    StringGrid1: TStringGrid;
+    Panel1: TPanel;
+    procedure ListBox1SelectionChange(Sender: TObject; User: boolean);
   private
    _preSet_:tLazExt_extIDEM_preSet_edtNode;
     procedure _preSet_SET_(preSet:tLazExt_extIDEM_preSet_edtNode);
     function  _preSet_FND_:tLazExt_extIDEM_preSet_edtNode;
   protected
-    function _preSet_GET_:tLazExt_extIDEM_preSet_edtNode;
+    function  _preSet_GET_:tLazExt_extIDEM_preSet_edtNode;
   private
-    procedure _Rec_set_(value:PIDEOptionsEditorRec);
-    function  _Rec_get_:PIDEOptionsEditorRec;
+    //procedure _Rec_set_(value:PIDEOptionsEditorRec);
+    //function  _Rec_get_:PIDEOptionsEditorRec;
+  protected
+    function  _nodesList_mstReCrt:boolean;
+    procedure _nodesList_ReCreate;
   public
     class function SupportedOptionsClass:TAbstractIDEOptionsClass; override;
   public
@@ -53,7 +57,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
   public
-    property Rec:PIDEOptionsEditorRec read _Rec_get_ write _Rec_set_;
+    //property Rec:PIDEOptionsEditorRec read _Rec_get_ write _Rec_set_;
   end;
  tLazExt_extIDEM_preSet_frmEditTYPE=class of tLazExt_extIDEM_preSet_frmEdit;
 
@@ -116,18 +120,49 @@ begin
 
 end;
 
-procedure tLazExt_extIDEM_preSet_frmEdit.ReadSettings(AOptions:TAbstractIDEOptions);
+
+type
+
+ tASD=class
+   _node_:tLazExt_extIDEM_node;
+   _edit_:tLazExt_extIDEM_frmEdit;
+
+  public
+    constructor Create(const node:tLazExt_extIDEM_node; tEdit:tLazExt_extIDEM_frmEdit);
+  end;
+
+
+constructor tASD.Create(const node:tLazExt_extIDEM_node; tEdit:tLazExt_extIDEM_frmEdit);
+begin
+  _node_:=node;
+  _edit_:=tEdit;
+end;
+
+
+function tLazExt_extIDEM_preSet_frmEdit._nodesList_mstReCrt:boolean;
+begin
+    result:=0=self.ListBox1.Count;
+end;
+
+procedure tLazExt_extIDEM_preSet_frmEdit._nodesList_ReCreate;
 var tmp:tLazExt_extIDEM_node;
 begin
-    self.ListBox1.Items.Add('sadf');
     if Assigned(_preSet_GET_) then begin
         tmp:=_preSet_GET_.Nodes_First;
         while Assigned(tmp) do begin
-            self.ListBox1.Items.AddObject(tmp.maCRO_Name,tmp);
+            if tmp.Edit<>nil
+            then self.ListBox1.Items.AddObject(tmp.maCRO_Name,tASD.Create(tmp,tmp.Edit.Create(self)))
+            else  self.ListBox1.Items.AddObject(tmp.maCRO_Name,tASD.Create(tmp,nil));
             //--->
             tmp:=_preSet_GET_.Nodes_Next(tmp);
         end;
     end;
+end;
+
+
+procedure tLazExt_extIDEM_preSet_frmEdit.ReadSettings(AOptions:TAbstractIDEOptions);
+begin
+    if _nodesList_mstReCrt then _nodesList_ReCreate;
 end;
 
 procedure tLazExt_extIDEM_preSet_frmEdit.WriteSettings(AOptions:TAbstractIDEOptions);
@@ -137,7 +172,30 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure tLazExt_extIDEM_preSet_frmEdit._Rec_set_(value:PIDEOptionsEditorRec);
+procedure tLazExt_extIDEM_preSet_frmEdit.ListBox1SelectionChange(Sender:TObject; User:boolean);
+var i:integer;
+  var tmp:tASD;
+
+begin
+    i:=ListBox1.ItemIndex;
+    if i>0 then begin
+        tmp:=tASD(ListBox1.Items.Objects[i]);
+        if Assigned(tmp) and Assigned(tmp._edit_) then begin
+            Panel1.HandleNeeded;
+            tmp._edit_.Parent:=Panel1;
+            tmp._edit_.Align:=alClient;
+            tmp._edit_.Visible:=true;
+        end;
+
+
+    end;
+  //sdf
+end;
+
+
+//------------------------------------------------------------------------------
+
+{procedure tLazExt_extIDEM_preSet_frmEdit._Rec_set_(value:PIDEOptionsEditorRec);
 begin
     inherited Rec:=value;
    _preSet_SET_(_preSet_FND_);
@@ -146,7 +204,7 @@ end;
 function tLazExt_extIDEM_preSet_frmEdit._Rec_get_:PIDEOptionsEditorRec;
 begin
     result:=inherited Rec;
-end;
+end; }
 
 //------------------------------------------------------------------------------
 

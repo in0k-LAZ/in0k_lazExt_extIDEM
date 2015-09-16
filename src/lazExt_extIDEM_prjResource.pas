@@ -15,18 +15,21 @@ interface
 uses {$ifDef lazExt_Sub6_EventLOG_mode}Sub6_wndDebug,{$endIf}
    Laz2_XMLCfg, //< !!! для работы ОБЯЗАТЕЛЬНО пользоваться этой библиотекой
    ProjectResourcesIntf,
+   lazExt_extIDEM_preSet_NDF,
+   LazIDEIntf,
+
    lazExt_extIDEM_preSet_node;
 
 type
 
   // это список из ProjectFile
- tExtIDEM_prjResources_list=class(tLazExt_extIDEM_preSetsList_core)
+ {tExtIDEM_prjResources_list=class(tLazExt_extIDEM_preSetsList_core)
   //
   end;
-
+ }
  tExtIDEM_prjResources=class(TAbstractProjectResource)
   protected
-   _list_:tExtIDEM_prjResources_list;
+   _list_:tLazExt_extIDEM_preSetsList_core;
     procedure _list_reInit;
   protected
     function _getConfigPATH_(const Path:string):string; virtual;
@@ -40,10 +43,29 @@ type
     procedure WriteToProjectFile(AConfig: {Laz2_XMLCfg.TXMLConfig}TObject; Path: String); override;
     procedure ReadFromProjectFile(AConfig: {Laz2_XMLCfg.TXMLConfig}TObject; Path: String); override;
   public
+    property preSets:tLazExt_extIDEM_preSetsList_core read _list_;
 //    property used:boolean read _used_ write _used_set_;
   end;
 
+
+ function ActiveProject_ExtIDEM_prjResources:tExtIDEM_prjResources;
+
 implementation
+
+
+// получть ЭКЗЕМПЛЯР ресурсов 'Sub6' для текущего АКТИВНОГО проекта
+function ActiveProject_ExtIDEM_prjResources:tExtIDEM_prjResources;
+begin
+    result:=nil;
+    if Assigned(LazarusIDE) and                     //< -- такое чуство что
+       Assigned(LazarusIDE.ActiveProject) and       //<    проверок слишком
+       Assigned(LazarusIDE.ActiveProject.Resources) //<    много
+    then begin
+        with TAbstractProjectResources(LazarusIDE.ActiveProject.Resources)
+        do result:=tExtIDEM_prjResources(Resource[tExtIDEM_prjResources]);
+    end;
+end;
+
 
 constructor tExtIDEM_prjResources.Create;
 begin
@@ -82,7 +104,9 @@ begin
     end;
     //---
    _list_reInit; //< мы юудем его ПЕРЕЗАГРУЖАТЬ полностью
-    //---
+  // _list_.PreSETs_ADD(tExtIDEM_preSet_NDF_node.Create);
+
+   //---
     {$ifDef lazExt_Sub6_EventLOG_mode}
         DEBUG(self.ClassName+'.ReadFromProjectFile : '+Path);
     {$endIf}
@@ -110,7 +134,7 @@ end;
 procedure tExtIDEM_prjResources._list_reInit;
 begin
    _list_.FREE;
-   _list_:=tExtIDEM_prjResources_list.Create;
+   _list_:=tLazExt_extIDEM_preSetsList_core.Create;
 end;
 
 end.

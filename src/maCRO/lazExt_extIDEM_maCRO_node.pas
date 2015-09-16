@@ -30,11 +30,12 @@ type
     constructor Create(const prmNAME:string; const EDITor:tLazExt_extIDEM_frmEditTYPE=nil); virtual;
     destructor DESTROY; override;
   protected
-    //procedure Copy
+    procedure SetUP;                                    virtual;
+    procedure Copy (const Source:tLazExt_extIDEM_node); virtual;
   public
     //property Next:tLazExt_extIDEM_node read _next_ write _next_;
-    property Edit:tLazExt_extIDEM_frmEditTYPE read _edit_;
-    property maCRO_Name:string read _name_;
+    property Node_EditTYPE:tLazExt_extIDEM_frmEditTYPE read _edit_;
+    property Node_Name:string read _name_;
   public
     class function defEditor:tLazExt_extIDEM_frmEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
     class function is_Public:boolean; virtual;
@@ -50,8 +51,11 @@ type
     procedure _node_setNext(const node:tLazExt_extIDEM_node; const value:tLazExt_extIDEM_node);
   protected
     procedure _nodes_CLR_;
+    function  _nodes_LST_:tLazExt_extIDEM_node;
     function  _nodes_FND_(const IDNT:string):tLazExt_extIDEM_node;
     procedure _nodes_INS_(const node:tLazExt_extIDEM_node);
+  protected
+    procedure _nodes_CP_ (const Target:tLazExt_extIDEM_nodesList_core);
   public
     constructor Create; virtual;
     destructor DESTROY; override;
@@ -103,6 +107,18 @@ end;
 procedure tLazExt_extIDEM_node.isChange_SET;
 begin
    _isCHANGE_:=TRUE;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_node.Copy(const Source:tLazExt_extIDEM_node);
+begin
+   //
+end;
+
+procedure tLazExt_extIDEM_node.SetUP;
+begin
+   //
 end;
 
 //==============================================================================
@@ -201,6 +217,12 @@ begin
     end;
 end;
 
+function tLazExt_extIDEM_nodesList_core._nodes_LST_:tLazExt_extIDEM_node;
+begin
+   result:=_nodes_;
+   while Assigned(result)and Assigned(result._next_) do result:=result._next_;
+end;
+
 // поиск в спискае узла с совпадающим идентификатором
 function tLazExt_extIDEM_nodesList_core._nodes_FND_(const IDNT:string):tLazExt_extIDEM_node;
 begin
@@ -219,11 +241,29 @@ begin
     {$ifDef _TSTPRM_}
         Assert(Assigned(node),'NODE === NIL');
     {$endIF}
-    node._next_:=_nodes_;
-   _nodes_:=node;
+    node._next_:=_nodes_LST_;
+    if Assigned(node._next_) then begin
+        node._next_._next_:=node;
+        node._next_:=nil;
+    end
+    else _nodes_:=node;
 end;
 
+//------------------------------------------------------------------------------
 
+procedure tLazExt_extIDEM_nodesList_core._nodes_CP_(const Target:tLazExt_extIDEM_nodesList_core);
+var tmp:tLazExt_extIDEM_node;
+    tmq:tLazExt_extIDEM_node;
+begin //
+    tmp:=Nodes_First;
+    while Assigned(tmp) do begin
+        tmq:=tLazExt_extIDEM_nodeTYPE(tmp.ClassType).Create(tmp.Node_Name,tmp.Node_EditTYPE);
+        tmq.Copy(tmp);
+        Target._nodes_INS_(tmq);
+        //--->
+        tmp:=Nodes_Next(tmp);
+    end;
+end;
 
 end.
 

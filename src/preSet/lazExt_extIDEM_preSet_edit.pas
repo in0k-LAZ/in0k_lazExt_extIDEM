@@ -163,7 +163,7 @@ begin
     if Assigned(_preSet_GET_) then begin
         tmp:=_preSet_GET_.Nodes_First;
         while Assigned(tmp) do begin
-            self.ListBox1.Items.AddObject(tmp.maCRO_Name,tASD.Create(tmp));
+            self.ListBox1.Items.AddObject(tmp.Node_Name,tASD.Create(tmp));
             //--->
             tmp:=_preSet_GET_.Nodes_Next(tmp);
         end;
@@ -213,7 +213,7 @@ end;
 function tLazExt_extIDEM_preSet_frmEdit._nodeFrame_CRT_(const node:tLazExt_extIDEM_node):tLazExt_extIDEM_frmEdit;
 begin
     result:=nil;
-    if Assigned(node) then result:=node.Edit.Create(SELF);
+    if Assigned(node) then result:=node.Node_EditTYPE.Create(SELF);
     result.Settings_Read(node);
 end;
 

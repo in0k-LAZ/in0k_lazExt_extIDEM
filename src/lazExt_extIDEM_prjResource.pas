@@ -17,7 +17,7 @@ uses {$ifDef lazExt_Sub6_EventLOG_mode}Sub6_wndDebug,{$endIf}
    ProjectResourcesIntf,
    lazExt_extIDEM_preSet_NDF,
    LazIDEIntf,
-
+   lazExt_extIDEM_maCRO_NDF,
    lazExt_extIDEM_preSet_node;
 
 type
@@ -38,10 +38,17 @@ type
 //    procedure _used_set_(const value:boolean);
   public
     constructor Create; override;
+
+//    procedure DoAfterBuild({%H-}AResources: TAbstractProjectResources; {%H-}AReason: TCompileReason; {%H-}SaveToTestDir: boolean); virtual;
+//    procedure DoBeforeBuild({%H-}AResources: TAbstractProjectResources; {%H-}AReason: TCompileReason; {%H-}SaveToTestDir: boolean); virtual;
+    function UpdateResources(AResources: TAbstractProjectResources; const MainFilename: string): Boolean; override;
+    procedure WriteToProjectFile(AConfig: {TXMLConfig}TObject; Path: String); override;
+    procedure ReadFromProjectFile(AConfig: {TXMLConfig}TObject; Path: String); override;
+
   public
-    function  UpdateResources(AResources: TAbstractProjectResources; const MainFilename: string): Boolean; override;
-    procedure WriteToProjectFile(AConfig: {Laz2_XMLCfg.TXMLConfig}TObject; Path: String); override;
-    procedure ReadFromProjectFile(AConfig: {Laz2_XMLCfg.TXMLConfig}TObject; Path: String); override;
+    //function  UpdateResources(AResources: TAbstractProjectResources; const MainFilename: string): Boolean; override;
+    //procedure WriteToProjectFile(AConfig: {Laz2_XMLCfg.TXMLConfig}TObject; Path: String); override;
+    //procedure ReadFromProjectFile(AConfig: {Laz2_XMLCfg.TXMLConfig}TObject; Path: String); override;
   public
     property preSets:tLazExt_extIDEM_preSetsList_core read _list_;
 //    property used:boolean read _used_ write _used_set_;
@@ -70,7 +77,8 @@ end;
 constructor tExtIDEM_prjResources.Create;
 begin
     inherited;
-   _list_:=nil;
+//   _list_:=nil;
+   _list_reInit;
 end;
 
 //------------------------------------------------------------------------------
@@ -132,9 +140,19 @@ end;
 //------------------------------------------------------------------------------
 
 procedure tExtIDEM_prjResources._list_reInit;
+var i:tExtIDEM_preSet_NDF_node;
 begin
    _list_.FREE;
    _list_:=tLazExt_extIDEM_preSetsList_core.Create;
+    //---
+    i:=tExtIDEM_preSet_NDF_node.Create;
+    i.ADD('asd1', tLazExt_extIDEM_maCRO_NDF_node);
+    i.ADD('asd2', tLazExt_extIDEM_maCRO_NDF_node);
+   _list_.PreSETs_ADD(i);
+
+
+
+
 end;
 
 end.

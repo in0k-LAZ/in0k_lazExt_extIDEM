@@ -1,31 +1,34 @@
 object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
   Left = 0
-  Height = 240
+  Height = 406
   Top = 0
-  Width = 320
-  ClientHeight = 240
-  ClientWidth = 320
+  Width = 777
+  ClientHeight = 406
+  ClientWidth = 777
   TabOrder = 0
   DesignLeft = 341
   DesignTop = 142
   object lst_preSet: TListBox
     Left = 0
-    Height = 190
+    Height = 356
     Top = 50
-    Width = 136
+    Width = 179
     Align = alLeft
     ItemHeight = 0
+    OnDragOver = lst_preSetDragOver
+    OnDrawItem = lst_preSetDrawItem
+    OnSelectionChange = lst_preSetSelectionChange
     TabOrder = 0
   end
   object Panel1: TPanel
     Left = 0
     Height = 50
     Top = 0
-    Width = 320
+    Width = 777
     Align = alTop
     Caption = 'Panel1'
     ClientHeight = 50
-    ClientWidth = 320
+    ClientWidth = 777
     TabOrder = 1
     object CheckBox1: TCheckBox
       Left = 8
@@ -35,5 +38,138 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
       Caption = 'CheckBox1'
       TabOrder = 0
     end
+  end
+  object Panel2: TPanel
+    AnchorSideLeft.Control = Splitter1
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Panel1
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 404
+    Height = 50
+    Top = 50
+    Width = 373
+    Anchors = [akTop, akLeft, akRight]
+    ClientHeight = 50
+    ClientWidth = 373
+    TabOrder = 2
+    object Label1: TLabel
+      Left = 80
+      Height = 15
+      Top = 32
+      Width = 34
+      Caption = 'Label1'
+      ParentColor = False
+    end
+    object CheckBox2: TCheckBox
+      Left = 14
+      Height = 19
+      Top = 12
+      Width = 78
+      Caption = 'CheckBox2'
+      TabOrder = 0
+    end
+    object Label2: TLabel
+      Left = 135
+      Height = 15
+      Top = 14
+      Width = 6
+      Caption = '$'
+      ParentColor = False
+    end
+    object Label3: TLabel
+      AnchorSideLeft.Control = Label2
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Label2
+      AnchorSideTop.Side = asrCenter
+      Left = 141
+      Height = 15
+      Top = 14
+      Width = 48
+      Caption = 'ExtIDEm'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
+    object Label4: TLabel
+      AnchorSideLeft.Control = Label3
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Label2
+      AnchorSideTop.Side = asrCenter
+      Left = 189
+      Height = 15
+      Top = 14
+      Width = 4
+      Caption = '('
+      ParentColor = False
+    end
+    object Label5: TLabel
+      AnchorSideLeft.Control = Label4
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Label2
+      AnchorSideTop.Side = asrCenter
+      Left = 193
+      Height = 15
+      Top = 14
+      Width = 15
+      Caption = 'xxx'
+      ParentColor = False
+    end
+    object Label6: TLabel
+      AnchorSideLeft.Control = Label5
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Label2
+      AnchorSideTop.Side = asrCenter
+      Left = 208
+      Height = 15
+      Top = 14
+      Width = 4
+      Caption = ')'
+      ParentColor = False
+    end
+  end
+  object Splitter1: TSplitter
+    Left = 399
+    Height = 356
+    Top = 50
+    Width = 5
+  end
+  object Panel3: TPanel
+    AnchorSideLeft.Control = Splitter1
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Panel2
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 404
+    Height = 306
+    Top = 100
+    Width = 373
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    Caption = 'Panel3'
+    TabOrder = 4
+  end
+  object TreeView1: TTreeView
+    Left = 179
+    Height = 356
+    Top = 50
+    Width = 220
+    Align = alLeft
+    DefaultItemHeight = 18
+    TabOrder = 5
+    OnChange = TreeView1Change
+    OnChanging = TreeView1Changing
+    OnDeletion = TreeView1Deletion
+    Items.Data = {
+      F9FFFFFF020002000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF020000000000
+      000001050000006664666768FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000
+      0000000000080000006466676864666768FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FF0000000000000000000F000000D0ADD0BBD0B5D0BCD0B5D0BDD18234FFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFF0100000000000000010400000064666768FFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFF0000000000000000000400000064666768
+    }
   end
 end

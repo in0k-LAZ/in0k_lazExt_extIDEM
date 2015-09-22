@@ -15,7 +15,6 @@ object lazExt_extIDEM_preSet_frmEdit: TlazExt_extIDEM_preSet_frmEdit
     Width = 224
     Align = alLeft
     ItemHeight = 0
-    OnSelectionChange = ListBox1SelectionChange
     TabOrder = 0
   end
   object Panel1: TPanel

@@ -14,7 +14,7 @@ uses
   lazExt_extIDEM_preSet_USER, lazExt_extIDEM_preSet_SUB6, 
   lazExt_extIDEM_maCRO_Text, lazExt_extIDEM_maCRO_TextML, 
   lazExt_extIDEM_maCRO_NDF, lazExt_extIDEM_prjResource, 
-  lazExt_extIDEM_maCRO_TextSL, LazarusPackageIntf;
+  lazExt_extIDEM_maCRO_TextSL, extIDEM_coreObject, LazarusPackageIntf;
 
 implementation
 

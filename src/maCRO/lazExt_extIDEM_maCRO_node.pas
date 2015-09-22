@@ -12,32 +12,37 @@ interface
     {$define _INLINE_}
 {$endIf}
 
-uses lazExt_extIDEM_maCRO_edit,
+uses lazExt_extIDEM_maCRO_edit, extIDEM_coreObject,
   Classes, SysUtils;
 
 type
 
- tLazExt_extIDEM_node=class(tlazExt_extIDEM_edtNode)
+ tLazExt_extIDEM_node=class(tExtIDEM_core_objNODE)
   private
    _isCHANGE_:boolean;
   protected
     procedure isChange_SET;
   private
    _next_:tLazExt_extIDEM_node;
-   _edit_:tLazExt_extIDEM_frmEditTYPE; //< выбранный редактор (может отличаться от defEditor)
-   _name_:string;
+   _edit_:tExtIDEM_core_objEditTYPE; //< выбранный редактор (может отличаться от defEditor)
+   _IDNT_:string;
+    //function _compare_IDNT_(const IDNT:string):integer;
   public
-    constructor Create(const prmNAME:string; const EDITor:tLazExt_extIDEM_frmEditTYPE=nil); virtual;
+    constructor Create;
+    constructor Create(const prmIDNT:string; const EDITor:tExtIDEM_core_objEditTYPE=nil); virtual;
     destructor DESTROY; override;
   protected
     procedure SetUP;                                    virtual;
     procedure Copy (const Source:tLazExt_extIDEM_node); virtual;
   public
     //property Next:tLazExt_extIDEM_node read _next_ write _next_;
-    property Node_EditTYPE:tLazExt_extIDEM_frmEditTYPE read _edit_;
-    property Node_Name:string read _name_;
+    //property Node_EditTYPE:tExtIDEM_core_objEditTYPE read _edit_;
+    //property Node_IDNT:string read _IDNT_;
+
+    function nodeTEdit:tExtIDEM_core_objEditTYPE; override;
+    function node_IDNT:string; override;
   public
-    class function defEditor:tLazExt_extIDEM_frmEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
+    //class function defEditor:tExtIDEM_core_objEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
     class function is_Public:boolean; virtual;
   end;
  tLazExt_extIDEM_nodeTYPE=class of tLazExt_extIDEM_node;
@@ -60,9 +65,8 @@ type
     constructor Create; virtual;
     destructor DESTROY; override;
   public
-    function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tLazExt_extIDEM_frmEditTYPE):boolean;
+    function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tExtIDEM_core_objEditTYPE):boolean;
     function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
-
   public
     function Nodes_First:tLazExt_extIDEM_node;
     function Nodes_Next(const node:tLazExt_extIDEM_node):tLazExt_extIDEM_node;
@@ -72,30 +76,34 @@ type
 
 implementation
 
-constructor tLazExt_extIDEM_node.Create(const prmNAME:string; const EDITor:tLazExt_extIDEM_frmEditTYPE=nil);
+constructor tLazExt_extIDEM_node.Create;
 begin
-   _name_:=prmNAME;
-   _edit_:=EDITor;
+    Create('',nil);
+end;
+
+constructor tLazExt_extIDEM_node.Create(const prmIDNT:string; const EDITor:tExtIDEM_core_objEditTYPE=nil);
+begin
+    if prmIDNT<>''      then _IDNT_:=prmIDNT else  _IDNT_:=Obj_IDNT;
+    if Assigned(EDITor) then _edit_:=EDITor  else  _edit_:=ObjTEdit;
    _next_:=nil;
 end;
 
 destructor tLazExt_extIDEM_node.DESTROY;
-begin
-    // наследие дельфей
+begin // наследие дельфей
    _next_:=nil;
    _edit_:=nil;
-   _name_:='';
+   _IDNT_:='';
 end;
 
 //------------------------------------------------------------------------------
 
-{$ifDef _TSTABS_}
-class function tLazExt_extIDEM_node.defEditor:tLazExt_extIDEM_frmEditTYPE;
+{{$ifDef _TSTABS_}
+class function tLazExt_extIDEM_node.defEditor:tExtIDEM_core_objEditTYPE;
 begin
     Assert(false,self.ClassName+'.defEditor mast by OVERRIDE');
     result:=NIL; {todo: вставить НОТ ДЕФ редактор}
 end;
-{$endif}
+{$endif}}
 
 class function tLazExt_extIDEM_node.is_Public:boolean;
 begin
@@ -121,6 +129,18 @@ begin
    //
 end;
 
+//------------------------------------------------------------------------------
+
+function tLazExt_extIDEM_node.nodeTEdit:tExtIDEM_core_objEditTYPE;
+begin
+    result:=_edit_;
+end;
+
+function tLazExt_extIDEM_node.node_IDNT:string;
+begin
+    result:=_IDNT_;
+end;
+
 //==============================================================================
 
 constructor tLazExt_extIDEM_nodesList_core.Create;
@@ -137,7 +157,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-function tLazExt_extIDEM_nodesList_core.ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tLazExt_extIDEM_frmEditTYPE=nil):boolean;
+function tLazExt_extIDEM_nodesList_core.ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tExtIDEM_core_objEditTYPE):boolean;
 begin
     {$ifDef _TSTPRM_}
        // Assert(Assigned(node),'NODE === NIL');
@@ -150,14 +170,11 @@ begin
     {$ifDef _TSTPRM_}
          Assert(result, ClassName+'.ADD('+prmName+','+nodeType.ClassName+')'+'FALSE');
     {$endIF}
-
-
-
 end;
 
 function tLazExt_extIDEM_nodesList_core.ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
 begin
-    result:=ADD(prmName,nodeType,nodeType.defEditor)
+    result:=ADD(prmName,nodeType,nil)
 end;
 
 function tLazExt_extIDEM_nodesList_core.Nodes_First:tLazExt_extIDEM_node;
@@ -231,7 +248,7 @@ begin
     {$endIF}
     result:=_nodes_;
     while Assigned(result) do begin
-        //if 0=result._idnt_compare(IDNT) then BREAK;
+        if result.Node_IDNT=IDNT then BREAK;
         result:=result._next_;
     end;
 end;
@@ -257,7 +274,7 @@ var tmp:tLazExt_extIDEM_node;
 begin //
     tmp:=Nodes_First;
     while Assigned(tmp) do begin
-        tmq:=tLazExt_extIDEM_nodeTYPE(tmp.ClassType).Create(tmp.Node_Name,tmp.Node_EditTYPE);
+        tmq:=tLazExt_extIDEM_nodeTYPE(tmp.ClassType).Create(tmp.Node_IDNT);
         tmq.Copy(tmp);
         Target._nodes_INS_(tmq);
         //--->

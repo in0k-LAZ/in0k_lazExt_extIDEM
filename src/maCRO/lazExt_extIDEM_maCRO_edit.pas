@@ -15,35 +15,24 @@ interface
 
 
 
-uses windows,
+uses windows, extIDEM_coreObject,
   Classes, SysUtils, FileUtil, Forms, Controls;
 
 type
 
 
- tlazExt_extIDEM_edtNode=class
-  public
-    class function NodeTYPE_Name:string; virtual; {$ifNdef _TSTABS_} abstract; {$endif}
-    class function NodeTYPE_Desc:string; virtual; {$ifNdef _TSTABS_} abstract; {$endif}
+ tlazExt_extIDEM_edtNode=class(tExtIDEM_core_objNODE)
   end;
 
- tLazExt_extIDEM_frmEdit = class(TFrame)
-  private
-    { private declarations }
-  public
-    constructor Create(TheOwner:TComponent); override;
-  public
-    //procedure Settings_Setup;  override;
-    procedure Settings_Read (const node:tlazExt_extIDEM_edtNode);  virtual;
-    procedure Settings_Write(const node:tlazExt_extIDEM_edtNode);  virtual;
+ tLazExt_extIDEM_frmEdit = class(tExtIDEM_core_objEDIT)
   end;
- tLazExt_extIDEM_frmEditTYPE=class of TlazExt_extIDEM_frmEdit;
+// tLazExt_extIDEM_frmEditTYPE=class of TlazExt_extIDEM_frmEdit;
 
 implementation
 
 {$R *.lfm}
 
-constructor tLazExt_extIDEM_frmEdit.Create(TheOwner:TComponent);
+{constructor tLazExt_extIDEM_frmEdit.Create(TheOwner:TComponent);
 begin
     inherited Create(TheOwner);
     sleep(100);
@@ -78,7 +67,7 @@ begin
     Assert(false,self.ClassName+'.Node_Desc mast by OVERRIDE');
     result:=self.ClassName;
 end;
-{$endif}
+{$endif}  }
 
 end.
 

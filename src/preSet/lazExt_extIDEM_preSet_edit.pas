@@ -13,35 +13,46 @@ interface
 {$endIf}
 
 
-uses lazExt_extIDEM_maCRO_node,  IDEOptionsIntf, lazExt_extIDEM_maCRO_edit,
+uses lazExt_extIDEM_maCRO_node,  IDEOptionsIntf, lazExt_extIDEM_maCRO_edit,  extIDEM_coreObject,
   Classes, SysUtils, FileUtil, Forms, Controls, Grids, StdCtrls, ExtCtrls;
 
 type
 
- tLazExt_extIDEM_preSet_edtNode=class(tLazExt_extIDEM_nodesList_core)
+ tLazExt_extIDEM_preSet_edtNode=class(tExtIDEM_core_objNODE)
+  private
+   _param_list_:tLazExt_extIDEM_nodesList_core;
+  protected
+    class function ObjTEdit:tExtIDEM_core_objEditTYPE; {$ifDef _TSTABS_}override;{$endif}
+    class function Obj_IDNT:string;                    {$ifDef _TSTABS_}override;{$endif}
+    class function Obj_Name:string;                    {$ifDef _TSTABS_}override;{$endif}
+    class function Obj_Desc:string;                    {$ifDef _TSTABS_}override;{$endif}
   public
-    class function preSet_IDNT:string; virtual; {$ifNdef _TSTABS_} abstract; {$endif}
-    class function preSet_Name:string; virtual; {$ifNdef _TSTABS_} abstract; {$endif}
-    class function preSet_Desc:string; virtual; {$ifNdef _TSTABS_} abstract; {$endif}
+    constructor Create; virtual;
+    destructor DESTROY; override;
+  public
+    function Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE; const prmEdit:tExtIDEM_core_objEditTYPE):boolean;
+    function Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
+    function Param_First:tLazExt_extIDEM_node;
+    function Param_Next(const node:tLazExt_extIDEM_node):tLazExt_extIDEM_node;
   end;
 
  { tLazExt_extIDEM_preSet_frmEdit }
 
- tLazExt_extIDEM_preSet_frmEdit=class(TAbstractIDEOptionsEditor)
+ tLazExt_extIDEM_preSet_frmEdit=class(tExtIDEM_core_objEDIT)
     ListBox1: TListBox;
     Panel1: TPanel;
-    procedure ListBox1SelectionChange(Sender: TObject; User: boolean);
+   // procedure ListBox1SelectionChange(Sender: TObject; User: boolean);
   private
-   _preSet_:tLazExt_extIDEM_preSet_edtNode;
+   {_preSet_:tLazExt_extIDEM_preSet_edtNode;
     procedure _preSet_SET_(preSet:tLazExt_extIDEM_preSet_edtNode);
-    function  _preSet_FND_:tLazExt_extIDEM_preSet_edtNode;
+    function  _preSet_FND_:tLazExt_extIDEM_preSet_edtNode; }
   protected
-    function  _preSet_GET_:tLazExt_extIDEM_preSet_edtNode;
+   { function  _preSet_GET_:tLazExt_extIDEM_preSet_edtNode; }
   private
     //procedure _Rec_set_(value:PIDEOptionsEditorRec);
     //function  _Rec_get_:PIDEOptionsEditorRec;
   protected
-    function  _nodesList_Present_:boolean;
+   { function  _nodesList_Present_:boolean;
     function  _nodesList_mstReCrt:boolean;
     procedure _nodesList_ReCreate;
     procedure _nodesList_settings_read_;
@@ -63,7 +74,7 @@ type
     procedure ReadSettings(AOptions:TAbstractIDEOptions);   override;
     procedure WriteSettings(AOptions:TAbstractIDEOptions);  override;
   public
-  public
+  public    }
     constructor Create(AOwner: TComponent); override;
   public
     //property Rec:PIDEOptionsEditorRec read _Rec_get_ write _Rec_set_;
@@ -79,11 +90,11 @@ uses lazExt_extIDEM;
 constructor tLazExt_extIDEM_preSet_frmEdit.Create(AOwner:TComponent);
 begin
     inherited Create(AOwner);
-   _preSet_:=nil;
+   //_preSet_:=nil;
 end;
 
 //------------------------------------------------------------------------------
-
+{
 procedure tLazExt_extIDEM_preSet_frmEdit._preSet_SET_(preSet:tLazExt_extIDEM_preSet_edtNode);
 begin
    _preSet_:=preSet;
@@ -213,7 +224,7 @@ end;
 function tLazExt_extIDEM_preSet_frmEdit._nodeFrame_CRT_(const node:tLazExt_extIDEM_node):tLazExt_extIDEM_frmEdit;
 begin
     result:=nil;
-    if Assigned(node) then result:=node.Node_EditTYPE.Create(SELF);
+    if Assigned(node) then result:=tLazExt_extIDEM_frmEdit(node.ObjTEdit.Create(SELF));
     result.Settings_Read(node);
 end;
 
@@ -278,7 +289,78 @@ begin
     result:=nil;
 end;
 
+}
 //==============================================================================
+
+constructor tLazExt_extIDEM_preSet_edtNode.Create;
+begin
+   _param_list_:=tLazExt_extIDEM_nodesList_core.Create;
+end;
+
+destructor tLazExt_extIDEM_preSet_edtNode.DESTROY;
+begin
+   _param_list_.FREE;
+    inherited;
+end;
+
+//------------------------------------------------------------------------------
+
+function tLazExt_extIDEM_preSet_edtNode.Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE; const prmEdit:tExtIDEM_core_objEditTYPE):boolean;
+begin
+     result:=_param_list_.ADD(prmName,prmType,prmEdit);
+end;
+
+function tLazExt_extIDEM_preSet_edtNode.Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
+begin
+    result:=Param_ADD(prmName,prmType,nil);
+end;
+
+//------------------------------------------------------------------------------
+
+function tLazExt_extIDEM_preSet_edtNode.Param_First:tLazExt_extIDEM_node;
+begin
+    result:=_param_list_.Nodes_First;
+end;
+
+function tLazExt_extIDEM_preSet_edtNode.Param_Next(const node:tLazExt_extIDEM_node):tLazExt_extIDEM_node;
+begin
+    result:=_param_list_.Nodes_Next(node);
+end;
+
+//------------------------------------------------------------------------------
+
+{$ifDef _TSTABS_}
+class function tLazExt_extIDEM_preSet_edtNode.ObjTEdit:tExtIDEM_core_objEditTYPE;
+begin
+    result:=tLazExt_extIDEM_preSet_frmEdit;
+end;
+{$endif}
+
+{$ifDef _TSTABS_}
+class function tLazExt_extIDEM_preSet_edtNode.Obj_IDNT:string;
+begin
+    result:='Obj_IDNT='+self.ClassName;
+    Assert(false,self.ClassName+'.Obj_IDNT mast by OVERRIDE');
+end;
+{$endif}
+
+{$ifDef _TSTABS_}
+class function tLazExt_extIDEM_preSet_edtNode.Obj_Name:string;
+begin
+    result:='Obj_Name='+self.ClassName;
+    Assert(false,self.ClassName+'.Obj_Name mast by OVERRIDE');
+end;
+{$endif}
+
+{$ifDef _TSTABS_}
+class function tLazExt_extIDEM_preSet_edtNode.Obj_Desc:string;
+begin
+    result:='Obj_Desc='+self.ClassName;
+    Assert(false,self.ClassName+'.Obj_Desc mast by OVERRIDE');
+end;
+{$endif}
+
+{
 
 {$ifDef _TSTABS_}
 class function tLazExt_extIDEM_preSet_edtNode.preSet_IDNT:string;
@@ -303,6 +385,6 @@ begin
     Assert(false,self.ClassName+'.preSet_Desc mast by OVERRIDE');
 end;
 {$endif}
-
+               }
 end.
 

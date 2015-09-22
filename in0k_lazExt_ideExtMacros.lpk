@@ -8,11 +8,11 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <OtherUnitFiles Value="src;src\preSet;src\ideEdit;src\maCRO;src\maCRO\maCROs;src\preSETs\setNDF;src\preSETs\setSUB6;src\preSETs\setUSER"/>
+        <OtherUnitFiles Value="src;src\coreObject;src\preSet;src\ideEdit;src\maCRO;src\maCRO\maCROs;src\preSETs\setNDF;src\preSETs\setSUB6;src\preSETs\setUSER"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="17">
+    <Files Count="18">
       <Item1>
         <Filename Value="in0k_lazExt_extIDEM_INI.inc"/>
         <Type Value="Binary"/>
@@ -82,6 +82,10 @@
         <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_maCRO_TextSL.pas"/>
         <UnitName Value="lazExt_extIDEM_maCRO_TextSL"/>
       </Item17>
+      <Item18>
+        <Filename Value="src\coreObject\extIDEM_coreObject.pas"/>
+        <UnitName Value="extIDEM_coreObject"/>
+      </Item18>
     </Files>
     <RequiredPkgs Count="3">
       <Item1>

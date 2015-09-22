@@ -24,7 +24,7 @@ type
     destructor DESTROY; override;
   public
     property preSets:tLazExt_extIDEM_preSetsList_core read _list_preSets_;
-    function preSet_FiND(const INDX:integer):tLazExt_extIDEM_preSet_Node;
+//    function preSet_FiND(const INDX:integer):tLazExt_extIDEM_preSet_Node;
     function PreSETs_ADD_Node(const Node:tLazExt_extIDEM_preSet_NodeTYPE):tLazExt_extIDEM_preSet_Node;
   end;
 
@@ -49,15 +49,15 @@ end;
 
 //------------------------------------------------------------------------------
 
-function tLazExt_extIDEM.preSet_FiND(const INDX:integer):tLazExt_extIDEM_preSet_Node;
+{function tLazExt_extIDEM.preSet_FiND(const INDX:integer):tLazExt_extIDEM_preSet_Node;
 begin
     result:=_list_preSets_.PreSETs_Find_INDX(INDX);
-end;
+end;}
 
 function tLazExt_extIDEM.PreSETs_ADD_Node(const Node:tLazExt_extIDEM_preSet_NodeTYPE):tLazExt_extIDEM_preSet_Node;
 //var fIdeOI:integer;
 begin
-    result:=_list_preSets_.PreSETs_Find_IDNT(Node.preSet_IDNT);
+    result:=nil;//_list_preSets_.PreSETs_Find_IDNT(Node.preSet_IDNT);
     if not Assigned(result) then begin
         result:=node.Create;
        _list_preSets_.PreSETs_ADD(result);

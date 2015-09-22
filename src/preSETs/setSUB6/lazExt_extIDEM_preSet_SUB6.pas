@@ -4,7 +4,7 @@ unit lazExt_extIDEM_preSet_SUB6;
 
 interface
 
-uses lazExt_extIDEM_preSet_node,
+uses lazExt_extIDEM_preSet_node,  extIDEM_coreObject,
      lazExt_extIDEM_preSet_edit,
      //---
      lazExt_extIDEM_maCRO_Text,
@@ -16,17 +16,17 @@ type
 
  tExtIDEM_preSet_SUB6_node=class(tLazExt_extIDEM_preSet_Node)
   public
-    class function def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE; override;
-    class function preSet_IDNT:string; override;
-    class function preSet_Name:string; override;
-    class function preSet_Desc:string; override;
+    class function ObjTEdit:tExtIDEM_core_objEditTYPE; override;
+    class function obj_IDNT:string; override;
+    class function obj_Name:string; override;
+    class function obj_Desc:string; override;
   public
     procedure set_def_maCROs; override;
   end;
 
  tExtIDEM_preSet_SUB6_Edit=class(tLazExt_extIDEM_preSet_frmEdit)
   public
-    function GetTitle:string; override;
+    //function GetTitle:string; override;
   end;
 
 implementation
@@ -35,43 +35,41 @@ implementation
 
 procedure tExtIDEM_preSet_SUB6_node.set_def_maCROs;
 begin
-    Assert(false,'asdf');
-
-    ADD('asd1', tLazExt_extIDEM_maCRO_Text_node);
-    ADD('asd2', tLazExt_extIDEM_maCRO_TextSL_node);
-    ADD('asd3', tLazExt_extIDEM_maCRO_TextML_node);
+    Param_ADD('asd1', tLazExt_extIDEM_maCRO_Text_node  );
+    Param_ADD('asd2', tLazExt_extIDEM_maCRO_TextSL_node);
+    Param_ADD('asd3', tLazExt_extIDEM_maCRO_TextML_node);
 end;
 
 //------------------------------------------------------------------------------
 
-class function tExtIDEM_preSet_SUB6_node.def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE;
+class function tExtIDEM_preSet_SUB6_node.ObjTEdit:tExtIDEM_core_objEditTYPE;
 begin
     result:=TextIDEM_preSet_SUB6_Edit;
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-class function tExtIDEM_preSet_SUB6_node.preSet_IDNT:string;
+class function tExtIDEM_preSet_SUB6_node.obj_IDNT:string;
 begin
-    result:='Sub6';
+    result:='SUB6';
 end;
 
-class function tExtIDEM_preSet_SUB6_node.preSet_Name:string;
+class function tExtIDEM_preSet_SUB6_node.obj_Name:string;
 begin
-    result:='System Used block VI';
+    result:='System Use Block VI';
 end;
 
-class function tExtIDEM_preSet_SUB6_node.preSet_Desc:string;
+class function tExtIDEM_preSet_SUB6_node.obj_Desc:string;
 begin
-    result:='System Used block Version Info';
+    result:='System Use Block "Version Info"';
 end;
 
 //==============================================================================
 
-function tExtIDEM_preSet_SUB6_Edit.GetTitle:string;
+{function tExtIDEM_preSet_SUB6_Edit.GetTitle:string;
 begin
-    result:=tExtIDEM_preSet_SUB6_node.preSet_Name;
-end;
+    result:=tExtIDEM_preSet_SUB6_node.obj_Name;
+end; }
 
 
 

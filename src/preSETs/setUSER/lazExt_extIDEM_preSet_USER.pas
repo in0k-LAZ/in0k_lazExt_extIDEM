@@ -4,7 +4,7 @@ unit lazExt_extIDEM_preSet_USER;
 
 interface
 
-uses lazExt_extIDEM_preSet_node,
+uses lazExt_extIDEM_preSet_node, extIDEM_coreObject,
      lazExt_extIDEM_preSet_edit,
   Classes, SysUtils, FileUtil, Forms, Controls;
 
@@ -12,15 +12,15 @@ type
 
  tExtIDEM_preSet_USER_Edit=class(tLazExt_extIDEM_preSet_frmEdit)
   public
-   function GetTitle:string; override;
+   //function GetTitle:string; override;
   end;
 
  tExtIDEM_preSet_USER_node=class(tLazExt_extIDEM_preSet_Node)
   public
-    class function def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE; override;
-    class function preSet_IDNT:string; override;
-    class function preSet_Name:string; override;
-    class function preSet_Desc:string; override;
+    class function ObjTEdit:tExtIDEM_core_objEditTYPE; override;
+    class function Obj_IDNT:string; override;
+    class function Obj_Name:string; override;
+    class function Obj_Desc:string; override;
   end;
 
 implementation
@@ -28,31 +28,31 @@ implementation
 {$R *.lfm}
 
 
-function tExtIDEM_preSet_USER_Edit.GetTitle:string;
+{function tExtIDEM_preSet_USER_Edit.GetTitle:string;
 begin
-    result:=tExtIDEM_preSet_USER_node.preSet_Name;
-end;
+    result:=tExtIDEM_preSet_USER_node.Obj_Name;
+end;}
 
 //==============================================================================
 
-class function tExtIDEM_preSet_USER_node.def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE;
+class function tExtIDEM_preSet_USER_node.ObjTEdit:tExtIDEM_core_objEditTYPE;
 begin
-    result:=TextIDEM_preSet_USER_Edit;
+    result:=tExtIDEM_core_objEDIT;//TextIDEM_preSet_USER_Edit;
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-class function tExtIDEM_preSet_USER_node.preSet_IDNT:string;
+class function tExtIDEM_preSet_USER_node.Obj_IDNT:string;
 begin
     result:='extIDEM_USR';
 end;
 
-class function tExtIDEM_preSet_USER_node.preSet_Name:string;
+class function tExtIDEM_preSet_USER_node.Obj_Name:string;
 begin
     result:='User sets';
 end;
 
-class function tExtIDEM_preSet_USER_node.preSet_Desc:string;
+class function tExtIDEM_preSet_USER_node.Obj_Desc:string;
 begin
     result:='Macroses set by user.';
 end;

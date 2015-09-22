@@ -146,8 +146,8 @@ begin
    _list_:=tLazExt_extIDEM_preSetsList_core.Create;
     //---
     i:=tExtIDEM_preSet_NDF_node.Create;
-    i.ADD('asd1', tLazExt_extIDEM_maCRO_NDF_node);
-    i.ADD('asd2', tLazExt_extIDEM_maCRO_NDF_node);
+    i.Param_ADD('asd1', tLazExt_extIDEM_maCRO_NDF_node);
+    i.Param_ADD('asd2', tLazExt_extIDEM_maCRO_NDF_node);
    _list_.PreSETs_ADD(i);
 
 

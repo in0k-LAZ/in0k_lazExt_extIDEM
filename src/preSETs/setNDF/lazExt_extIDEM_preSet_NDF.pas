@@ -4,7 +4,7 @@ unit lazExt_extIDEM_preSet_NDF;
 
 interface
 
-uses lazExt_extIDEM_preSet_node,
+uses lazExt_extIDEM_preSet_node, extIDEM_coreObject,
      lazExt_extIDEM_preSet_edit,
   Classes, SysUtils, FileUtil, Forms, Controls;
 
@@ -13,15 +13,15 @@ type
 
  TextIDEM_preSet_NDF_Edit=class(tLazExt_extIDEM_preSet_frmEdit)
   public
-    function GetTitle:string; override;
+   // function GetTitle:string; override;
   end;
 
  tExtIDEM_preSet_NDF_node=class(tLazExt_extIDEM_preSet_Node)
   public
-    class function def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE; override;
-    class function preSet_IDNT:string; override;
-    class function preSet_Name:string; override;
-    class function preSet_Desc:string; override;
+    class function ObjTEdit:tExtIDEM_core_objEditTYPE; override;
+    class function obj_IDNT:string; override;
+    class function obj_Name:string; override;
+    class function obj_Desc:string; override;
   end;
 
 
@@ -30,31 +30,31 @@ implementation
 
 {$R *.lfm}
 
-function TextIDEM_preSet_NDF_Edit.GetTitle:string;
+{function TextIDEM_preSet_NDF_Edit.GetTitle:string;
 begin
-    result:=tExtIDEM_preSet_NDF_node.preSet_Name;
-end;
+    result:=tExtIDEM_preSet_NDF_node.obj_Name;
+end; }
 
 //==============================================================================
 
-class function tExtIDEM_preSet_NDF_node.def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE;
+class function tExtIDEM_preSet_NDF_node.ObjTEdit:tExtIDEM_core_objEditTYPE;
 begin
     result:=TextIDEM_preSet_NDF_Edit;
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-class function tExtIDEM_preSet_NDF_node.preSet_IDNT:string;
+class function tExtIDEM_preSet_NDF_node.obj_IDNT:string;
 begin
     result:='extIDEM_NDF';
 end;
 
-class function tExtIDEM_preSet_NDF_node.preSet_Name:string;
+class function tExtIDEM_preSet_NDF_node.obj_Name:string;
 begin
     result:='NOT define';
 end;
 
-class function tExtIDEM_preSet_NDF_node.preSet_Desc:string;
+class function tExtIDEM_preSet_NDF_node.obj_Desc:string;
 begin
     result:='NOT found or NOT define preSet.';
 end;

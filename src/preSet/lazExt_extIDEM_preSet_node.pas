@@ -19,15 +19,15 @@ type
  tLazExt_extIDEM_preSet_Node=class(tLazExt_extIDEM_preSet_edtNode)
   private
    _next_:tLazExt_extIDEM_preSet_Node;
-   _indx_:Integer; //< TIDEOptionsEditorRec.Index
-    function _node_nameCMP_(const name:string):integer;
-    function _node_name_IS_(const name:string):boolean;
-    function _node_indxCMP_(const indx:integer):integer;
-    function _node_indx_IS_(const indx:integer):boolean;
+//   _indx_:Integer; //< TIDEOptionsEditorRec.Index
+    function _node_idntCMP_(const name:string):integer;
+    function _node_idnt_IS_(const name:string):boolean;
+//    function _node_indxCMP_(const indx:integer):integer;
+//    function _node_indx_IS_(const indx:integer):boolean;
   public
     procedure set_def_maCROs; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
   public
-    class function def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
+    //class function def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
   end;
  tLazExt_extIDEM_preSet_NodeTYPE=class of tLazExt_extIDEM_preSet_Node;
 
@@ -35,11 +35,11 @@ type
   protected
    _nodes_:tLazExt_extIDEM_preSet_Node;
   protected
-    procedure _node_setID_(const node:tLazExt_extIDEM_preSet_Node; const INDX:integer);
+//    procedure _node_setID_(const node:tLazExt_extIDEM_preSet_Node; const INDX:integer);
     function  _nodes_LST_:tLazExt_extIDEM_preSet_Node;
     procedure _nodes_CLR_;
     function  _nodes_FND_(const IDNT:string):tLazExt_extIDEM_preSet_Node; overload;
-    function  _nodes_FND_(const INDX:integer):tLazExt_extIDEM_preSet_Node; overload;
+//    function  _nodes_FND_(const INDX:integer):tLazExt_extIDEM_preSet_Node; overload;
     procedure _nodes_INS_(const node:tLazExt_extIDEM_preSet_Node);
   public
     constructor Create; virtual;
@@ -49,7 +49,7 @@ type
     function PreSETs_enumFIRST:tLazExt_extIDEM_preSet_Node;
     function PreSETs_enum_NEXT(const node:tLazExt_extIDEM_preSet_Node):tLazExt_extIDEM_preSet_Node;
     //------
-    function PreSETs_Find_INDX(const Value:integer):tLazExt_extIDEM_preSet_Node;
+    //function PreSETs_Find_INDX(const Value:integer):tLazExt_extIDEM_preSet_Node;
     function PreSETs_Find_IDNT(const value:string ):tLazExt_extIDEM_preSet_Node;
     //------
     procedure PreSETs_ADD(const preSet:tLazExt_extIDEM_preSet_Node);
@@ -64,27 +64,27 @@ begin
 end;
 {$endif}
 
-{$ifDef _TSTABS_}
+{{$ifDef _TSTABS_}
 class function tLazExt_extIDEM_preSet_Node.def_frmEdtr:tLazExt_extIDEM_preSet_frmEditTYPE;
 begin
     Assert(false,self.ClassName+'.defEditor mast by OVERRIDE');
     result:=NIL; {todo: вставить НОТ ДЕФ редактор}
 end;
-{$endif}
+{$endif}}
 
 //------------------------------------------------------------------------------
 
-function tLazExt_extIDEM_preSet_Node._node_nameCMP_(const name:string):integer;
+function tLazExt_extIDEM_preSet_Node._node_idntCMP_(const name:string):integer;
 begin
-    result:=sysutils.CompareText(self.preSet_Name,name);
+    result:=sysutils.CompareText(self.Obj_IDNT,name);
 end;
 
-function tLazExt_extIDEM_preSet_Node._node_name_IS_(const name:string):boolean;
+function tLazExt_extIDEM_preSet_Node._node_idnt_IS_(const name:string):boolean;
 begin
-    result:= 0=_node_nameCMP_(name);
+    result:= 0=_node_idntCMP_(name);
 end;
 
-function tLazExt_extIDEM_preSet_Node._node_indxCMP_(const indx:integer):integer;
+{function tLazExt_extIDEM_preSet_Node._node_indxCMP_(const indx:integer):integer;
 begin
     if indx=self._indx_ then result:=0
     else begin
@@ -96,7 +96,7 @@ end;
 function tLazExt_extIDEM_preSet_Node._node_indx_IS_(const indx:integer):boolean;
 begin
     result:= 0=_node_indxCMP_(indx)
-end;
+end;}
 
 //==============================================================================
 
@@ -143,10 +143,10 @@ end;
 
 //------------------------------------------------------------------------------
 
-function tLazExt_extIDEM_preSetsList_core.PreSETs_Find_INDX(const Value:integer):tLazExt_extIDEM_preSet_Node;
+{function tLazExt_extIDEM_preSetsList_core.PreSETs_Find_INDX(const Value:integer):tLazExt_extIDEM_preSet_Node;
 begin
     result:=_nodes_FND_(value);
-end;
+end; }
 
 function tLazExt_extIDEM_preSetsList_core.PreSETs_Find_IDNT(const value:string):tLazExt_extIDEM_preSet_Node;
 begin
@@ -187,14 +187,14 @@ end;}
 
 //------------------------------------------------------------------------------
 
-procedure tLazExt_extIDEM_preSetsList_core._node_setID_(const node:tLazExt_extIDEM_preSet_Node; const INDX:integer);
+{procedure tLazExt_extIDEM_preSetsList_core._node_setID_(const node:tLazExt_extIDEM_preSet_Node; const INDX:integer);
 begin
     {$ifDef _TSTPRM_}
         Assert(Assigned(node),'node === NIL');
     {$endIF}
     node._indx_:=INDX;
 
-end;
+end; }
 
 //------------------------------------------------------------------------------
 
@@ -229,13 +229,13 @@ begin
     {$endIF}
     result:=_nodes_;
     while Assigned(result) do begin
-        if result._node_name_IS_(IDNT) then BREAK;
+        if result._node_idnt_IS_(IDNT) then BREAK;
         result:=result._next_;
     end;
 end;
 
 //------------------------------------------------------------------------------
-
+{
 // поиск в спискае узла с совпадающим индексом
 function tLazExt_extIDEM_preSetsList_core._nodes_FND_(const INDX:integer):tLazExt_extIDEM_preSet_Node;
 begin
@@ -247,7 +247,7 @@ begin
        if result._node_indx_IS_(INDX) then BREAK;
        result:=result._next_;
    end;
-end;
+end;}
 
 // вставляем экземпляр ПОЛЕДНИМ элементом
 procedure tLazExt_extIDEM_preSetsList_core._nodes_INS_(const node:tLazExt_extIDEM_preSet_Node);
@@ -270,10 +270,10 @@ begin
     {$ifDef _TSTPRM_}
         Assert(Assigned(preSet),'preSet === NIL');
     {$endIF}
-    if not Assigned(_nodes_FND_(preSet.preSet_IDNT)) then begin
+    //if not Assigned(_nodes_FND_(preSet.preSet_IDNT)) then begin
         //result:=preSet.Create;
        _nodes_INS_(preSet);
-    end
+    //end
     //else result:=nil
 end;
 

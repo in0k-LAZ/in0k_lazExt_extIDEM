@@ -1,8 +1,16 @@
 unit lazExt_extIDEM_prjOptionEdit;
 
 {$mode objfpc}{$H+}
-
 interface
+{$I in0k_lazExt_extIDEM_INI.inc}
+{$ifDef lazExt_extIDEM_DEBUG_mode}
+    {$define _DEBUG_}
+    {$define _TSTPRM_}
+    {$define _TSTABS_}
+{$else}
+    {$define _INLINE_}
+{$endIf}
+
 
 uses IDEOptionsIntf, lazExt_extIDEM,    Graphics,
 
@@ -23,6 +31,7 @@ type
  { tLazExt_extIDEM_frmPrjOptionEdit }
 
  tLazExt_extIDEM_frmPrjOptionEdit = class(TAbstractIDEOptionsEditor)
+   Button1: TButton;
     CheckBox1: TCheckBox;
     CheckBox2: TCheckBox;
     Label1: TLabel;
@@ -47,10 +56,10 @@ type
       var AllowChange: Boolean);
     procedure TreeView1Deletion(Sender: TObject; Node: TTreeNode);
  private
-   _nodeFrame_:TFrame;
-    procedure _rePlace_setFRM_(const FRM:tFrame);
-    function  _rePlace_getFRM_(const ITM:tLazExt_extIDEM_preSet_Node):tFrame;
-    procedure _rePlace_setITM_(const ITM:tLazExt_extIDEM_preSet_Node);
+   _nodeFrame_:tExtIDEM_core_objEDIT;
+    procedure _rePlace_setFRM_(const FRM:tExtIDEM_core_objEDIT);
+//    function  _rePlace_getFRM_(const ITM:tLazExt_extIDEM_preSet_Node):tExtIDEM_core_objEDIT;
+//    procedure _rePlace_setITM_(const ITM:tLazExt_extIDEM_preSet_Node);
 
  private //< управление текстовкой
     procedure _labels_macroNames_INITFNT;
@@ -59,6 +68,7 @@ type
     procedure _labels_macroNames_setDELT(const value:boolean);
  private
     procedure _rePlace_TreeNODE_Labels_(const treeNode:TTreeNode);
+    procedure _rePlace_TreeNODE_Editor_(const treeNode:TTreeNode);
     procedure _rePlace_TreeNODE_(const treeNode:TTreeNode);
 
  private
@@ -69,6 +79,7 @@ type
  private
     procedure  _treePreSets_clear_not_IDE;
     procedure  _treePreSets_clear_forFREE;
+    procedure  _treePreSets_clear_wasLoad_;
 
     procedure  _treePreSets_setUp_ide_ideMCRs_(const treeNode:TTreeNode; const preSet:tLazExt_extIDEM_preSet_Node);
     procedure  _treePreSets_setUp_ide_preSETs_(const preSETsList:tLazExt_extIDEM_preSetsList_core);
@@ -78,6 +89,9 @@ type
 
     function   _treePreSets_find_preSET_(const idnt:string):TTreeNode;
     function   _treePreSets_find_ideMCR_(const prnt:TTreeNode; const idnt:string):TTreeNode;
+ private
+    procedure  _treePreSets_Settings_Read_;
+    procedure  _treePreSets_Settings_Write_;
 { private
     procedure  _lstPreSets_clear_forFREE;
     procedure  _lstPreSets_clear_forREAD;
@@ -116,11 +130,14 @@ type
     function  _node_is_MacroITM_:boolean;
     function  _node_is_MacroPRM_:boolean;
     //-------
-    function  _node_get_EDIT(const aOwner:TComponent):tExtIDEM_core_objEDIT;
+    function  _node_get_EDIT:tExtIDEM_core_objEditTYPE;
     function  _node_get_IDNT:string;
     function  _node_get_NAME:string;
     function  _node_get_DESC:string;
     function  _node_get_ENBL:boolean;
+  strict private
+   _was_load_:boolean;
+
   public
     constructor Create;
     destructor DESTROY; override;
@@ -128,23 +145,43 @@ type
     class function Create_IDE(const node:tExtIDEM_core_objNODE):tNodeDATA;
     class function Create_PRJ(const node:tExtIDEM_core_objNODE):tNodeDATA;
   public
-    procedure Node_PRJ_clean;
-    procedure Node_PRJ_SET(const value:tExtIDEM_core_objNODE);
+    property  Was_Loaded:boolean read _was_load_;
+    procedure Was_Loaded_CLEAR;
   public
     function IDE_based:boolean;
     function PRJ_based:boolean;
     function IS_Macros:boolean;
     function IS_McrPRM:boolean;
   public
+    property Node_EDT:tExtIDEM_core_objEDIT read _edit_frm_;
     property Node_IDE:tExtIDEM_core_objNODE read _node_ide_;
     property Node_PRJ:tExtIDEM_core_objNODE read _node_prj_;
+  public
+    procedure Node_PRJ_clean;
+    procedure Node_PRJ_SET(const value:tExtIDEM_core_objNODE);
+    procedure Node_EDT_SET(const value:tExtIDEM_core_objEDIT);
+  public
+    property NodeTEDT:tExtIDEM_core_objEditTYPE read _node_get_EDIT;
+    property NodeENBL:boolean read _node_get_ENBL;
     property NodeIDNT:string  read _node_get_IDNT;
     property NodeNAME:string  read _node_get_NAME;
     property NodeDESC:string  read _node_get_DESC;
-    property NodeENBL:boolean read _node_get_ENBL;
-
-    //property EDITOR  :tFrame read _edit_frm_ ;
+  public
+    procedure EDITOR_Settings_READ;
+    procedure EDITOR_Settings_WRITE;
   end;
+
+{todo: добавить проверку `if Assigned(_node_getACTV_)` в проверку в ASSERT}
+
+//------------------------------------------------------------------------------
+
+function _treeNodeDATA_(const TreeNode:tTreeNode):tNodeDATA;{$ifNdef _INLINE_}inline;{$endif}
+begin
+    result:=nil;
+    if Assigned(TreeNode) then begin
+        result:=tNodeDATA(TreeNode.Data);
+    end;
+end;
 
 //------------------------------------------------------------------------------
 
@@ -153,6 +190,7 @@ begin
   _node_ide_:=nil;
   _node_prj_:=nil;
   _edit_frm_:=nil;
+  _was_load_:=false;
 end;
 
 destructor tNodeDATA.DESTROY;
@@ -200,12 +238,11 @@ end;
 
 //------------------------------------------------------------------------------
 
-function tNodeDATA._node_get_EDIT(const aOwner:TComponent):tExtIDEM_core_objEDIT;
-var tmp:tExtIDEM_core_objNODE;
+function tNodeDATA._node_get_EDIT:tExtIDEM_core_objEditTYPE;
 begin
-    result:=_edit_frm_;
-    if (not Assigned(result))and(Assigned(_node_getACTV_)) then begin //< тут все сложнее
-        result:=_node_getACTV_.nodeTEdit.Create(aOwner);
+    result:=nil;
+    if Assigned(_node_getACTV_) then begin //< тут все сложнее
+        result:=_node_getACTV_.nodeTEdit;
     end;
 end;
 
@@ -247,6 +284,13 @@ end;
 procedure tNodeDATA._node_prj_set_(const value:tExtIDEM_core_objNODE);
 begin
    _node_prj_:=value;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tNodeDATA.Was_Loaded_CLEAR;
+begin
+   _was_load_:=FALSE;
 end;
 
 //------------------------------------------------------------------------------
@@ -297,6 +341,34 @@ begin
    _node_prj_set_(value);
 end;
 
+procedure tNodeDATA.Node_EDT_SET(const value:tExtIDEM_core_objEDIT);
+begin
+   _edit_frm_:=value;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tNodeDATA.EDITOR_Settings_READ;
+var tmpNode:tExtIDEM_core_objNODE;
+begin
+    tmpNode:=_node_getACTV_;
+    if Assigned(tmpNode) and Assigned(_edit_frm_) then begin
+       _edit_frm_.Settings_Read(tmpNode);
+       _was_load_:=TRUE;
+    end
+    else _was_load_:=FALSE;
+end;
+
+procedure tNodeDATA.EDITOR_Settings_WRITE;
+var tmpNode:tExtIDEM_core_objNODE;
+begin
+    tmpNode:=_node_getACTV_;
+    if Assigned(tmpNode) and Assigned(_edit_frm_) then begin
+       _edit_frm_.Settings_Write(tmpNode);
+    end;
+end;
+
+
 {%endRegion}
 
 
@@ -307,7 +379,7 @@ type
  tListNode=class
    _node_ide_:tLazExt_extIDEM_preSet_Node; //< что предоставляет IDE
    _node_prj_:tLazExt_extIDEM_preSet_Node; //< что записано в ПРОЕКТ
-   _edit_frm_:tFrame;//tLazExt_extIDEM_preSet_frmEdit;
+   _edit_frm_:tFrame;                      //tLazExt_extIDEM_preSet_frmEdit;
   public
     constructor Create;
     destructor DESTROY; override;
@@ -441,18 +513,22 @@ end;
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit.ReadSettings(AOptions:TAbstractIDEOptions);
 begin
-   _treePreSets_clear_not_IDE; //< чистим от зависимостей проекта
-    //------------
+    // чистим от прощлых зависимостей проекта
+   _treePreSets_clear_not_IDE;
+   _treePreSets_clear_wasLoad_;
+    // добавляем зависимости ТЕКУЩЕГО
     if Assigned(ActiveProject_ExtIDEM_prjResources) and
        Assigned(ActiveProject_ExtIDEM_prjResources.preSets)
     then begin
       _treePreSets_setUp_prj_preSETs_(ActiveProject_ExtIDEM_prjResources.preSets);
     end;
+    //---
+   _treePreSets_Settings_Read_;
 end;
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit.WriteSettings(AOptions:TAbstractIDEOptions);
 begin
-
+   _treePreSets_Settings_Write_;
 end;
 
 //------------------------------------------------------------------------------
@@ -470,7 +546,7 @@ begin
 end;
 
 
-procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_setFRM_(const FRM:tFrame);
+procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_setFRM_(const FRM:tExtIDEM_core_objEDIT);
 begin
     if FRM<>_nodeFrame_ then begin
         // готовим новый
@@ -487,16 +563,14 @@ begin
     end;
 end;
 
-function tLazExt_extIDEM_frmPrjOptionEdit._rePlace_getFRM_(const ITM:tLazExt_extIDEM_preSet_Node):tFrame;
+{function tLazExt_extIDEM_frmPrjOptionEdit._rePlace_getFRM_(const ITM:tLazExt_extIDEM_preSet_Node):tFrame;
 begin
     result:=nil;
 end;
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_setITM_(const ITM:tLazExt_extIDEM_preSet_Node);
 begin
-end;
-
-
+end;}
 
 //------------------------------------------------------------------------------
 
@@ -565,6 +639,23 @@ begin
     TreeView1.Items.Clear;
 end;
 
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treePreSets_clear_wasLoad_;
+var Enumerator:TTreeNodesEnumerator;
+    node:TTreeNode;
+    data:tNodeDATA;
+begin
+    Enumerator:=TreeView1.Items.GetEnumerator; //< "указатель" стоит на -1 !!!
+    if Enumerator.MoveNext then begin //< значит туть БОЛЬШЕ одного;
+        while Assigned(node) do begin
+            node:=Enumerator.Current;
+            data:=tNodeDATA(node.Data);
+            if Assigned(data) then data.Was_Loaded_CLEAR;
+            if not Enumerator.MoveNext then break;
+        end;
+    end;
+    Enumerator.FREE;
+end;
+
 //------------------------------------------------------------------------------
 
 function tLazExt_extIDEM_frmPrjOptionEdit._treePreSets_find_preSet_(const idnt:string):TTreeNode;
@@ -595,6 +686,41 @@ begin
     end;
 end;
 
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treePreSets_Settings_Read_;
+var Enumerator:TTreeNodesEnumerator;
+    node:TTreeNode;
+    data:tNodeDATA;
+begin
+    Enumerator:=TreeView1.Items.GetEnumerator; //< "указатель" стоит на -1 !!!
+    if Enumerator.MoveNext then begin //< значит туть БОЛЬШЕ одного;
+        while Assigned(node) do begin
+            node:=Enumerator.Current;
+            data:=tNodeDATA(node.Data);
+            if Assigned(data) then data.EDITOR_Settings_READ;
+            if not Enumerator.MoveNext then break;
+        end;
+    end;
+    Enumerator.FREE;
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treePreSets_Settings_Write_;
+var Enumerator:TTreeNodesEnumerator;
+    node:TTreeNode;
+    data:tNodeDATA;
+begin
+    Enumerator:=TreeView1.Items.GetEnumerator; //< "указатель" стоит на -1 !!!
+    if Enumerator.MoveNext then begin //< значит туть БОЛЬШЕ одного;
+        while Assigned(node) do begin
+            node:=Enumerator.Current;
+            data:=tNodeDATA(node.Data);
+            if Assigned(data) then data.EDITOR_Settings_WRITE;
+            if not Enumerator.MoveNext then break;
+        end;
+    end;
+    Enumerator.FREE;
+end;
 
 //------------------------------------------------------------------------------
 
@@ -764,7 +890,34 @@ end;
 // отображение соответстующего фрейма
 procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_(const treeNode:TTreeNode);
 begin
-   _rePlace_TreeNODE_Labels_(treeNode)
+   _rePlace_TreeNODE_Labels_(treeNode);
+   _rePlace_TreeNODE_Editor_(treeNode);
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_Editor_(const treeNode:TTreeNode);
+var NodeDATA:tNodeDATA;
+    NodeEdit:tExtIDEM_core_objEDIT;
+begin
+    NodeDATA:=_treeNodeDATA_(treeNode);
+    if Assigned(NodeDATA) then begin
+        //--- готовим фрейм
+        NodeEdit:=NodeDATA.Node_EDT;
+        if (not Assigned(NodeEdit))and(Assigned(NodeDATA.NodeTEDT))
+        then begin
+            NodeEdit:=NodeDATA.NodeTEDT.Create(SELF);
+            NodeDATA.Node_EDT_SET(NodeEdit);
+        end;
+        //
+        if Assigned(NodeEdit) then begin
+            NodeDATA.EDITOR_Settings_READ;
+        end;
+    end;
+    //--- показываем фрейм
+    if Assigned(NodeEdit) then begin
+       _rePlace_setFRM_(NodeEdit);
+    end;
 end;
 
 //------------------------------------------------------------------------------

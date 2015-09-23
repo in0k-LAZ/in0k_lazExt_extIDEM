@@ -12,9 +12,10 @@ uses
   lazExt_extIDEM_prjOptionEdit_node, lazExt_extIDEM_preSet_edit, 
   lazExt_extIDEM_preSet_node, lazExt_extIDEM_preSet_NDF, 
   lazExt_extIDEM_preSet_USER, lazExt_extIDEM_preSet_SUB6, 
-  lazExt_extIDEM_maCRO_Text, lazExt_extIDEM_maCRO_TextML, 
+  lazExt_extIDEM_maCRO_File_CORE, lazExt_extIDEM_maCRO_TextML, 
   lazExt_extIDEM_maCRO_NDF, lazExt_extIDEM_prjResource, 
-  lazExt_extIDEM_maCRO_TextSL, extIDEM_coreObject, LazarusPackageIntf;
+  lazExt_extIDEM_maCRO_TextSL, extIDEM_coreObject, lazExt_extIDEM_subFrm_core, 
+  LazarusPackageIntf;
 
 implementation
 

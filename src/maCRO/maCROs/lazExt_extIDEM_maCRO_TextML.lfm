@@ -1,6 +1,2 @@
 inherited lazExt_extIDEM_maCRO_TextML_edit: TlazExt_extIDEM_maCRO_TextML_edit
-  inherited Memo1: TMemo
-    Left = 32
-    Top = 96
-  end
 end

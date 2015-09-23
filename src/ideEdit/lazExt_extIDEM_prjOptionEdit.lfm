@@ -146,6 +146,21 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
       ParentFont = False
       WordWrap = True
     end
+    object Button1: TButton
+      AnchorSideTop.Control = Panel2
+      AnchorSideRight.Control = Panel2
+      AnchorSideRight.Side = asrBottom
+      Left = 477
+      Height = 25
+      Hint = 'Disable and Clear in project file'
+      Top = 0
+      Width = 75
+      Anchors = [akTop, akRight]
+      Caption = 'CLEAR'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+    end
   end
   object Splitter1: TSplitter
     Left = 220
@@ -167,7 +182,8 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
     Top = 99
     Width = 552
     Anchors = [akTop, akLeft, akRight, akBottom]
-    Caption = 'Panel3'
+    BevelOuter = bvNone
+    FullRepaint = False
     TabOrder = 3
   end
   object TreeView1: TTreeView

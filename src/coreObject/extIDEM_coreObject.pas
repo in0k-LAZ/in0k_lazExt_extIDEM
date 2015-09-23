@@ -13,7 +13,7 @@ interface
 {$endIf}
 
 
-uses Classes, SysUtils, Forms;
+uses Classes, SysUtils, Forms, windows;
 
 type
 
@@ -50,7 +50,8 @@ var GUID:TGUID;
 begin
     inherited;
     {todo: фигня ... думать как делать по нормальному}
-    if CreateGUID(GUID)=0 then self.Name:=GUIDToString(GUID)+self.Name;
+    //if CreateGUID(GUID)=0 then self.Name:=GUIDToString(GUID)+self.Name;
+    self.Name:=self.Name+inttostr(GetTickCount64);
 end;
 
 //------------------------------------------------------------------------------

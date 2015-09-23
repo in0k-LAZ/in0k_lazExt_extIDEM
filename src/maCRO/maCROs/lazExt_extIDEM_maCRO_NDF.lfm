@@ -1,5 +1,27 @@
 inherited lazExt_extIDEM_maCRO_NDF_edit: TlazExt_extIDEM_maCRO_NDF_edit
-  inherited Memo1: TMemo
-    Left = 136
+  Height = 259
+  Width = 895
+  ClientHeight = 259
+  ClientWidth = 895
+  inherited Value_Memo: TMemo
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    Height = 239
+    Width = 895
+    ReadOnly = True
+  end
+  inherited Value_Shape: TShape
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    Top = 241
+    Width = 891
+  end
+  inherited Value_Label: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+    Top = 244
+    Width = 895
   end
 end

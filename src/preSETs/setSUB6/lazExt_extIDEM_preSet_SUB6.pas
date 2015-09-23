@@ -7,7 +7,7 @@ interface
 uses lazExt_extIDEM_preSet_node,  extIDEM_coreObject,
      lazExt_extIDEM_preSet_edit,
      //---
-     lazExt_extIDEM_maCRO_Text,
+     lazExt_extIDEM_maCRO_Text,     lazExt_extIDEM_maCRO_File_CORE,
      lazExt_extIDEM_maCRO_TextSL,
      lazExt_extIDEM_maCRO_TextML,
   Classes, SysUtils, FileUtil, Forms, Controls;
@@ -38,6 +38,7 @@ begin
     Param_ADD('asd1', tLazExt_extIDEM_maCRO_Text_node  );
     Param_ADD('asd2', tLazExt_extIDEM_maCRO_TextSL_node);
     Param_ADD('asd3', tLazExt_extIDEM_maCRO_TextML_node);
+    Param_ADD('asdа', tLazExt_extIDEM_maCRO_File_CORE_node);
 end;
 
 //------------------------------------------------------------------------------

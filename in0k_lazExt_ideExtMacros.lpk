@@ -8,11 +8,11 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <OtherUnitFiles Value="src;src\coreObject;src\preSet;src\ideEdit;src\maCRO;src\maCRO\maCROs;src\preSETs\setNDF;src\preSETs\setSUB6;src\preSETs\setUSER"/>
+        <OtherUnitFiles Value="src;src\coreObject;src\preSet;src\ideEdit;src\ideEdit\sub_frames;src\maCRO;src\maCRO\maCROs;src\preSETs\setNDF;src\preSETs\setSUB6;src\preSETs\setUSER"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="18">
+    <Files Count="19">
       <Item1>
         <Filename Value="in0k_lazExt_extIDEM_INI.inc"/>
         <Type Value="Binary"/>
@@ -63,8 +63,8 @@
         <UnitName Value="lazExt_extIDEM_preSet_SUB6"/>
       </Item12>
       <Item13>
-        <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_maCRO_Text.pas"/>
-        <UnitName Value="lazExt_extIDEM_maCRO_Text"/>
+        <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_maCRO_Text_CORE.pas"/>
+        <UnitName Value="lazExt_extIDEM_maCRO_Text_CORE"/>
       </Item13>
       <Item14>
         <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_maCRO_TextML.pas"/>
@@ -86,6 +86,10 @@
         <Filename Value="src\coreObject\extIDEM_coreObject.pas"/>
         <UnitName Value="extIDEM_coreObject"/>
       </Item18>
+      <Item19>
+        <Filename Value="src\ideEdit\sub_frames\lazExt_extIDEM_subFrm_core.pas"/>
+        <UnitName Value="lazExt_extIDEM_subFrm_core"/>
+      </Item19>
     </Files>
     <RequiredPkgs Count="3">
       <Item1>

@@ -1,13 +1,53 @@
 inherited lazExt_extIDEM_maCRO_Text_edit: TlazExt_extIDEM_maCRO_Text_edit
-  DesignLeft = 341
-  object Memo1: TMemo[0]
-    Left = 29
-    Height = 90
-    Top = 50
-    Width = 150
-    Lines.Strings = (
-      'Memo1'
-    )
+  Height = 119
+  Width = 413
+  ClientHeight = 119
+  ClientWidth = 413
+  DesignLeft = 472
+  DesignTop = 217
+  object Value_Memo: TMemo[0]
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Value_Shape
+    Left = 0
+    Height = 99
+    Top = 0
+    Width = 413
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    ScrollBars = ssAutoBoth
     TabOrder = 0
+  end
+  object Value_Shape: TShape[1]
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Value_Memo
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Value_Label
+    Left = 2
+    Height = 1
+    Top = 101
+    Width = 409
+    Anchors = [akLeft, akRight, akBottom]
+    BorderSpacing.Left = 2
+    BorderSpacing.Top = 2
+    BorderSpacing.Right = 2
+    BorderSpacing.Bottom = 2
+  end
+  object Value_Label: TLabel[2]
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 0
+    Height = 15
+    Top = 104
+    Width = 413
+    Anchors = [akLeft, akRight, akBottom]
+    Caption = 'Value_Label'
+    ParentColor = False
   end
 end

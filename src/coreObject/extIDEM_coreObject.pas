@@ -23,7 +23,7 @@ type
   private
    _ENBL_:boolean;
   protected
-    procedure _ENBL_SET_(const value:boolean); virtual;
+    procedure _ENBL_SET_(const value:boolean);
   public
     constructor Create(TheOwner:TComponent); override;
   public

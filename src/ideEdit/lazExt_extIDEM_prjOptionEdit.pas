@@ -56,7 +56,9 @@ type
       var AllowChange: Boolean);
     procedure TreeView1Deletion(Sender: TObject; Node: TTreeNode);
  private
+   _nodeTree_ :TtreeNode;
    _nodeFrame_:tExtIDEM_core_objEDIT;
+
     procedure _rePlace_setFRM_(const FRM:tExtIDEM_core_objEDIT);
 //    function  _rePlace_getFRM_(const ITM:tLazExt_extIDEM_preSet_Node):tExtIDEM_core_objEDIT;
 //    procedure _rePlace_setITM_(const ITM:tLazExt_extIDEM_preSet_Node);
@@ -357,10 +359,12 @@ procedure tNodeDATA.EDITOR_Settings_READ;
 var tmpNode:tExtIDEM_core_objNODE;
 begin
     tmpNode:=_node_getACTV_;
-    if Assigned(tmpNode) and Assigned(_edit_frm_) and(not _was_load_) then begin
-       //_edit_frm_.Settings_Read(tmpNode);
-        ShowMessage('EDITOR_Settings_READ');
-       _was_load_:=TRUE;
+    if Assigned(tmpNode) and Assigned(_edit_frm_) then begin
+        if not _was_load_ then begin //< если ещё не загружено, то грузим
+           _edit_frm_.Settings_Read(tmpNode);
+            //ShowMessage('EDITOR_Settings_READ');
+           _was_load_:=TRUE;
+        end;
     end
     else _was_load_:=FALSE;
 end;
@@ -370,8 +374,8 @@ var tmpNode:tExtIDEM_core_objNODE;
 begin
     tmpNode:=_node_getACTV_;
     if Assigned(tmpNode) and Assigned(_edit_frm_) then begin
-       //_edit_frm_.Settings_Write(tmpNode);
-       ShowMessage('EDITOR_Settings_WRITE');
+       _edit_frm_.Settings_Write(tmpNode);
+        ShowMessage('EDITOR_Settings_WRITE');
     end;
 end;
 
@@ -554,8 +558,19 @@ end;
 //------------------------------------------------------------------------------
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit.chb_nodeEnabledChange(Sender: TObject);
+var treeNode:tTreeNode;
 begin
-    ShowMessage('CheckBox2Change');
+    //treeNode:=TreeView1.;
+    if Assigned(_nodeTree_) then begin
+      _rePlace_TreeNODE_Labels_(_nodeTree_)
+    end;
+
+
+
+
+
+
+    //ShowMessage('CheckBox2Change');
 end;
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit.chb_nodeEnabledClick(Sender: TObject);
@@ -599,10 +614,10 @@ begin
         // готовим новый
         if Assigned(FRM) then begin
 
-            if FRM.NodeEnabled
+            {if FRM.NodeEnabled
             then ShowMessage(FRM.ClassName+' '+ IntToHex(integer(pointer(FRM)),8)+'FRM.NodeEnabled  - TRUE' )
             else ShowMessage(FRM.ClassName+' '+ IntToHex(integer(pointer(FRM)),8)+'FRM.NodeEnabled  - FALSE' );
-
+            }
             chb_nodeEnabled.Checked:=FRM.NodeEnabled;
             FRM.Parent:=Panel3;
             FRM.Align:=alClient;
@@ -787,6 +802,7 @@ end;
 procedure tLazExt_extIDEM_frmPrjOptionEdit.TreeView1Change(Sender:TObject; Node:TTreeNode);
 begin
     if Assigned(node) then _rePlace_TreeNODE_(node);
+   _nodeTree_:=Node;
 end;
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit.TreeView1Changing(Sender: TObject;
@@ -937,7 +953,7 @@ begin
             end
             else begin
                 frm_nodeName.setNames('',nodeData.NodeIDNT);
-                frm_nodeName.setUsed(nodeData.NodeENBL);
+                frm_nodeName.setUsed(_nodeFrame_.NodeEnabled{ nodeData.NodeENBL});
             end;
         end
        else begin
@@ -952,8 +968,8 @@ end;
 procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_(const treeNode:TTreeNode);
 begin
    _chb_nodeEnabled_eventCLR;
-   _rePlace_TreeNODE_Labels_(treeNode);
    _rePlace_TreeNODE_Editor_(treeNode);
+   _rePlace_TreeNODE_Labels_(treeNode);
    _chb_nodeEnabled_eventSET;
 end;
 
@@ -970,7 +986,7 @@ begin
         if (not Assigned(NodeEdit))and(Assigned(NodeDATA.NodeTEDT))
         then begin
             NodeEdit:=NodeDATA.NodeTEDT.Create(SELF);
-            ShowMessage('NodeDATA.NodeTEDT.Create');
+            //ShowMessage('NodeDATA.NodeTEDT.Create');
             NodeDATA.Node_EDT_SET(NodeEdit);
         end;
         //

@@ -51,7 +51,7 @@ type
     //procedure _Rec_set_(value:PIDEOptionsEditorRec);
     //function  _Rec_get_:PIDEOptionsEditorRec;
   protected
-    procedure _ENBL_SET_(const value:boolean); override;
+    //procedure _ENBL_SET_(const value:boolean); override;
 
    { function  _nodesList_Present_:boolean;
     function  _nodesList_mstReCrt:boolean;
@@ -94,7 +94,7 @@ begin
    //_preSet_:=nil;
 end;
 
-
+{
 procedure tLazExt_extIDEM_preSet_frmEdit._ENBL_SET_(const value:boolean);
 begin
     inherited;
@@ -102,7 +102,7 @@ begin
     then ShowMessage(self.ClassName+' '+ IntToHex(integer(pointer(self)),8)+'_ENBL_SET_ - TRUE' )
     else ShowMessage(self.ClassName+' '+ IntToHex(integer(pointer(self)),8)+'_ENBL_SET_ - FALSE' );
 end;
-
+ }
 //------------------------------------------------------------------------------
 {
 procedure tLazExt_extIDEM_preSet_frmEdit._preSet_SET_(preSet:tLazExt_extIDEM_preSet_edtNode);

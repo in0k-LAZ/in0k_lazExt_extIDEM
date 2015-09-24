@@ -1,41 +1,33 @@
-inherited lazExt_extIDEM_maCRO_File_CORE_edit: TlazExt_extIDEM_maCRO_File_CORE_edit
-  Height = 453
-  Width = 679
-  AutoSize = True
-  ClientHeight = 453
-  ClientWidth = 679
-  DesignLeft = 410
-  DesignTop = 219
-  inline extIDEM_sub_COMMENTs_frm1: TextIDEM_sub_COMMENTs_frm[0]
+inherited extIDEM_SUB6_mcrPRM__ProductName_frm: TextIDEM_SUB6_mcrPRM__ProductName_frm
+  Height = 240
+  Width = 320
+  ClientHeight = 240
+  ClientWidth = 320
+  DesignLeft = 376
+  DesignTop = 120
+  inherited extIDEM_sub_COMMENTs_frm1: TextIDEM_sub_COMMENTs_frm
     Height = 42
     Top = 63
-    Width = 679
     Align = alTop
     ClientHeight = 42
-    ClientWidth = 679
     inherited frm_Caption: TLabel
       AnchorSideLeft.Control = extIDEM_sub_COMMENTs_frm1
     end
     inherited frm_Data: TPanel
       AnchorSideLeft.Control = extIDEM_sub_COMMENTs_frm1
       AnchorSideRight.Control = extIDEM_sub_COMMENTs_frm1
-      Width = 679
-      ClientWidth = 679
-      inherited Edit2: TEdit
-        Width = 679
-      end
     end
     inherited CheckBox1: TCheckBox
       AnchorSideTop.Control = extIDEM_sub_COMMENTs_frm1
     end
   end
-  inline sub_RESULT: TextIDEM_sub_RESULT_frm[1]
+  inherited sub_RESULT: TextIDEM_sub_RESULT_frm
     Height = 38
     Top = 105
-    Width = 679
+    Width = 320
     Align = alTop
     ClientHeight = 38
-    ClientWidth = 679
+    ClientWidth = 320
     TabOrder = 1
     inherited frm_Caption: TLabel
       AnchorSideLeft.Control = sub_RESULT
@@ -44,30 +36,28 @@ inherited lazExt_extIDEM_maCRO_File_CORE_edit: TlazExt_extIDEM_maCRO_File_CORE_e
     inherited frm_Data: TPanel
       AnchorSideLeft.Control = sub_RESULT
       AnchorSideRight.Control = sub_RESULT
-      Width = 679
-      ClientWidth = 679
+      Width = 320
+      ClientWidth = 320
       inherited Shape1: TShape
-        Left = 335
+        Left = 156
       end
       inherited cmb_forIDE: TComboBox
-        Width = 294
+        Width = 115
       end
       inherited lbl_forSRC: TLabel
-        Left = 343
+        Left = 164
       end
       inherited cmb_forSRC: TComboBox
-        Left = 388
-        Width = 291
+        Left = 209
+        Width = 111
       end
     end
   end
-  inline extIDEM_sub_valFILE_frm1: TextIDEM_sub_valFILE_frm[2]
+  inherited extIDEM_sub_valFILE_frm1: TextIDEM_sub_valFILE_frm
     Height = 63
-    Width = 679
     Align = alTop
     AutoSize = True
     ClientHeight = 63
-    ClientWidth = 679
     TabOrder = 2
     inherited frm_Caption: TLabel
       AnchorSideLeft.Control = extIDEM_sub_valFILE_frm1
@@ -76,20 +66,6 @@ inherited lazExt_extIDEM_maCRO_File_CORE_edit: TlazExt_extIDEM_maCRO_File_CORE_e
     inherited frm_Data: TPanel
       AnchorSideLeft.Control = extIDEM_sub_valFILE_frm1
       AnchorSideRight.Control = extIDEM_sub_valFILE_frm1
-      Width = 679
-      ClientWidth = 679
-      inherited SpeedButton1: TSpeedButton
-        Left = 656
-      end
-      inherited Edit1: TEdit
-        Width = 625
-      end
-      inherited Edit2: TEdit
-        Width = 624
-      end
-      inherited SpeedButton2: TSpeedButton
-        Left = 656
-      end
     end
   end
 end

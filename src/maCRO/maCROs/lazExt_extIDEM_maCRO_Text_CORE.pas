@@ -13,24 +13,16 @@ interface
 
 
 uses lazExt_extIDEM_maCRO_node, lazExt_extIDEM_maCRO_edit, extIDEM_coreObject,
-  Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, EditBtn,
-  Buttons;
+  lazExt_extIDEM_frm_sub_RESULT, lazExt_extIDEM_frm_sub_valTEXT, Classes,
+  SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, EditBtn, Buttons;
 
 type
 
  { TlazExt_extIDEM_maCRO_Text_CORE_edit }
 
  TlazExt_extIDEM_maCRO_Text_CORE_edit=class(tExtIDEM_core_objEDIT)
-    ComboBox1: TComboBox;
-    ComboBox2: TComboBox;
-    Edit1: TEdit;
-    Label1: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Shape1: TShape;
-    SpeedButton1: TSpeedButton;
+    sub_valTEXT: TextIDEM_sub_valTEXT_frm;
+    sub_RESULT: TextIDEM_sub_RESULT_frm;
   public
     class function Value_label_TEXT:string; virtual;
   public
@@ -49,9 +41,12 @@ type
   public
     constructor Create(const prmNAME:string; const EDITor:tExtIDEM_core_objEditTYPE=nil); override;
   public
+    class function PUBLISED:boolean; override;
+  protected
     class function ObjTEdit:tExtIDEM_core_objEditTYPE; override;
-    //class function NodeTYPE_Name:string; override;
-    //class function NodeTYPE_Desc:string; override;
+    class function Obj_IDNT:string;                    override;
+    class function Obj_Name:string;                    override;
+    class function Obj_Desc:string;                    override;
   end;
 
 
@@ -99,9 +94,29 @@ begin
    _value_:='';
 end;
 
+class function tLazExt_extIDEM_maCRO_Text_CORE_node.PUBLISED:boolean;
+begin
+    result:=FALSE;
+end;
+
 class function tLazExt_extIDEM_maCRO_Text_CORE_node.ObjTEdit:tExtIDEM_core_objEditTYPE;
 begin
     result:=TlazExt_extIDEM_maCRO_Text_CORE_edit;
+end;
+
+class function tLazExt_extIDEM_maCRO_Text_CORE_node.Obj_IDNT:string;
+begin
+    result:='Text';
+end;
+
+class function tLazExt_extIDEM_maCRO_Text_CORE_node.Obj_Name:string;
+begin
+    result:='Текстовое Значение';
+end;
+
+class function tLazExt_extIDEM_maCRO_Text_CORE_node.Obj_Desc:string;
+begin
+    result:='Любое указанное текстовое значение.';
 end;
 
 //------------------------------------------------------------------------------
@@ -110,7 +125,7 @@ procedure tLazExt_extIDEM_maCRO_Text_CORE_node._value_SET_(const newValue:string
 begin
     if _value_<>newValue then begin
        _value_:=newValue;
-        isChange_SET;
+        isChanged;
     end;
 end;
 

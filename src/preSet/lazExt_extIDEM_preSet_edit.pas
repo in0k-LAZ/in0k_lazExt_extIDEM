@@ -13,7 +13,7 @@ interface
 {$endIf}
 
 
-uses lazExt_extIDEM_maCRO_node,  IDEOptionsIntf, lazExt_extIDEM_maCRO_edit,  extIDEM_coreObject,
+uses lazExt_extIDEM_maCRO_node,  IDEOptionsIntf, lazExt_extIDEM_maCRO_edit,  extIDEM_coreObject,  Dialogs,
   Classes, SysUtils, FileUtil, Forms, Controls, Grids, StdCtrls, ExtCtrls;
 
 type
@@ -32,6 +32,7 @@ type
   public
     function Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE; const prmEdit:tExtIDEM_core_objEditTYPE):boolean;
     function Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
+    function Param_ADD(const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
     function Param_First:tLazExt_extIDEM_node;
     function Param_Next(const node:tLazExt_extIDEM_node):tLazExt_extIDEM_node;
   end;
@@ -39,8 +40,6 @@ type
  { tLazExt_extIDEM_preSet_frmEdit }
 
  tLazExt_extIDEM_preSet_frmEdit=class(tExtIDEM_core_objEDIT)
-    ListBox1: TListBox;
-    Panel1: TPanel;
    // procedure ListBox1SelectionChange(Sender: TObject; User: boolean);
   private
    {_preSet_:tLazExt_extIDEM_preSet_edtNode;
@@ -52,6 +51,8 @@ type
     //procedure _Rec_set_(value:PIDEOptionsEditorRec);
     //function  _Rec_get_:PIDEOptionsEditorRec;
   protected
+    procedure _ENBL_SET_(const value:boolean); override;
+
    { function  _nodesList_Present_:boolean;
     function  _nodesList_mstReCrt:boolean;
     procedure _nodesList_ReCreate;
@@ -91,6 +92,15 @@ constructor tLazExt_extIDEM_preSet_frmEdit.Create(AOwner:TComponent);
 begin
     inherited Create(AOwner);
    //_preSet_:=nil;
+end;
+
+
+procedure tLazExt_extIDEM_preSet_frmEdit._ENBL_SET_(const value:boolean);
+begin
+    inherited;
+    if value
+    then ShowMessage(self.ClassName+' '+ IntToHex(integer(pointer(self)),8)+'_ENBL_SET_ - TRUE' )
+    else ShowMessage(self.ClassName+' '+ IntToHex(integer(pointer(self)),8)+'_ENBL_SET_ - FALSE' );
 end;
 
 //------------------------------------------------------------------------------
@@ -313,6 +323,11 @@ end;
 function tLazExt_extIDEM_preSet_edtNode.Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
 begin
     result:=Param_ADD(prmName,prmType,nil);
+end;
+
+function tLazExt_extIDEM_preSet_edtNode.Param_ADD(const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
+begin
+    result:=Param_ADD('',prmType,nil);
 end;
 
 //------------------------------------------------------------------------------

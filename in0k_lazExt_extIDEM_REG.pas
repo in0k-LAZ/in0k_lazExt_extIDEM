@@ -9,7 +9,7 @@ IDEOptionsIntf,  lazExt_extIDEM_preSet_edit,
 
 lazExt_extIDEM_preSet_NDF,
 lazExt_extIDEM_preSet_USER,
-lazExt_extIDEM_preSet_SUB6,
+lazExt_extIDEM__SUB6_MACROS,
 
 lazExt_extIDEM_prjOptionEdit,
 lazExt_extIDEM_prjResource,   ProjectResourcesIntf,

@@ -18,17 +18,15 @@ uses lazExt_extIDEM_maCRO_edit, extIDEM_coreObject,
 type
 
  tLazExt_extIDEM_node=class(tExtIDEM_core_objNODE)
-  private
-   _isCHANGE_:boolean;
   protected
-    procedure isChange_SET;
+    procedure isChanged;
   private
    _next_:tLazExt_extIDEM_node;
    _edit_:tExtIDEM_core_objEditTYPE; //< выбранный редактор (может отличаться от defEditor)
    _IDNT_:string;
     //function _compare_IDNT_(const IDNT:string):integer;
   public
-    constructor Create;
+    constructor Create; override;
     constructor Create(const prmIDNT:string; const EDITor:tExtIDEM_core_objEditTYPE=nil); virtual;
     destructor DESTROY; override;
   protected
@@ -43,7 +41,12 @@ type
     function node_IDNT:string; override;
   public
     //class function defEditor:tExtIDEM_core_objEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
-    class function is_Public:boolean; virtual;
+
+
+                 //PUBLISED
+    class function PUBLISED:boolean; virtual;
+
+
   end;
  tLazExt_extIDEM_nodeTYPE=class of tLazExt_extIDEM_node;
 
@@ -67,6 +70,7 @@ type
   public
     function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tExtIDEM_core_objEditTYPE):boolean;
     function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
+    function ADD(const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
   public
     function Nodes_First:tLazExt_extIDEM_node;
     function Nodes_Next(const node:tLazExt_extIDEM_node):tLazExt_extIDEM_node;
@@ -105,16 +109,16 @@ begin
 end;
 {$endif}}
 
-class function tLazExt_extIDEM_node.is_Public:boolean;
+class function tLazExt_extIDEM_node.PUBLISED:boolean;
 begin
-    result:=true;
+    result:=FALSE;
 end;
 
 //------------------------------------------------------------------------------
 
-procedure tLazExt_extIDEM_node.isChange_SET;
+procedure tLazExt_extIDEM_node.isChanged;
 begin
-   _isCHANGE_:=TRUE;
+   _isChange_;
 end;
 
 //------------------------------------------------------------------------------
@@ -158,15 +162,20 @@ end;
 //------------------------------------------------------------------------------
 
 function tLazExt_extIDEM_nodesList_core.ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tExtIDEM_core_objEditTYPE):boolean;
+var tmp:tLazExt_extIDEM_node;
 begin
     {$ifDef _TSTPRM_}
        // Assert(Assigned(node),'NODE === NIL');
     {$endIF}
-    if not Assigned(_nodes_FND_(prmName)) then begin
-       _nodes_INS_(nodeType.Create(prmName,nodeEdit));
-        result:=true;
+    tmp:=nodeType.Create(prmName,nodeEdit);
+    if Assigned(_nodes_FND_(tmp.node_Name)) then begin //< такой уже есть
+        result:=FALSE;
+        tmp.FREE;
     end
-    else result:=false;
+    else begin //< такого нет, вставляем
+       _nodes_INS_(tmp);
+        result:=true;
+    end;
     {$ifDef _TSTPRM_}
          Assert(result, ClassName+'.ADD('+prmName+','+nodeType.ClassName+')'+'FALSE');
     {$endIF}
@@ -176,6 +185,12 @@ function tLazExt_extIDEM_nodesList_core.ADD(const prmName:string; const nodeType
 begin
     result:=ADD(prmName,nodeType,nil)
 end;
+
+function tLazExt_extIDEM_nodesList_core.ADD(const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
+begin
+    result:=ADD('',nodeType,nil)
+end;
+
 
 function tLazExt_extIDEM_nodesList_core.Nodes_First:tLazExt_extIDEM_node;
 begin

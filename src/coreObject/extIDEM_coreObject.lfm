@@ -4,6 +4,6 @@ object extIDEM_core_objEDIT: TextIDEM_core_objEDIT
   Top = 0
   Width = 320
   TabOrder = 0
-  DesignLeft = 492
-  DesignTop = 383
+  DesignLeft = 757
+  DesignTop = 238
 end

@@ -1,141 +1,65 @@
 inherited lazExt_extIDEM_maCRO_Text_CORE_edit: TlazExt_extIDEM_maCRO_Text_CORE_edit
-  Height = 156
+  Height = 433
   Width = 679
   AutoSize = True
-  ClientHeight = 156
+  ClientHeight = 433
   ClientWidth = 679
   DesignLeft = 535
   DesignTop = 182
-  object Label1: TLabel[0]
-    AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = Owner
-    Left = 0
-    Height = 15
-    Top = 0
-    Width = 56
-    Caption = 'Значение'
-    Font.Style = [fsBold]
-    ParentColor = False
-    ParentFont = False
+  inline sub_RESULT: TextIDEM_sub_RESULT_frm[0]
+    Height = 38
+    Top = 38
+    Width = 679
+    Align = alTop
+    ClientHeight = 38
+    ClientWidth = 679
+    inherited frm_Caption: TLabel
+      AnchorSideLeft.Control = sub_RESULT
+      AnchorSideTop.Control = sub_RESULT
+    end
+    inherited frm_Data: TPanel
+      AnchorSideLeft.Control = sub_RESULT
+      AnchorSideRight.Control = sub_RESULT
+      Width = 679
+      ClientWidth = 679
+      inherited Shape1: TShape
+        Left = 335
+      end
+      inherited cmb_forIDE: TComboBox
+        Width = 294
+      end
+      inherited lbl_forSRC: TLabel
+        Left = 343
+      end
+      inherited cmb_forSRC: TComboBox
+        Left = 388
+        Width = 291
+      end
+    end
   end
-  object Edit1: TEdit[1]
-    AnchorSideLeft.Control = Label6
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = Label1
-    AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = SpeedButton1
-    Left = 48
-    Height = 23
-    Top = 15
-    Width = 608
-    Anchors = [akTop, akLeft, akRight]
-    BorderSpacing.Left = 2
-    TabOrder = 0
-    Text = 'Edit1'
-  end
-  object SpeedButton1: TSpeedButton[2]
-    AnchorSideTop.Control = Edit1
-    AnchorSideTop.Side = asrCenter
-    AnchorSideRight.Control = Owner
-    AnchorSideRight.Side = asrBottom
-    Left = 656
-    Height = 22
-    Top = 15
-    Width = 23
-    Anchors = [akTop, akRight]
-  end
-  object Label3: TLabel[3]
-    AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = Edit1
-    AnchorSideTop.Side = asrBottom
-    Left = 0
-    Height = 15
-    Top = 40
-    Width = 55
-    BorderSpacing.Top = 2
-    Caption = 'Результат'
-    Font.Style = [fsBold]
-    ParentColor = False
-    ParentFont = False
-  end
-  object Label4: TLabel[4]
-    AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = ComboBox1
-    AnchorSideTop.Side = asrCenter
-    Left = 16
-    Height = 15
-    Top = 59
-    Width = 39
-    BorderSpacing.Left = 16
-    Caption = 'для IDE'
-    ParentColor = False
-  end
-  object Label5: TLabel[5]
-    AnchorSideLeft.Control = Shape1
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = ComboBox2
-    AnchorSideTop.Side = asrCenter
-    Left = 343
-    Height = 15
-    Top = 59
-    Width = 43
-    Caption = 'для SRC'
-    ParentColor = False
-  end
-  object ComboBox1: TComboBox[6]
-    AnchorSideLeft.Control = Label4
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = Label3
-    AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = Shape1
-    Left = 57
-    Height = 23
-    Top = 55
-    Width = 278
-    Anchors = [akTop, akLeft, akRight]
-    BorderSpacing.Left = 2
-    ItemHeight = 15
+  inline sub_valTEXT: TextIDEM_sub_valTEXT_frm[1]
+    Height = 38
+    Width = 679
+    Align = alTop
+    AutoSize = True
+    ClientHeight = 38
+    ClientWidth = 679
     TabOrder = 1
-    Text = 'ComboBox1'
-  end
-  object ComboBox2: TComboBox[7]
-    AnchorSideLeft.Control = Label5
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = ComboBox1
-    AnchorSideRight.Control = Owner
-    AnchorSideRight.Side = asrBottom
-    Left = 388
-    Height = 23
-    Top = 55
-    Width = 291
-    Anchors = [akTop, akLeft, akRight]
-    BorderSpacing.Left = 2
-    ItemHeight = 15
-    TabOrder = 2
-    Text = 'ComboBox2'
-  end
-  object Label6: TLabel[8]
-    AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = Edit1
-    AnchorSideTop.Side = asrCenter
-    Left = 16
-    Height = 15
-    Top = 19
-    Width = 30
-    BorderSpacing.Left = 16
-    Caption = 'Текст'
-    ParentColor = False
-  end
-  object Shape1: TShape[9]
-    AnchorSideLeft.Control = Owner
-    AnchorSideLeft.Side = asrCenter
-    AnchorSideTop.Control = Label3
-    AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Side = asrCenter
-    Left = 335
-    Height = 1
-    Top = 55
-    Width = 8
-    Pen.Style = psClear
+    inherited frm_Caption: TLabel
+      AnchorSideLeft.Control = sub_valTEXT
+      AnchorSideTop.Control = sub_valTEXT
+    end
+    inherited frm_Data: TPanel
+      AnchorSideLeft.Control = sub_valTEXT
+      AnchorSideRight.Control = sub_valTEXT
+      Width = 679
+      ClientWidth = 679
+      inherited SpeedButton1: TSpeedButton
+        Left = 656
+      end
+      inherited Edit1: TEdit
+        Width = 624
+      end
+    end
   end
 end

@@ -13,29 +13,19 @@ interface
 
 
 uses lazExt_extIDEM_maCRO_node, lazExt_extIDEM_maCRO_edit, extIDEM_coreObject,
-  Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, EditBtn,
-  Buttons;
+  lazExt_extIDEM_maCRO_Text_CORE,
+  lazExt_extIDEM_frm_sub_valTEXT, lazExt_extIDEM_frm_sub_COMMENTs,
+  lazExt_extIDEM_frm_sub_RESULT, lazExt_extIDEM_frm_sub_valFILE, Classes,
+  SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, EditBtn, Buttons;
 
 type
 
  { TlazExt_extIDEM_maCRO_File_CORE_edit }
 
  TlazExt_extIDEM_maCRO_File_CORE_edit=class(tExtIDEM_core_objEDIT)
-    CheckBox1: TCheckBox;
-    ComboBox1: TComboBox;
-    ComboBox2: TComboBox;
-    Edit1: TEdit;
-    Edit2: TEdit;
-    Edit3: TEdit;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Shape1: TShape;
-    SpeedButton1: TSpeedButton;
+    extIDEM_sub_COMMENTs_frm1: TextIDEM_sub_COMMENTs_frm;
+    extIDEM_sub_valFILE_frm1: TextIDEM_sub_valFILE_frm;
+    sub_RESULT: TextIDEM_sub_RESULT_frm;
   public
     class function Value_label_TEXT:string; virtual;
   public
@@ -45,18 +35,13 @@ type
     constructor Create(TheOwner:TComponent); override;
   end;
 
- tLazExt_extIDEM_maCRO_File_CORE_node=class(tLazExt_extIDEM_node)
-  private
-   _value_:string;
-    procedure _value_SET_(const newValue:string);
+ tLazExt_extIDEM_maCRO_File_CORE_node=class(tLazExt_extIDEM_maCRO_Text_CORE_node)
   public
-    property Value:string read _value_ write _value_SET_;
-  public
-    constructor Create(const prmNAME:string; const EDITor:tExtIDEM_core_objEditTYPE=nil); override;
-  public
+    class function PUBLISED:boolean; override;
     class function ObjTEdit:tExtIDEM_core_objEditTYPE; override;
-    //class function NodeTYPE_Name:string; override;
-    //class function NodeTYPE_Desc:string; override;
+    class function Obj_IDNT:string;                    override;
+    class function Obj_Name:string;                    override;
+    class function Obj_Desc:string;                    override;
   end;
 
 
@@ -98,10 +83,9 @@ end;
 
 //==============================================================================
 
-constructor tLazExt_extIDEM_maCRO_File_CORE_node.Create(const prmNAME:string; const EDITor:tExtIDEM_core_objEditTYPE=nil);
+class function tLazExt_extIDEM_maCRO_File_CORE_node.PUBLISED:boolean;
 begin
-    inherited Create(prmNAME,EDITor);
-   _value_:='';
+    result:=FALSE;
 end;
 
 class function tLazExt_extIDEM_maCRO_File_CORE_node.ObjTEdit:tExtIDEM_core_objEditTYPE;
@@ -109,14 +93,19 @@ begin
     result:=TlazExt_extIDEM_maCRO_File_CORE_edit;
 end;
 
-//------------------------------------------------------------------------------
-
-procedure tLazExt_extIDEM_maCRO_File_CORE_node._value_SET_(const newValue:string);
+class function tLazExt_extIDEM_maCRO_File_CORE_node.Obj_IDNT:string;
 begin
-    if _value_<>newValue then begin
-       _value_:=newValue;
-        isChange_SET;
-    end;
+    result:='File';
+end;
+
+class function tLazExt_extIDEM_maCRO_File_CORE_node.Obj_Name:string;
+begin
+    result:='Значение из Файла';
+end;
+
+class function tLazExt_extIDEM_maCRO_File_CORE_node.Obj_Desc:string;
+begin
+    result:='Значением является СОДЕРЖИМОЕ указанного файла.';
 end;
 
 end.

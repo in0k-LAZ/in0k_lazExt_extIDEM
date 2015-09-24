@@ -17,8 +17,11 @@ uses {$ifDef lazExt_Sub6_EventLOG_mode}Sub6_wndDebug,{$endIf}
    ProjectResourcesIntf,
    lazExt_extIDEM_preSet_NDF,
    LazIDEIntf,
-   lazExt_extIDEM_maCRO_NDF,
-   lazExt_extIDEM_preSet_node;
+   lazExt_extIDEM_mcrPRM_NotDEF,
+   lazExt_extIDEM_preSet_USER,
+   lazExt_extIDEM_preSet_node,
+   lazExt_extIDEM_mcrPRM_usrTEXT,
+   lazExt_extIDEM_mcrPRM_usrFILE;
 
 type
 
@@ -140,16 +143,21 @@ end;
 //------------------------------------------------------------------------------
 
 procedure tExtIDEM_prjResources._list_reInit;
-var i:tExtIDEM_preSet_NDF_node;
+var i:tLazExt_extIDEM_preSet_Node;
 begin
    _list_.FREE;
    _list_:=tLazExt_extIDEM_preSetsList_core.Create;
     //---
     i:=tExtIDEM_preSet_NDF_node.Create;
-    i.Param_ADD('asd1', tLazExt_extIDEM_maCRO_NDF_node);
-    i.Param_ADD('asd2', tLazExt_extIDEM_maCRO_NDF_node);
    _list_.PreSETs_ADD(i);
 
+   //---
+   i:=tExtIDEM_preSet_USER_node.Create;
+   i.Param_ADD('Text', TlazExt_extIDEM_mcrPRM_usrTEXT_itm);
+   i.Param_ADD('File', TlazExt_extIDEM_mcrPRM_usrFILE_itm);
+   i.Param_ADD('asd1', tLazExt_extIDEM_maCRO_NDF_node);
+   i.Param_ADD('asd2', tLazExt_extIDEM_maCRO_NDF_node);
+  _list_.PreSETs_ADD(i);
 
 
 

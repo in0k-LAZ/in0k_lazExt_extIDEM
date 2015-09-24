@@ -1,0 +1,54 @@
+inherited extIDEM_sub_valTEXT_frm: TextIDEM_sub_valTEXT_frm
+  AutoSize = False
+  DesignLeft = 376
+  DesignTop = 120
+  inherited frm_Caption: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+  end
+  inherited frm_Data: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = nil
+    Height = 23
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    ClientHeight = 23
+    object SpeedButton1: TSpeedButton[0]
+      AnchorSideTop.Control = Edit1
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = frm_Data
+      AnchorSideRight.Side = asrBottom
+      Left = 297
+      Height = 22
+      Top = 0
+      Width = 23
+      Anchors = [akTop, akRight]
+    end
+    object Edit1: TEdit[1]
+      AnchorSideLeft.Control = Label6
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = frm_Data
+      AnchorSideRight.Control = SpeedButton1
+      Left = 32
+      Height = 23
+      Top = 0
+      Width = 265
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 2
+      TabOrder = 0
+      Text = 'Edit1'
+    end
+    object Label6: TLabel[2]
+      AnchorSideLeft.Control = frm_Data
+      AnchorSideTop.Control = Edit1
+      AnchorSideTop.Side = asrCenter
+      Left = 0
+      Height = 15
+      Top = 4
+      Width = 30
+      Caption = 'Текст'
+      ParentColor = False
+    end
+  end
+end

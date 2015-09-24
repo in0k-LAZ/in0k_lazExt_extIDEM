@@ -12,12 +12,12 @@ interface
 {$endIf}
 
 
-uses IDEOptionsIntf, lazExt_extIDEM,    Graphics,
-
+uses IDEOptionsIntf, lazExt_extIDEM,    Graphics,       lazExt_extIDEM_mcrPRM_NotDEF,  lazExt_extIDEM_preSet_NDF,
+     Dialogs,
 lazExt_extIDEM_maCRO_node, extIDEM_coreObject,
 lazExt_extIDEM_preSet_node, Classes,
   SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, ComCtrls,
-  lazExt_extIDEM_prjResource, types;
+  lazExt_extIDEM_prjResource, lazExt_extIDEM_frm_nodeName, types;
 
 type
 
@@ -33,19 +33,19 @@ type
  tLazExt_extIDEM_frmPrjOptionEdit = class(TAbstractIDEOptionsEditor)
    Button1: TButton;
     CheckBox1: TCheckBox;
-    CheckBox2: TCheckBox;
+    chb_nodeEnabled: TCheckBox;
     Label1: TLabel;
     Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
     Label7: TLabel;
+    frm_nodeName: TlazExt_extIDEM_nodeName_frm;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
     Splitter1: TSplitter;
     TreeView1: TTreeView;
+    procedure chb_nodeEnabledChange(Sender: TObject);
+    procedure chb_nodeEnabledClick(Sender: TObject);
+    procedure Label2Click(Sender: TObject);
     procedure lst_preSetDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
     procedure lst_preSetDrawItem(Control: TWinControl; Index: Integer;
@@ -61,11 +61,10 @@ type
 //    function  _rePlace_getFRM_(const ITM:tLazExt_extIDEM_preSet_Node):tExtIDEM_core_objEDIT;
 //    procedure _rePlace_setITM_(const ITM:tLazExt_extIDEM_preSet_Node);
 
- private //< управление текстовкой
-    procedure _labels_macroNames_INITFNT;
-    procedure _labels_macroNames_setText(const preSetName,macroName:string);
-    procedure _labels_macroNames_setUsed(const value:boolean);
-    procedure _labels_macroNames_setDELT(const value:boolean);
+
+    procedure _chb_nodeEnabled_eventCLR;
+    procedure _chb_nodeEnabled_eventSET;
+
  private
     procedure _rePlace_TreeNODE_Labels_(const treeNode:TTreeNode);
     procedure _rePlace_TreeNODE_Editor_(const treeNode:TTreeNode);
@@ -148,24 +147,25 @@ type
     property  Was_Loaded:boolean read _was_load_;
     procedure Was_Loaded_CLEAR;
   public
-    function IDE_based:boolean;
-    function PRJ_based:boolean;
-    function IS_Macros:boolean;
-    function IS_McrPRM:boolean;
+    function  IDE_based:boolean;
+    function  PRJ_based:boolean;
+    function  IS_Macros:boolean;
+    function  IS_McrPRM:boolean;
+    function  IS_NotDEF:boolean;
   public
-    property Node_EDT:tExtIDEM_core_objEDIT read _edit_frm_;
-    property Node_IDE:tExtIDEM_core_objNODE read _node_ide_;
-    property Node_PRJ:tExtIDEM_core_objNODE read _node_prj_;
+    property  Node_EDT:tExtIDEM_core_objEDIT read _edit_frm_;
+    property  Node_IDE:tExtIDEM_core_objNODE read _node_ide_;
+    property  Node_PRJ:tExtIDEM_core_objNODE read _node_prj_;
   public
     procedure Node_PRJ_clean;
     procedure Node_PRJ_SET(const value:tExtIDEM_core_objNODE);
     procedure Node_EDT_SET(const value:tExtIDEM_core_objEDIT);
   public
-    property NodeTEDT:tExtIDEM_core_objEditTYPE read _node_get_EDIT;
-    property NodeENBL:boolean read _node_get_ENBL;
-    property NodeIDNT:string  read _node_get_IDNT;
-    property NodeNAME:string  read _node_get_NAME;
-    property NodeDESC:string  read _node_get_DESC;
+    property  NodeTEDT:tExtIDEM_core_objEditTYPE read _node_get_EDIT;
+    property  NodeENBL:boolean read _node_get_ENBL;
+    property  NodeIDNT:string  read _node_get_IDNT;
+    property  NodeNAME:string  read _node_get_NAME;
+    property  NodeDESC:string  read _node_get_DESC;
   public
     procedure EDITOR_Settings_READ;
     procedure EDITOR_Settings_WRITE;
@@ -236,6 +236,21 @@ begin
     result:=_node_is_MacroPRM_;//    result:=Assigned(_node_ACTIVE_) and (_node_ACTIVE_ is tLazExt_extIDEM_node);
 end;
 
+function tNodeDATA.IS_NotDEF:boolean;
+begin
+    if _node_is_MacroITM_ then begin
+        result:=_node_getACTV_.InheritsFrom(tExtIDEM_preSet_NDF_node);
+    end
+   else
+    if _node_is_MacroPRM_ then begin
+        result:=_node_getACTV_.InheritsFrom(tLazExt_extIDEM_maCRO_NDF_node);
+    end
+   else begin
+       result:=false;
+   end;
+
+end;
+
 //------------------------------------------------------------------------------
 
 function tNodeDATA._node_get_EDIT:tExtIDEM_core_objEditTYPE;
@@ -272,11 +287,9 @@ end;
 
 function tNodeDATA._node_get_ENBL:boolean;
 begin
-    if IDE_based then begin
-        result:=Assigned(_node_prj_);
-        {todo: добавить проверку _node_prj_.Enable}
-    end
-    else result:=false;
+    result:=Assigned(_node_ide_)
+            and (not (_node_ide_ is tLazExt_extIDEM_maCRO_NDF_node))
+            and (_node_ide_.Enabled);
 end;
 
 //------------------------------------------------------------------------------
@@ -307,14 +320,6 @@ end;
 function tNodeDATA._node_is_MacroITM_:boolean;
 begin
     result:=false;
-   { if Assigned(_node_getACTV_) then begin
-        result:=_node_getACTV_ is tLazExt_extIDEM_preSet_Node;
-
-        _node_getACTV_.ClassParent;
-
-
-    end;  }
-
     if Assigned(_node_getACTV_) then begin
         result:=_node_getACTV_.InheritsFrom(tLazExt_extIDEM_preSet_Node);
     end;
@@ -324,7 +329,6 @@ function tNodeDATA._node_is_MacroPRM_:boolean;
 begin
     result:=false;
     if Assigned(_node_getACTV_) then begin
-        // result:=_node_getACTV_ is tLazExt_extIDEM_node;
         result:=_node_getACTV_.InheritsFrom(tLazExt_extIDEM_node);
     end;
 end;
@@ -334,6 +338,7 @@ end;
 procedure tNodeDATA.Node_PRJ_clean;
 begin
    _node_prj_set_(nil);
+   _was_load_:=FALSE;
 end;
 
 procedure tNodeDATA.Node_prj_SET(const value:tExtIDEM_core_objNODE);
@@ -352,8 +357,9 @@ procedure tNodeDATA.EDITOR_Settings_READ;
 var tmpNode:tExtIDEM_core_objNODE;
 begin
     tmpNode:=_node_getACTV_;
-    if Assigned(tmpNode) and Assigned(_edit_frm_) then begin
-       _edit_frm_.Settings_Read(tmpNode);
+    if Assigned(tmpNode) and Assigned(_edit_frm_) and(not _was_load_) then begin
+       //_edit_frm_.Settings_Read(tmpNode);
+        ShowMessage('EDITOR_Settings_READ');
        _was_load_:=TRUE;
     end
     else _was_load_:=FALSE;
@@ -364,7 +370,8 @@ var tmpNode:tExtIDEM_core_objNODE;
 begin
     tmpNode:=_node_getACTV_;
     if Assigned(tmpNode) and Assigned(_edit_frm_) then begin
-       _edit_frm_.Settings_Write(tmpNode);
+       //_edit_frm_.Settings_Write(tmpNode);
+       ShowMessage('EDITOR_Settings_WRITE');
     end;
 end;
 
@@ -539,6 +546,41 @@ begin
 
 end;
 
+procedure tLazExt_extIDEM_frmPrjOptionEdit.Label2Click(Sender: TObject);
+begin
+    tLabel(Sender).ShowHelp;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit.chb_nodeEnabledChange(Sender: TObject);
+begin
+    ShowMessage('CheckBox2Change');
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit.chb_nodeEnabledClick(Sender: TObject);
+begin
+    ShowMessage('CheckBox2Click');
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._chb_nodeEnabled_eventCLR;
+begin
+    with chb_nodeEnabled do begin
+        OnChange:=nil;
+        OnClick :=nil;
+    end;
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._chb_nodeEnabled_eventSET;
+begin
+    with chb_nodeEnabled do begin
+        OnChange:=@chb_nodeEnabledChange;
+        OnClick :=@chb_nodeEnabledClick;
+    end;
+end;
+
+//------------------------------------------------------------------------------
+
 procedure tLazExt_extIDEM_frmPrjOptionEdit.lst_preSetDrawItem(
   Control: TWinControl; Index: Integer; ARect: TRect; State: TOwnerDrawState);
 begin
@@ -549,15 +591,28 @@ end;
 procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_setFRM_(const FRM:tExtIDEM_core_objEDIT);
 begin
     if FRM<>_nodeFrame_ then begin
+        // сохраняем значение для СТАРОГО
+        if Assigned(_nodeFrame_) and (_nodeFrame_.InheritsFrom(tExtIDEM_core_objEDIT))
+        then begin
+           _nodeFrame_.NodeEnabled:=chb_nodeEnabled.Checked;
+        end;
         // готовим новый
         if Assigned(FRM) then begin
+
+            if FRM.NodeEnabled
+            then ShowMessage(FRM.ClassName+' '+ IntToHex(integer(pointer(FRM)),8)+'FRM.NodeEnabled  - TRUE' )
+            else ShowMessage(FRM.ClassName+' '+ IntToHex(integer(pointer(FRM)),8)+'FRM.NodeEnabled  - FALSE' );
+
+            chb_nodeEnabled.Checked:=FRM.NodeEnabled;
             FRM.Parent:=Panel3;
             FRM.Align:=alClient;
             FRM.SendToBack;
             FRM.Show;
         end;
         // убираем старый
-        if Assigned(_nodeFrame_) then _nodeFrame_.Hide;
+        if Assigned(_nodeFrame_) then begin
+           _nodeFrame_.Hide;
+        end;
         // запомнили новый
        _nodeFrame_:=FRM;
     end;
@@ -840,7 +895,6 @@ end;}
 constructor tLazExt_extIDEM_frmPrjOptionEdit.Create(AOwner: TComponent);
 begin
     Inherited;
-   _labels_macroNames_INITFNT;
 end;
 
 destructor tLazExt_extIDEM_frmPrjOptionEdit.DESTROY;
@@ -857,32 +911,39 @@ begin
     if not (Assigned(treeNode) and Assigned(treeNode.Data)) then begin
         label1.Caption:='Not Default';
         Label7.Caption:='Not Default';
-       _labels_macroNames_setText('','');
-       _labels_macroNames_setUsed(false);
-       _labels_macroNames_setDELT(true);
+        frm_nodeName.setDELETED(true);
+        frm_nodeName.setUsed   (false);
+        frm_nodeName.setNames  ('','');
+        chb_nodeEnabled.Enabled:=FALSE;
     end
     else begin
         nodeData:=tNodeDATA(treeNode.Data);
         label1.Caption:=nodeData.NodeNAME;
         label7.Caption:=nodeData.NodeDESC;
+        Label2.Hint   :=nodeData.NodeDESC;
+        chb_nodeEnabled.Enabled:=not nodeData.IS_NotDEF;
         //--
         if nodeData.IS_Macros then begin
-           _labels_macroNames_setText(nodeData.NodeIDNT,'');
-           _labels_macroNames_setUsed(nodeData.NodeENBL);
-            //_labels_macroNames_setDELT(nodeData.NodeENBL);
+           //frm_nodeName.setDELETED(true);
+           frm_nodeName.setUsed   (nodeData.NodeENBL);
+           frm_nodeName.setNames  (nodeData.NodeIDNT,'');
         end
        else
         if nodeData.IS_McrPRM then begin
             if Assigned(treeNode.Parent) and Assigned(treeNode.Parent.Data)
-            then _labels_macroNames_setText(tNodeDATA(treeNode.Parent.Data).NodeIDNT,nodeData.NodeIDNT)
-            else _labels_macroNames_setText('',nodeData.NodeIDNT);
-           _labels_macroNames_setUsed(nodeData.NodeENBL);
-            //_labels_macroNames_setDELT(true);
+            then begin
+                frm_nodeName.setNames(tNodeDATA(treeNode.Parent.Data).NodeIDNT,nodeData.NodeIDNT);
+                frm_nodeName.setUsed(nodeData.NodeENBL and tNodeDATA(treeNode.Parent.Data).NodeENBL);
+            end
+            else begin
+                frm_nodeName.setNames('',nodeData.NodeIDNT);
+                frm_nodeName.setUsed(nodeData.NodeENBL);
+            end;
         end
        else begin
-           _labels_macroNames_setText('nfd','nfd');
-           _labels_macroNames_setUsed(false);
-           _labels_macroNames_setDELT(true);
+           frm_nodeName.setDELETED(false);
+           frm_nodeName.setUsed   (false);
+           frm_nodeName.setNames  ('nfd','nfd');
         end;
     end;
 end;
@@ -890,8 +951,10 @@ end;
 // отображение соответстующего фрейма
 procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_(const treeNode:TTreeNode);
 begin
+   _chb_nodeEnabled_eventCLR;
    _rePlace_TreeNODE_Labels_(treeNode);
    _rePlace_TreeNODE_Editor_(treeNode);
+   _chb_nodeEnabled_eventSET;
 end;
 
 //------------------------------------------------------------------------------
@@ -907,6 +970,7 @@ begin
         if (not Assigned(NodeEdit))and(Assigned(NodeDATA.NodeTEDT))
         then begin
             NodeEdit:=NodeDATA.NodeTEDT.Create(SELF);
+            ShowMessage('NodeDATA.NodeTEDT.Create');
             NodeDATA.Node_EDT_SET(NodeEdit);
         end;
         //
@@ -917,69 +981,6 @@ begin
     //--- показываем фрейм
     if Assigned(NodeEdit) then begin
        _rePlace_setFRM_(NodeEdit);
-    end;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure tLazExt_extIDEM_frmPrjOptionEdit._labels_macroNames_INITFNT;
-begin
-    with label2 do begin
-        Font.Style:=[fsBold];
-    end;
-    with label4 do begin
-        Font.Style:=[];
-    end;
-    with label6 do begin
-        Font.Style:=[];
-    end;
-end;
-
-procedure tLazExt_extIDEM_frmPrjOptionEdit._labels_macroNames_setText(const preSetName,macroName:string);
-begin
-    with label3 do begin
-        if preSetName='' then Caption:='xxx' else Caption:=preSetName;
-        if macroName='' then Font.Style:=[fsBold] else Font.Style:=[];
-    end;
-    with label5 do begin
-        if macroName='' then Font.Style:=[] else Font.Style:=[fsBold];
-        if macroName='' then Caption:='xxx' else Caption:=macroName;
-    end;
-end;
-
-procedure tLazExt_extIDEM_frmPrjOptionEdit._labels_macroNames_setUsed(const value:boolean);
-begin
-    if value then begin
-        with label2.Font do Color:=clHotLight;
-        with label3.Font do Color:=clDefault;
-        with label4.Font do Color:=clHotLight;
-        with label5.Font do Color:=clDefault;
-        with label6.Font do Color:=clHotLight;
-    end
-    else begin
-        with label2.Font do Color:=clGrayText;
-        with label3.Font do Color:=clGrayText;
-        with label4.Font do Color:=clGrayText;
-        with label5.Font do Color:=clGrayText;
-        with label6.Font do Color:=clGrayText;
-    end;
-end;
-
-procedure tLazExt_extIDEM_frmPrjOptionEdit._labels_macroNames_setDELT(const value:boolean);
-begin
-    if value then begin
-        with label2.Font do Style:=Style+[fsStrikeOut];
-        with label3.Font do Style:=Style+[fsStrikeOut];
-        with label4.Font do Style:=Style+[fsStrikeOut];
-        with label5.Font do Style:=Style+[fsStrikeOut];
-        with label6.Font do Style:=Style+[fsStrikeOut];
-    end
-    else begin
-        with label2.Font do Style:=Style-[fsStrikeOut];
-        with label3.Font do Style:=Style-[fsStrikeOut];
-        with label4.Font do Style:=Style-[fsStrikeOut];
-        with label5.Font do Style:=Style-[fsStrikeOut];
-        with label6.Font do Style:=Style-[fsStrikeOut];
     end;
 end;
 

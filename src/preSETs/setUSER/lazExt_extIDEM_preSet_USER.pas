@@ -6,11 +6,15 @@ interface
 
 uses lazExt_extIDEM_preSet_node, extIDEM_coreObject,
      lazExt_extIDEM_preSet_edit,
-  Classes, SysUtils, FileUtil, Forms, Controls;
+  Classes, SysUtils, FileUtil, Forms, Controls, ExtCtrls, StdCtrls;
 
 type
 
+ { tExtIDEM_preSet_USER_Edit }
+
  tExtIDEM_preSet_USER_Edit=class(tLazExt_extIDEM_preSet_frmEdit)
+    Label1: TLabel;
+    Label2: TLabel;
   public
    //function GetTitle:string; override;
   end;
@@ -37,7 +41,7 @@ end;}
 
 class function tExtIDEM_preSet_USER_node.ObjTEdit:tExtIDEM_core_objEditTYPE;
 begin
-    result:=tExtIDEM_core_objEDIT;//TextIDEM_preSet_USER_Edit;
+    result:=tExtIDEM_preSet_USER_Edit;//TextIDEM_preSet_USER_Edit;
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

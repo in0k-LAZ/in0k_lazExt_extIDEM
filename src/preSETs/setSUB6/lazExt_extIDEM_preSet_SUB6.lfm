@@ -1,6 +1,0 @@
-inherited extIDEM_preSet_SUB6_Edit: TextIDEM_preSet_SUB6_Edit
-  Width = 320
-  ClientWidth = 320
-  DesignLeft = 246
-  DesignTop = 114
-end

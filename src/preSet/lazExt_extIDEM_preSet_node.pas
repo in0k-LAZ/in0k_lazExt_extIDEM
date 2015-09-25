@@ -108,7 +108,7 @@ end;
 
 destructor tLazExt_extIDEM_preSetsList_core.DESTROY;
 begin
-   //_nodes_CLR_;
+   _nodes_CLR_;
     inherited;
 end;
 

@@ -32,7 +32,10 @@ type
 
  tLazExt_extIDEM_frmPrjOptionEdit = class(TAbstractIDEOptionsEditor)
    Button1: TButton;
-    CheckBox1: TCheckBox;
+   ui_ExtIDEM_LOGO: TLabel;
+   ui_ExtIDEM_HINT: TLabel;
+   ui_ExtIDEM_MustDEL: TCheckBox;
+    ui_ExtIDEM_Enabled: TCheckBox;
     chb_nodeEnabled: TCheckBox;
     Label1: TLabel;
     Label2: TLabel;
@@ -45,6 +48,7 @@ type
     TreeView1: TTreeView;
     procedure chb_nodeEnabledChange(Sender: TObject);
     procedure chb_nodeEnabledClick(Sender: TObject);
+    procedure ui_ExtIDEM_EnabledChange(Sender: TObject);
     procedure Label2Click(Sender: TObject);
     procedure lst_preSetDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -55,10 +59,16 @@ type
     procedure TreeView1Changing(Sender: TObject; Node: TTreeNode;
       var AllowChange: Boolean);
     procedure TreeView1Deletion(Sender: TObject; Node: TTreeNode);
+    procedure ui_ExtIDEM_MustDELChange(Sender: TObject);
+
+ private
+   _ExtIDEM_:tExtIDEM_prjResources;
+    procedure _ExtIDEM_SET_(const value:tExtIDEM_prjResources);
+    procedure _ui_ExtIDEM_Enablede_eventCLR_;
+    procedure _ui_ExtIDEM_Enablede_eventSET_;
  private
    _nodeTree_ :TtreeNode;
    _nodeFrame_:tExtIDEM_core_objEDIT;
-
     procedure _rePlace_setFRM_(const FRM:tExtIDEM_core_objEDIT);
 //    function  _rePlace_getFRM_(const ITM:tLazExt_extIDEM_preSet_Node):tExtIDEM_core_objEDIT;
 //    procedure _rePlace_setITM_(const ITM:tLazExt_extIDEM_preSet_Node);
@@ -68,6 +78,7 @@ type
     procedure _chb_nodeEnabled_eventSET;
 
  private
+    procedure _rePlace_TreeNODE_enblCh_(const treeNode:TTreeNode);
     procedure _rePlace_TreeNODE_Labels_(const treeNode:TTreeNode);
     procedure _rePlace_TreeNODE_Editor_(const treeNode:TTreeNode);
     procedure _rePlace_TreeNODE_(const treeNode:TTreeNode);
@@ -92,7 +103,7 @@ type
     function   _treePreSets_find_ideMCR_(const prnt:TTreeNode; const idnt:string):TTreeNode;
  private
     procedure  _treePreSets_Settings_Read_;
-    procedure  _treePreSets_Settings_Write_;
+    function   _treePreSets_Settings_Write_:boolean;
 { private
     procedure  _lstPreSets_clear_forFREE;
     procedure  _lstPreSets_clear_forREAD;
@@ -130,6 +141,7 @@ type
     //-------
     function  _node_is_MacroITM_:boolean;
     function  _node_is_MacroPRM_:boolean;
+    function  _node_is_MacroNDF_:boolean;
     //-------
     function  _node_get_EDIT:tExtIDEM_core_objEditTYPE;
     function  _node_get_IDNT:string;
@@ -151,6 +163,7 @@ type
   public
     function  IDE_based:boolean;
     function  PRJ_based:boolean;
+    function  PRJ_exist:boolean;
     function  IS_Macros:boolean;
     function  IS_McrPRM:boolean;
     function  IS_NotDEF:boolean;
@@ -170,7 +183,10 @@ type
     property  NodeDESC:string  read _node_get_DESC;
   public
     procedure EDITOR_Settings_READ;
-    procedure EDITOR_Settings_WRITE;
+    function  EDITOR_Settings_WRITE:boolean;
+  public
+    procedure COPY_toPRJ_MacroITM(const prjMARCOSES:tLazExt_extIDEM_preSetsList_core);
+    procedure COPY_toPRJ_MacroPRM(const prjMARCOSES:tLazExt_extIDEM_preSetsList_core; const MacroITM:tNodeDATA);
   end;
 
 {todo: добавить проверку `if Assigned(_node_getACTV_)` в проверку в ASSERT}
@@ -226,6 +242,11 @@ begin
     result:=not IDE_based;
 end;
 
+function tNodeDATA.PRJ_exist:boolean;
+begin
+    result:=Assigned(_node_prj_);
+end;
+
 //------------------------------------------------------------------------------
 
 function tNodeDATA.IS_Macros:boolean;
@@ -240,17 +261,7 @@ end;
 
 function tNodeDATA.IS_NotDEF:boolean;
 begin
-    if _node_is_MacroITM_ then begin
-        result:=_node_getACTV_.InheritsFrom(tExtIDEM_preSet_NDF_node);
-    end
-   else
-    if _node_is_MacroPRM_ then begin
-        result:=_node_getACTV_.InheritsFrom(tLazExt_extIDEM_maCRO_NDF_node);
-    end
-   else begin
-       result:=false;
-   end;
-
+    result:=_node_is_MacroNDF_;
 end;
 
 //------------------------------------------------------------------------------
@@ -289,9 +300,12 @@ end;
 
 function tNodeDATA._node_get_ENBL:boolean;
 begin
-    result:=Assigned(_node_ide_)
-            and (not (_node_ide_ is tLazExt_extIDEM_maCRO_NDF_node))
-            and (_node_ide_.Enabled);
+    if Assigned(_edit_frm_) and (_was_load_) then begin //< есть фрейм редактор и данные загружены,
+        result:=_edit_frm_.NodeEnabled; //< то данные мы ДОЛЖНЫ брать из него
+    end
+    else begin //< иначе читаем прямо из объекта
+        result:=Assigned(_node_prj_)and (not _node_is_MacroNDF_) and _node_prj_.Enabled;
+    end;
 end;
 
 //------------------------------------------------------------------------------
@@ -335,6 +349,20 @@ begin
     end;
 end;
 
+function tNodeDATA._node_is_MacroNDF_:boolean;
+begin
+    if _node_is_MacroITM_ then begin
+        result:=_node_getACTV_.InheritsFrom(tExtIDEM_preSet_NDF_node);
+    end
+   else
+    if _node_is_MacroPRM_ then begin
+        result:=_node_getACTV_.InheritsFrom(tLazExt_extIDEM_maCRO_NDF_node);
+    end
+   else begin
+       result:=false;
+   end;
+end;
+
 //------------------------------------------------------------------------------
 
 procedure tNodeDATA.Node_PRJ_clean;
@@ -369,16 +397,64 @@ begin
     else _was_load_:=FALSE;
 end;
 
-procedure tNodeDATA.EDITOR_Settings_WRITE;
+function tNodeDATA.EDITOR_Settings_WRITE:boolean;
 var tmpNode:tExtIDEM_core_objNODE;
-begin
-    tmpNode:=_node_getACTV_;
-    if Assigned(tmpNode) and Assigned(_edit_frm_) then begin
-       _edit_frm_.Settings_Write(tmpNode);
-        ShowMessage('EDITOR_Settings_WRITE');
+begin // !!! сохранение идет ТОЛЬКО в `_node_prj_`
+    result:=false;
+    //tmpNode:=_node_getACTV_;
+    if Assigned(_node_prj_) and Assigned(_edit_frm_) then begin
+       _edit_frm_.Settings_Write(_node_prj_);
+        result:=_node_prj_.Changed;
+        //if result
+        //then ShowMessage('EDITOR_Settings_WRITE '+_node_prj_.node_IDNT+':TRUE')
+        //else ShowMessage('EDITOR_Settings_WRITE '+_node_prj_.node_IDNT+':false');
     end;
 end;
 
+//------------------------------------------------------------------------------
+
+procedure tNodeDATA.COPY_toPRJ_MacroITM(const prjMARCOSES:tLazExt_extIDEM_preSetsList_core);
+begin
+    if ( Assigned(prjMARCOSES)  )and(not Assigned(_node_prj_)) //< вообще есть смысл
+        AND
+       ( Assigned(_node_ide_) and (_node_ide_ is tLazExt_extIDEM_preSet_Node) and (not self.IS_NotDEF) )
+    then begin
+       _node_prj_:=tLazExt_extIDEM_preSet_NodeTYPE(_node_ide_.ClassType).Create;
+        prjMARCOSES.PreSETs_ADD(tLazExt_extIDEM_preSet_Node(_node_prj_));
+        tLazExt_extIDEM_preSet_Node(_node_prj_).Enabled:=TRUE;
+
+        ShowMessage('COPY_toPRJ_MacroITM');
+    end;
+end;
+
+
+procedure tNodeDATA.COPY_toPRJ_MacroPRM(const prjMARCOSES:tLazExt_extIDEM_preSetsList_core; const MacroITM:tNodeDATA);
+//var tmpNode:tLazExt_extIDEM_node;
+begin
+    //ShowMessage('COPY_toPRJ_MacroPRM start');
+    if ( Assigned(prjMARCOSES) and Assigned(MacroITM) and (not Assigned(_node_prj_)) ) //< вообще есть смысл
+    then begin
+        //ShowMessage('COPY_toPRJ_MacroPRM -1');
+        if ( MacroITM.IS_Macros and (not MacroITM.IS_NotDEF) and MacroITM.PRJ_exist) then begin
+            //ShowMessage('COPY_toPRJ_MacroPRM -2');
+
+            if  ( Assigned(_node_ide_) and (_node_ide_ is tLazExt_extIDEM_node) and (not self.IS_NotDEF) )
+
+    then begin
+        //ShowMessage('COPY_toPRJ_MacroPRM -3');
+        _node_prj_:=tLazExt_extIDEM_nodeTYPE(_node_ide_.ClassType).Create;
+         tLazExt_extIDEM_node(_node_prj_).Copy(tLazExt_extIDEM_node(_node_ide_));
+        // prjMARCOSES.PreSETs_ADD(tmpNode);
+        tLazExt_extIDEM_preSet_Node(MacroITM.Node_PRJ).Param_INS(tLazExt_extIDEM_node(_node_prj_));
+        tLazExt_extIDEM_node(_node_prj_).Enabled:=TRUE;
+        ShowMessage('COPY_toPRJ_MacroPRM');
+    end;
+
+
+        end;
+
+    end;
+end;
 
 {%endRegion}
 
@@ -514,10 +590,71 @@ begin
     end;
 end;
 
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._ExtIDEM_SET_(const value:tExtIDEM_prjResources);
+begin
+   _ui_ExtIDEM_Enablede_eventCLR_;
+   _ExtIDEM_:=Value;
+    if Assigned(_ExtIDEM_) then begin
+        ui_ExtIDEM_Enabled.Checked:=_ExtIDEM_.Enabled;
+        ui_ExtIDEM_MustDEL.Checked:=_ExtIDEM_.MustDEL;
+        //---
+        Panel2.Enabled:=_ExtIDEM_.Enabled;
+        Panel3.Enabled:=_ExtIDEM_.Enabled;
+        //--- ставим "ЛОГО"
+        if _ExtIDEM_.Enabled
+        then ui_ExtIDEM_LOGO.Font.Color:=clDefault
+        else ui_ExtIDEM_LOGO.Font.Color:=clGrayText;
+        if _ExtIDEM_.MustDEL
+        then ui_ExtIDEM_LOGO.Font.Style:=ui_ExtIDEM_LOGO.Font.Style+[fsStrikeOut]
+        else ui_ExtIDEM_LOGO.Font.Style:=ui_ExtIDEM_LOGO.Font.Style-[fsStrikeOut];
+    end
+    else begin //< чз ... надо ли вообще эту ветку
+        Panel2.Enabled:=false;
+        Panel3.Enabled:=false;
+    end;
+   _ui_ExtIDEM_Enablede_eventSET_;
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit.ui_ExtIDEM_EnabledChange(Sender: TObject);
+begin
+    if Assigned(_ExtIDEM_) then begin
+       _ExtIDEM_.Enabled:=TCheckBox(Sender).Checked;
+       _ExtIDEM_SET_(_ExtIDEM_);
+    end;
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit.ui_ExtIDEM_MustDELChange(Sender:TObject);
+begin
+    if Assigned(_ExtIDEM_) then begin
+       _ExtIDEM_.MustDEL:=TCheckBox(Sender).Checked;
+       _ExtIDEM_SET_(_ExtIDEM_);
+    end;
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._ui_ExtIDEM_Enablede_eventCLR_;
+begin
+    ui_ExtIDEM_Enabled.OnChange:=nil;
+    ui_ExtIDEM_MustDEL.OnChange:=nil;
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._ui_ExtIDEM_Enablede_eventSET_;
+begin
+    ui_ExtIDEM_Enabled.OnChange:=@ui_ExtIDEM_EnabledChange;
+    ui_ExtIDEM_MustDEL.OnChange:=@ui_ExtIDEM_MustDELChange;
+end;
+
 //------------------------------------------------------------------------------
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit.Setup(ADialog:TAbstractOptionsEditorDialog);
 begin
+   _ExtIDEM_SET_(nil);
    _treePreSets_clear_forFREE;  //< полная очистка
    _treePreSets_setUp_ide_preSETs_(extIDEM.preSets);
 end;
@@ -528,18 +665,24 @@ begin
    _treePreSets_clear_not_IDE;
    _treePreSets_clear_wasLoad_;
     // добавляем зависимости ТЕКУЩЕГО
-    if Assigned(ActiveProject_ExtIDEM_prjResources) and
-       Assigned(ActiveProject_ExtIDEM_prjResources.preSets)
+   _ExtIDEM_SET_(ActiveProject_ExtIDEM_prjResources);
+    if Assigned(_ExtIDEM_) and
+       Assigned(_ExtIDEM_.preSets)
     then begin
-      _treePreSets_setUp_prj_preSETs_(ActiveProject_ExtIDEM_prjResources.preSets);
+      _treePreSets_setUp_prj_preSETs_(_ExtIDEM_.preSets);
     end;
     //---
    _treePreSets_Settings_Read_;
 end;
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit.WriteSettings(AOptions:TAbstractIDEOptions);
+var l:boolean;
 begin
-   _treePreSets_Settings_Write_;
+    l:=_treePreSets_Settings_Write_;
+    if Assigned(_ExtIDEM_) and L then begin
+        _ExtIDEM_.Modified:=TRUE;
+    end;
+   _ExtIDEM_.Modified:=TRUE;
 end;
 
 //------------------------------------------------------------------------------
@@ -558,25 +701,64 @@ end;
 //------------------------------------------------------------------------------
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit.chb_nodeEnabledChange(Sender: TObject);
-var treeNode:tTreeNode;
+var nodeData:tNodeDATA;
 begin
-    //treeNode:=TreeView1.;
-    if Assigned(_nodeTree_) then begin
-      _rePlace_TreeNODE_Labels_(_nodeTree_)
+    if Assigned(_nodeFrame_) then begin //< изменяем данные в самом фрейме
+        if not tCheckBox(Sender).Checked then begin
+            // тут все просто, надо в самом фрейме поправить
+           _nodeFrame_.NodeEnabled:=FALSE; //< отметили что неиспользуется
+        end
+        else begin //< а вот тут сложнее, возможно придется копировать
+            if Assigned(_nodeTree_) then begin
+                nodeData:=tNodeDATA(_nodeTree_.Data);
+                if Assigned(nodeData) then begin
+                    if nodeData.PRJ_exist then begin
+                       _nodeFrame_.NodeEnabled:=TRUE;
+                    end
+                    else begin //< ну все, точно копировать
+                       if Assigned(ActiveProject_ExtIDEM_prjResources) and
+                          Assigned(ActiveProject_ExtIDEM_prjResources.preSets)
+                       then begin
+                            if nodeData.IS_Macros then begin
+                                nodeData.COPY_toPRJ_MacroITM(ActiveProject_ExtIDEM_prjResources.preSets);
+                               _nodeFrame_.NodeEnabled:=TRUE;
+                            end
+                           else
+                            if nodeData.IS_McrPRM then begin
+                                if Assigned(_nodeTree_.Parent) and Assigned(_nodeTree_.Parent.Data) then begin
+                                    ShowMessage('chb_nodeEnabledChange -> COPY_toPRJ_MacroPRM');
+                                    nodeData.COPY_toPRJ_MacroPRM(ActiveProject_ExtIDEM_prjResources.preSets, tNodeDATA(_nodeTree_.Parent.Data));
+                                    //nodeData.e
+                                   _nodeFrame_.NodeEnabled:=TRUE;
+                                end;
+                            end
+                           else begin
+                               _nodeFrame_.NodeEnabled:=FALSE;
+                            end;
+                            self._rePlace_TreeNODE_(_nodeTree_);
+                        end;
+                    end;
+                end
+                else begin
+                   _nodeFrame_.NodeEnabled:=FALSE; //< отметили что неиспользуется
+                end;
+            end
+            else begin
+               _nodeFrame_.NodeEnabled:=FALSE; //< отметили что неиспользуется
+            end;
+        end;
+       _nodeFrame_.NodeEnabled:=tCheckBox(Sender).Checked;
     end;
-
-
-
-
-
-
-    //ShowMessage('CheckBox2Change');
+    if Assigned(_nodeTree_) then begin //< переустановим текстовки
+      _rePlace_TreeNODE_Labels_(_nodeTree_);
+      _rePlace_TreeNODE_enblCh_(_nodeTree_);
+    end;
 end;
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit.chb_nodeEnabledClick(Sender: TObject);
 begin
-    ShowMessage('CheckBox2Click');
 end;
+
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit._chb_nodeEnabled_eventCLR;
 begin
@@ -775,17 +957,20 @@ begin
     Enumerator.FREE;
 end;
 
-procedure tLazExt_extIDEM_frmPrjOptionEdit._treePreSets_Settings_Write_;
+function tLazExt_extIDEM_frmPrjOptionEdit._treePreSets_Settings_Write_:boolean;
 var Enumerator:TTreeNodesEnumerator;
     node:TTreeNode;
     data:tNodeDATA;
 begin
+    result:=false;
     Enumerator:=TreeView1.Items.GetEnumerator; //< "указатель" стоит на -1 !!!
     if Enumerator.MoveNext then begin //< значит туть БОЛЬШЕ одного;
         while Assigned(node) do begin
             node:=Enumerator.Current;
             data:=tNodeDATA(node.Data);
-            if Assigned(data) then data.EDITOR_Settings_WRITE;
+            if Assigned(data) then begin
+                result:=data.EDITOR_Settings_WRITE;
+            end;
             if not Enumerator.MoveNext then break;
         end;
     end;
@@ -822,6 +1007,8 @@ begin
         //node.free;
     end;
 end;
+
+
 
 {procedure tLazExt_extIDEM_frmPrjOptionEdit._lstPreSets_clear_forFREE;
 var tmp:tListNode;
@@ -911,6 +1098,7 @@ end;}
 constructor tLazExt_extIDEM_frmPrjOptionEdit.Create(AOwner: TComponent);
 begin
     Inherited;
+   _ExtIDEM_:=nil;
 end;
 
 destructor tLazExt_extIDEM_frmPrjOptionEdit.DESTROY;
@@ -921,6 +1109,60 @@ end;
 
 //------------------------------------------------------------------------------
 
+procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_Editor_(const treeNode:TTreeNode);
+var NodeDATA:tNodeDATA;
+    NodeEdit:tExtIDEM_core_objEDIT;
+begin
+    NodeDATA:=_treeNodeDATA_(treeNode);
+    if Assigned(NodeDATA) then begin
+        //--- готовим фрейм
+        NodeEdit:=NodeDATA.Node_EDT;
+        if (not Assigned(NodeEdit))and(Assigned(NodeDATA.NodeTEDT))
+        then begin
+            NodeEdit:=NodeDATA.NodeTEDT.Create(SELF);
+            //ShowMessage('NodeDATA.NodeTEDT.Create');
+            NodeDATA.Node_EDT_SET(NodeEdit);
+        end;
+        //
+        if Assigned(NodeEdit) then begin
+            NodeDATA.EDITOR_Settings_READ;
+        end;
+    end;
+    //--- показываем фрейм
+    if Assigned(NodeEdit) then begin
+       _rePlace_setFRM_(NodeEdit);
+    end;
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_enblCh_(const treeNode:TTreeNode);
+var nodeData:tNodeDATA;
+begin
+    if Assigned(treeNode)and Assigned(_nodeFrame_) then begin
+        nodeData:=tNodeDATA(treeNode.Data);
+        if Assigned(nodeData)and(not nodeData.IS_NotDEF) then begin
+            chb_nodeEnabled.Checked:=nodeData.NodeENBL;
+            if nodeData.IS_Macros then begin
+                chb_nodeEnabled.Enabled:=true;
+                Exit;
+            end
+           else
+            if nodeData.IS_McrPRM then begin
+                if Assigned(treeNode.Parent) and Assigned(treeNode.Parent.Data)
+                then begin
+                    chb_nodeEnabled.Enabled:=tNodeDATA(treeNode.Parent.Data).NodeENBL;
+                end
+                else begin
+                    chb_nodeEnabled.Enabled:=false;
+                end;
+                Exit;
+            end;
+        end
+    end;
+    // !!! этот код сработает только если НЕ ВСТРЕТИТСЯ `exit` !!!
+    chb_nodeEnabled.Enabled:=FALSE;
+    chb_nodeEnabled.Checked:=FALSE;
+end;
+
 procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_Labels_(const treeNode:TTreeNode);
 var nodeData:tNodeDATA;
 begin
@@ -930,14 +1172,12 @@ begin
         frm_nodeName.setDELETED(true);
         frm_nodeName.setUsed   (false);
         frm_nodeName.setNames  ('','');
-        chb_nodeEnabled.Enabled:=FALSE;
     end
     else begin
         nodeData:=tNodeDATA(treeNode.Data);
         label1.Caption:=nodeData.NodeNAME;
-        label7.Caption:=nodeData.NodeDESC;
+        label1.Hint   :=nodeData.NodeNAME;
         Label2.Hint   :=nodeData.NodeDESC;
-        chb_nodeEnabled.Enabled:=not nodeData.IS_NotDEF;
         //--
         if nodeData.IS_Macros then begin
            //frm_nodeName.setDELETED(true);
@@ -970,35 +1210,13 @@ begin
    _chb_nodeEnabled_eventCLR;
    _rePlace_TreeNODE_Editor_(treeNode);
    _rePlace_TreeNODE_Labels_(treeNode);
+   _rePlace_TreeNODE_enblCh_(treeNode);
+    //---
+   _nodeTree_:=treeNode;
    _chb_nodeEnabled_eventSET;
 end;
 
 //------------------------------------------------------------------------------
-
-procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_Editor_(const treeNode:TTreeNode);
-var NodeDATA:tNodeDATA;
-    NodeEdit:tExtIDEM_core_objEDIT;
-begin
-    NodeDATA:=_treeNodeDATA_(treeNode);
-    if Assigned(NodeDATA) then begin
-        //--- готовим фрейм
-        NodeEdit:=NodeDATA.Node_EDT;
-        if (not Assigned(NodeEdit))and(Assigned(NodeDATA.NodeTEDT))
-        then begin
-            NodeEdit:=NodeDATA.NodeTEDT.Create(SELF);
-            //ShowMessage('NodeDATA.NodeTEDT.Create');
-            NodeDATA.Node_EDT_SET(NodeEdit);
-        end;
-        //
-        if Assigned(NodeEdit) then begin
-            NodeDATA.EDITOR_Settings_READ;
-        end;
-    end;
-    //--- показываем фрейм
-    if Assigned(NodeEdit) then begin
-       _rePlace_setFRM_(NodeEdit);
-    end;
-end;
 
 //==============================================================================
 

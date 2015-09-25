@@ -6,25 +6,80 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
   ClientHeight = 406
   ClientWidth = 777
   TabOrder = 0
-  DesignLeft = 341
-  DesignTop = 142
+  DesignLeft = 403
+  DesignTop = 140
   object Panel1: TPanel
     Left = 0
-    Height = 50
+    Height = 19
     Top = 0
     Width = 777
     Align = alTop
-    Caption = 'Panel1'
-    ClientHeight = 50
+    AutoSize = True
+    BorderSpacing.Bottom = 2
+    BevelOuter = bvNone
+    ClientHeight = 19
     ClientWidth = 777
+    FullRepaint = False
     TabOrder = 0
-    object CheckBox1: TCheckBox
-      Left = 8
+    object ui_ExtIDEM_Enabled: TCheckBox
+      AnchorSideLeft.Control = ui_ExtIDEM_HINT
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Panel1
+      Left = 63
       Height = 19
-      Top = 19
-      Width = 78
-      Caption = 'CheckBox1'
+      Top = 0
+      Width = 62
+      BorderSpacing.Left = 8
+      Caption = 'Enabled'
+      OnChange = ui_ExtIDEM_EnabledChange
       TabOrder = 0
+    end
+    object ui_ExtIDEM_LOGO: TLabel
+      AnchorSideLeft.Control = Panel1
+      AnchorSideTop.Control = ui_ExtIDEM_MustDEL
+      AnchorSideTop.Side = asrCenter
+      Left = 0
+      Height = 15
+      Top = 2
+      Width = 48
+      Caption = 'ExtIDEM'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
+    object ui_ExtIDEM_HINT: TLabel
+      AnchorSideLeft.Control = ui_ExtIDEM_LOGO
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = ui_ExtIDEM_LOGO
+      AnchorSideTop.Side = asrCenter
+      Cursor = crHelp
+      Left = 50
+      Height = 15
+      Hint = 'Hint'
+      Top = 2
+      Width = 5
+      BorderSpacing.Left = 2
+      Caption = '?'
+      Font.Color = clHotLight
+      Font.Style = [fsUnderline]
+      ParentColor = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = Label2Click
+    end
+    object ui_ExtIDEM_MustDEL: TCheckBox
+      AnchorSideLeft.Control = ui_ExtIDEM_Enabled
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Panel1
+      Left = 129
+      Height = 19
+      Top = 0
+      Width = 113
+      BorderSpacing.Left = 4
+      Caption = 'remove from *.lpi'
+      OnChange = ui_ExtIDEM_MustDELChange
+      TabOrder = 1
     end
   end
   object Panel2: TPanel
@@ -36,7 +91,7 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
     AnchorSideRight.Side = asrBottom
     Left = 225
     Height = 49
-    Top = 50
+    Top = 21
     Width = 552
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
@@ -46,15 +101,13 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
     FullRepaint = False
     TabOrder = 1
     object Label1: TLabel
-      AnchorSideLeft.Control = Label2
-      AnchorSideLeft.Side = asrBottom
+      AnchorSideLeft.Control = Panel2
       AnchorSideTop.Control = chb_nodeEnabled
       AnchorSideTop.Side = asrBottom
-      Left = 9
+      Left = 0
       Height = 15
       Top = 19
       Width = 36
-      BorderSpacing.Left = 2
       Caption = 'Label1'
       Font.Style = [fsBold]
       ParentColor = False
@@ -122,11 +175,12 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
       end
     end
     object Label2: TLabel
-      AnchorSideLeft.Control = Panel2
+      AnchorSideLeft.Control = Label1
+      AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = Label1
       AnchorSideTop.Side = asrCenter
       Cursor = crHelp
-      Left = 2
+      Left = 38
       Height = 15
       Hint = 'Hint'
       Top = 19
@@ -144,8 +198,8 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
   end
   object Splitter1: TSplitter
     Left = 220
-    Height = 356
-    Top = 50
+    Height = 385
+    Top = 21
     Width = 5
   end
   object Panel3: TPanel
@@ -158,8 +212,8 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
     Left = 225
-    Height = 307
-    Top = 99
+    Height = 336
+    Top = 70
     Width = 552
     Anchors = [akTop, akLeft, akRight, akBottom]
     BevelOuter = bvNone
@@ -168,8 +222,8 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
   end
   object TreeView1: TTreeView
     Left = 0
-    Height = 356
-    Top = 50
+    Height = 385
+    Top = 21
     Width = 220
     Align = alLeft
     DefaultItemHeight = 18

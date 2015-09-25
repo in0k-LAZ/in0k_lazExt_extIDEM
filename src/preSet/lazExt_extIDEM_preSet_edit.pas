@@ -30,6 +30,7 @@ type
     constructor Create; virtual;
     destructor DESTROY; override;
   public
+    function Param_INS(const prmNode:tLazExt_extIDEM_node):boolean;
     function Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE; const prmEdit:tExtIDEM_core_objEditTYPE):boolean;
     function Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
     function Param_ADD(const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
@@ -314,6 +315,12 @@ begin
 end;
 
 //------------------------------------------------------------------------------
+
+
+function tLazExt_extIDEM_preSet_edtNode.Param_INS(const prmNode:tLazExt_extIDEM_node):boolean;
+begin
+   _param_list_.INS(prmNode);
+end;
 
 function tLazExt_extIDEM_preSet_edtNode.Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE; const prmEdit:tExtIDEM_core_objEditTYPE):boolean;
 begin

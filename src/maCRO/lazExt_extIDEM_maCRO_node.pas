@@ -18,8 +18,6 @@ uses lazExt_extIDEM_maCRO_edit, extIDEM_coreObject,
 type
 
  tLazExt_extIDEM_node=class(tExtIDEM_core_objNODE)
-  protected
-    procedure isChanged;
   private
    _next_:tLazExt_extIDEM_node;
    _edit_:tExtIDEM_core_objEditTYPE; //< выбранный редактор (может отличаться от defEditor)
@@ -31,8 +29,8 @@ type
     destructor DESTROY; override;
   protected
     procedure SetUP;                                    virtual;
-    procedure Copy (const Source:tLazExt_extIDEM_node); virtual;
   public
+    procedure Copy (const Source:tLazExt_extIDEM_node); virtual;
     //property Next:tLazExt_extIDEM_node read _next_ write _next_;
     //property Node_EditTYPE:tExtIDEM_core_objEditTYPE read _edit_;
     //property Node_IDNT:string read _IDNT_;
@@ -68,6 +66,8 @@ type
     constructor Create; virtual;
     destructor DESTROY; override;
   public
+    procedure INS(const node:tLazExt_extIDEM_node);
+
     function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tExtIDEM_core_objEditTYPE):boolean;
     function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
     function ADD(const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
@@ -116,16 +116,11 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure tLazExt_extIDEM_node.isChanged;
-begin
-   _isChange_;
-end;
-
-//------------------------------------------------------------------------------
 
 procedure tLazExt_extIDEM_node.Copy(const Source:tLazExt_extIDEM_node);
 begin
-   //
+   _IDNT_:=Source._IDNT_;
+   _edit_:=Source._edit_;
 end;
 
 procedure tLazExt_extIDEM_node.SetUP;
@@ -160,6 +155,11 @@ begin
 end;
 
 //------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_nodesList_core.INS(const node:tLazExt_extIDEM_node);
+begin
+   _nodes_INS_(node);
+end;
 
 function tLazExt_extIDEM_nodesList_core.ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tExtIDEM_core_objEditTYPE):boolean;
 var tmp:tLazExt_extIDEM_node;

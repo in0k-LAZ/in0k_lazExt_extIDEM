@@ -102,7 +102,7 @@ procedure tLazExt_extIDEM_maCRO_Text_node._value_SET_(const newValue:string);
 begin
     if _value_<>newValue then begin
        _value_:=newValue;
-        isChanged;
+        set_IsCHANGed;
     end;
 end;
 

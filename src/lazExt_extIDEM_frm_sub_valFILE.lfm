@@ -86,6 +86,7 @@ inherited extIDEM_sub_valFILE_frm: TextIDEM_sub_valFILE_frm
       Top = 25
       Width = 23
       Anchors = [akTop, akRight]
+      OnClick = SpeedButton2Click
     end
   end
 end

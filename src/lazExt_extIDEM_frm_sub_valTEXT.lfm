@@ -24,6 +24,7 @@ inherited extIDEM_sub_valTEXT_frm: TextIDEM_sub_valTEXT_frm
       Top = 0
       Width = 23
       Anchors = [akTop, akRight]
+      OnClick = SpeedButton1Click
     end
     object Edit1: TEdit[1]
       AnchorSideLeft.Control = Label6

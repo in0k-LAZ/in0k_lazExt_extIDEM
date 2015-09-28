@@ -1,0 +1,57 @@
+inherited extIDEM_sub_valTEXT_frm: TextIDEM_sub_valTEXT_frm
+  Height = 82
+  AutoSize = False
+  ClientHeight = 82
+  DesignLeft = 382
+  DesignTop = 232
+  inherited frm_Caption: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+  end
+  inherited frm_Data: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = nil
+    Height = 23
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    ClientHeight = 23
+    object btn_Dialog: TSpeedButton[0]
+      AnchorSideTop.Control = edt_Value
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = frm_Data
+      AnchorSideRight.Side = asrBottom
+      Left = 297
+      Height = 22
+      Top = 0
+      Width = 23
+      Anchors = [akTop, akRight]
+      OnClick = btn_DialogClick
+    end
+    object edt_Value: TEdit[1]
+      AnchorSideLeft.Control = lbl_value
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = frm_Data
+      AnchorSideRight.Control = btn_Dialog
+      Left = 32
+      Height = 23
+      Top = 0
+      Width = 265
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 2
+      TabOrder = 0
+      Text = 'edt_Value'
+    end
+    object lbl_value: TLabel[2]
+      AnchorSideLeft.Control = frm_Data
+      AnchorSideTop.Control = edt_Value
+      AnchorSideTop.Side = asrCenter
+      Left = 0
+      Height = 15
+      Top = 4
+      Width = 30
+      Caption = 'Текст'
+      ParentColor = False
+    end
+  end
+end

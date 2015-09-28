@@ -8,8 +8,8 @@ uses extIDEM_coreObject,
      lazExt_extIDEM_frm_sub_valFILE,
      lazExt_extIDEM_frm_sub_COMMENTs,
      lazExt_extIDEM_frm_sub_RESULT,
-     lazExt_extIDEM_maCRO_File_CORE,
-  Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls;
+     extIDEM_McrPRM_File_CORE,
+  Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, Buttons;
 
 type
 

@@ -8,12 +8,12 @@ uses extIDEM_coreObject,
      lazExt_extIDEM_frm_sub_valFILE,
      lazExt_extIDEM_frm_sub_COMMENTs,
      lazExt_extIDEM_frm_sub_RESULT,
-     lazExt_extIDEM_maCRO_File_CORE,
+     extIDEM_McrPRM_File_CORE,
   Classes, SysUtils, FileUtil, Forms, Controls;
 
 type
 
- TextIDEM_SUB6_mcrPRM__ProductVersion_frmfrm = class(TlazExt_extIDEM_maCRO_File_CORE_edit)
+ tExtIDEM_SUB6_mcrPRM__ProductVersion_frm=class(TlazExt_extIDEM_maCRO_File_CORE_edit)
   end;
 
  tExtIDEM_SUB6_mcrPRM__ProductVersion_itm=class(tLazExt_extIDEM_maCRO_File_CORE_node)
@@ -37,7 +37,7 @@ const
 
 class function tExtIDEM_SUB6_mcrPRM__ProductVersion_itm.ObjTEdit:tExtIDEM_core_objEditTYPE;
 begin
-    result:=TextIDEM_SUB6_mcrPRM__ProductVersion_frmfrm;
+    result:=tExtIDEM_SUB6_mcrPRM__ProductVersion_frm;
 end;
 
 class function tExtIDEM_SUB6_mcrPRM__ProductVersion_itm.Obj_IDNT:string;

@@ -1,10 +1,2 @@
-inherited extIDEM_preSet_SUB6_Edit: TextIDEM_preSet_SUB6_Edit
-  object ToggleBox1: TToggleBox[0]
-    Left = 70
-    Height = 23
-    Top = 47
-    Width = 90
-    Caption = 'ToggleBox1'
-    TabOrder = 0
-  end
+inherited extIDEM_SUB6_MACROS_edit: TextIDEM_SUB6_MACROS_edit
 end

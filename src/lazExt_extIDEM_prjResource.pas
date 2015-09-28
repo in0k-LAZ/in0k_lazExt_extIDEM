@@ -15,13 +15,16 @@ interface
 uses {$ifDef lazExt_Sub6_EventLOG_mode}Sub6_wndDebug,{$endIf}
    Laz2_XMLCfg, //< !!! для работы ОБЯЗАТЕЛЬНО пользоваться этой библиотекой
    ProjectResourcesIntf,            Dialogs,
-   lazExt_extIDEM_preSet_NDF,  lazExt_extIDEM_maCRO_node,
-   LazIDEIntf,
-   lazExt_extIDEM_mcrPRM_NotDEF,
-   lazExt_extIDEM_preSet_USER,
-   lazExt_extIDEM_preSet_node,
-   lazExt_extIDEM_mcrPRM_usrTEXT,
-   lazExt_extIDEM_mcrPRM_usrFILE;
+   extIDEM_coreObject, extIDEM_MACROS_node, extIDEM_McrPRM_node,
+   //lazExt_extIDEM__NDF_MACROS,
+   //lazExt_extIDEM_maCRO_node,
+   LazIDEIntf;//,
+//   lazExt_extIDEM_mcrPRM_NotDEF,
+  // lazExt_extIDEM__USER_MACROS
+  // lazExt_extIDEM_preSet_node,
+   //lazExt_extIDEM_mcrPRM_usrTEXT,
+   //lazExt_extIDEM_mcrPRM_usrFILE
+   //;
 
 type
 
@@ -43,9 +46,9 @@ type
   strict private
     function  _getConfigPATH_(const Path:string):string;{$ifDef _INLINE_}inline;{$endIf}
   strict private
-    function  _MacroPRM_PATH_ (const macroPRM:tLazExt_extIDEM_node; const prntPath:String):string; {$ifDef _INLINE_}inline;{$endIf}
-    procedure _MacroPRM_Save_ (const macroPRM:tLazExt_extIDEM_node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
-    procedure _MacroPRM_Load_ (const macroPRM:tLazExt_extIDEM_node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
+    function  _MacroPRM_PATH_ (const macroPRM:tExtIDEM_McrPRM_node; const prntPath:String):string; {$ifDef _INLINE_}inline;{$endIf}
+    procedure _MacroPRM_Save_ (const macroPRM:tExtIDEM_McrPRM_node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
+    procedure _MacroPRM_Load_ (const macroPRM:tExtIDEM_McrPRM_node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
   strict private
     function  _MacroPRMs_PATH_(const prntPath:string):string;{$ifDef _INLINE_}inline;{$endIf}
     procedure _MacroPRMs_Save_(const macroITM:tLazExt_extIDEM_preSet_Node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
@@ -176,14 +179,14 @@ end;
 
 {%region --- _MacroPRM_..  Save|load ------------------------------ /fold}
 
-function  tExtIDEM_prjResources._MacroPRM_PATH_(const macroPRM:tLazExt_extIDEM_node; const prntPath:String):string;
+function  tExtIDEM_prjResources._MacroPRM_PATH_(const macroPRM:tExtIDEM_McrPRM_node; const prntPath:String):string;
 begin
     result:=prntPath+macroPRM.node_IDNT+_cTXT_pathDelimiter_;
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-procedure tExtIDEM_prjResources._MacroPRM_Save_(const macroPRM:tLazExt_extIDEM_node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
+procedure tExtIDEM_prjResources._MacroPRM_Save_(const macroPRM:tExtIDEM_McrPRM_node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
 begin
     if (macroPRM.MustDEL) then AConfig.DeletePath(_MacroPRM_PATH_(macroPRM,prntPath))
     else begin
@@ -196,7 +199,7 @@ begin
     end;
 end;
 
-procedure tExtIDEM_prjResources._MacroPRM_Load_(const macroPRM:tLazExt_extIDEM_node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
+procedure tExtIDEM_prjResources._MacroPRM_Load_(const macroPRM:tExtIDEM_McrPRM_node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
 begin
     {todo}
 end;
@@ -213,7 +216,7 @@ end;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 procedure tExtIDEM_prjResources._MacroPRMs_Save_(const macroITM:tLazExt_extIDEM_preSet_Node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
-var tmp:tLazExt_extIDEM_node;
+var tmp:tExtIDEM_McrPRM_node;
 begin
     tmp:=macroITM.Param_First;
     while Assigned(tmp) do begin

@@ -1,33 +1,34 @@
 inherited extIDEM_SUB6_mcrPRM__LegalTrademarks_frm: TextIDEM_SUB6_mcrPRM__LegalTrademarks_frm
-  Height = 240
-  Width = 320
-  ClientHeight = 240
-  ClientWidth = 320
-  DesignLeft = 376
-  DesignTop = 120
-  inherited extIDEM_sub_COMMENTs_frm1: TextIDEM_sub_COMMENTs_frm
+  inherited sub_COMMENTs: TextIDEM_sub_COMMENTs_frm
     Height = 42
     Top = 63
+    Width = 679
     Align = alTop
     ClientHeight = 42
+    ClientWidth = 679
     inherited frm_Caption: TLabel
-      AnchorSideLeft.Control = extIDEM_sub_COMMENTs_frm1
+      AnchorSideLeft.Control = sub_COMMENTs
     end
     inherited frm_Data: TPanel
-      AnchorSideLeft.Control = extIDEM_sub_COMMENTs_frm1
-      AnchorSideRight.Control = extIDEM_sub_COMMENTs_frm1
+      AnchorSideLeft.Control = sub_COMMENTs
+      AnchorSideRight.Control = sub_COMMENTs
+      Width = 679
+      ClientWidth = 679
+      inherited edt_CmntSMB: TEdit
+        Width = 679
+      end
     end
-    inherited CheckBox1: TCheckBox
-      AnchorSideTop.Control = extIDEM_sub_COMMENTs_frm1
+    inherited chb_Enabled: TCheckBox
+      AnchorSideTop.Control = sub_COMMENTs
     end
   end
   inherited sub_RESULT: TextIDEM_sub_RESULT_frm
     Height = 38
     Top = 105
-    Width = 320
+    Width = 679
     Align = alTop
     ClientHeight = 38
-    ClientWidth = 320
+    ClientWidth = 679
     TabOrder = 1
     inherited frm_Caption: TLabel
       AnchorSideLeft.Control = sub_RESULT
@@ -36,36 +37,52 @@ inherited extIDEM_SUB6_mcrPRM__LegalTrademarks_frm: TextIDEM_SUB6_mcrPRM__LegalT
     inherited frm_Data: TPanel
       AnchorSideLeft.Control = sub_RESULT
       AnchorSideRight.Control = sub_RESULT
-      Width = 320
-      ClientWidth = 320
+      Width = 679
+      ClientWidth = 679
       inherited Shape1: TShape
-        Left = 156
+        Left = 335
       end
       inherited cmb_forIDE: TComboBox
-        Width = 115
+        Width = 294
       end
       inherited lbl_forSRC: TLabel
-        Left = 164
+        Left = 343
       end
       inherited cmb_forSRC: TComboBox
-        Left = 209
-        Width = 111
+        Left = 388
+        Width = 291
       end
     end
   end
-  inherited extIDEM_sub_valFILE_frm1: TextIDEM_sub_valFILE_frm
+  inherited sub_valFILE: TextIDEM_sub_valFILE_frm
     Height = 63
+    Width = 679
     Align = alTop
     AutoSize = True
     ClientHeight = 63
+    ClientWidth = 679
     TabOrder = 2
     inherited frm_Caption: TLabel
-      AnchorSideLeft.Control = extIDEM_sub_valFILE_frm1
-      AnchorSideTop.Control = extIDEM_sub_valFILE_frm1
+      AnchorSideLeft.Control = sub_valFILE
+      AnchorSideTop.Control = sub_valFILE
     end
     inherited frm_Data: TPanel
-      AnchorSideLeft.Control = extIDEM_sub_valFILE_frm1
-      AnchorSideRight.Control = extIDEM_sub_valFILE_frm1
+      AnchorSideLeft.Control = sub_valFILE
+      AnchorSideRight.Control = sub_valFILE
+      Width = 679
+      ClientWidth = 679
+      inherited spb_fileDialog: TSpeedButton
+        Left = 656
+      end
+      inherited edt_fileName: TEdit
+        Width = 625
+      end
+      inherited edt_altText: TEdit
+        Width = 577
+      end
+      inherited spb_textDialog: TSpeedButton
+        Left = 656
+      end
     end
   end
 end

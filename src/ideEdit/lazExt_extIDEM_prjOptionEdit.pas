@@ -12,10 +12,19 @@ interface
 {$endIf}
 
 
-uses IDEOptionsIntf, lazExt_extIDEM,    Graphics,       lazExt_extIDEM_mcrPRM_NotDEF,  lazExt_extIDEM_preSet_NDF,
-     Dialogs,
-lazExt_extIDEM_maCRO_node, extIDEM_coreObject,
-lazExt_extIDEM_preSet_node, Classes,
+uses IDEOptionsIntf,
+
+
+lazExt_extIDEM,  extIDEM_McrPRM_NotDEF,
+Graphics,
+//lazExt_extIDEM_mcrPRM_NotDEF,
+
+//lazExt_extIDEM__NDF_MACROS,
+     Dialogs,    lazExt_extIDEM__NDF_MACROS,
+//lazExt_extIDEM_maCRO_node,
+extIDEM_coreObject,
+//lazExt_extIDEM_preSet_node,
+Classes,                    extIDEM_MACROS_node,extIDEM_McrPRM_node,
   SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, ComCtrls,
   lazExt_extIDEM_prjResource, lazExt_extIDEM_frm_nodeName, types;
 
@@ -345,18 +354,18 @@ function tNodeDATA._node_is_MacroPRM_:boolean;
 begin
     result:=false;
     if Assigned(_node_getACTV_) then begin
-        result:=_node_getACTV_.InheritsFrom(tLazExt_extIDEM_node);
+        result:=_node_getACTV_.InheritsFrom(tExtIDEM_McrPRM_node);
     end;
 end;
 
 function tNodeDATA._node_is_MacroNDF_:boolean;
 begin
     if _node_is_MacroITM_ then begin
-        result:=_node_getACTV_.InheritsFrom(tExtIDEM_preSet_NDF_node);
+        result:=_node_getACTV_.InheritsFrom(tExtIDEM_NDF_MACROS_node);
     end
    else
     if _node_is_MacroPRM_ then begin
-        result:=_node_getACTV_.InheritsFrom(tLazExt_extIDEM_maCRO_NDF_node);
+        result:=_node_getACTV_.InheritsFrom(tExtIDEM_McrPRM_NotDEF_node);
     end
    else begin
        result:=false;
@@ -438,15 +447,15 @@ begin
         if ( MacroITM.IS_Macros and (not MacroITM.IS_NotDEF) and MacroITM.PRJ_exist) then begin
             //ShowMessage('COPY_toPRJ_MacroPRM -2');
 
-            if  ( Assigned(_node_ide_) and (_node_ide_ is tLazExt_extIDEM_node) and (not self.IS_NotDEF) )
+            if  ( Assigned(_node_ide_) and (_node_ide_ is tExtIDEM_McrPRM_node) and (not self.IS_NotDEF) )
 
     then begin
         //ShowMessage('COPY_toPRJ_MacroPRM -3');
         _node_prj_:=tLazExt_extIDEM_nodeTYPE(_node_ide_.ClassType).Create;
-         tLazExt_extIDEM_node(_node_prj_).Copy(tLazExt_extIDEM_node(_node_ide_));
+         tExtIDEM_McrPRM_node(_node_prj_).Copy(tExtIDEM_McrPRM_node(_node_ide_));
         // prjMARCOSES.PreSETs_ADD(tmpNode);
-        tLazExt_extIDEM_preSet_Node(MacroITM.Node_PRJ).Param_INS(tLazExt_extIDEM_node(_node_prj_));
-        tLazExt_extIDEM_node(_node_prj_).Enabled:=TRUE;
+        tLazExt_extIDEM_preSet_Node(MacroITM.Node_PRJ).Param_INS(tExtIDEM_McrPRM_node(_node_prj_));
+        tExtIDEM_McrPRM_node(_node_prj_).Enabled:=TRUE;
         ShowMessage('COPY_toPRJ_MacroPRM');
     end;
 
@@ -521,7 +530,7 @@ end;
 //------------------------------------------------------------------------------
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit._treePreSets_setUp_ide_ideMCRs_(const treeNode:TTreeNode; const preSet:tLazExt_extIDEM_preSet_Node);
-var tmp:tLazExt_extIDEM_node;
+var tmp:tExtIDEM_McrPRM_node;
 begin
     with preSet do begin
         tmp:=Param_First;
@@ -549,7 +558,7 @@ end;
 //------------------------------------------------------------------------------
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit._treePreSets_setUp_prj_ideMCRs_(const treeNode:TTreeNode; const preSet:tLazExt_extIDEM_preSet_Node);
-var tmp:tLazExt_extIDEM_node;
+var tmp:tExtIDEM_McrPRM_node;
   lNode:TTreeNode;
 begin
     with preSet do begin
@@ -846,8 +855,8 @@ begin
         if not(Assigned(Node_IDE) or Assigned(Node_PRJ)) then result:=FALSE
         else begin
             if tNodeDATA(treeNode.Data).PRJ_based
-            then result:=tNodeDATA(treeNode.Data).Node_PRJ is tLazExt_extIDEM_node
-            else result:=tNodeDATA(treeNode.Data).Node_IDE is tLazExt_extIDEM_node;
+            then result:=tNodeDATA(treeNode.Data).Node_PRJ is tExtIDEM_McrPRM_node
+            else result:=tNodeDATA(treeNode.Data).Node_IDE is tExtIDEM_McrPRM_node;
         end;
     end;
 end;
@@ -931,7 +940,7 @@ begin
     while Assigned(result) do begin
         data:=tNodeDATA(result.Data);
         if Assigned(data) and data.IDE_based then begin
-            if tLazExt_extIDEM_node(data.Node_IDE).Node_IDNT=idnt
+            if tExtIDEM_McrPRM_node(data.Node_IDE).Node_IDNT=idnt
             then break
         end;
         result:=result.GetNextSibling;

@@ -14,11 +14,11 @@ inherited extIDEM_SUB6_mcrPRM__Comments_frm: TextIDEM_SUB6_mcrPRM__Comments_frm
       AnchorSideRight.Control = sub_COMMENTs
       Width = 679
       ClientWidth = 679
-      inherited Edit2: TEdit
+      inherited edt_CmntSMB: TEdit
         Width = 679
       end
     end
-    inherited CheckBox1: TCheckBox
+    inherited chb_Enabled: TCheckBox
       AnchorSideTop.Control = sub_COMMENTs
     end
   end
@@ -71,16 +71,16 @@ inherited extIDEM_SUB6_mcrPRM__Comments_frm: TextIDEM_SUB6_mcrPRM__Comments_frm
       AnchorSideRight.Control = sub_valFILE
       Width = 679
       ClientWidth = 679
-      inherited SpeedButton1: TSpeedButton
+      inherited spb_fileDialog: TSpeedButton
         Left = 656
       end
-      inherited Edit1: TEdit
+      inherited edt_fileName: TEdit
         Width = 625
       end
-      inherited Edit2: TEdit
-        Width = 624
+      inherited edt_altText: TEdit
+        Width = 577
       end
-      inherited SpeedButton2: TSpeedButton
+      inherited spb_textDialog: TSpeedButton
         Left = 656
       end
     end

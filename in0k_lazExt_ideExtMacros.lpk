@@ -8,11 +8,11 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <OtherUnitFiles Value="src;src\coreObject;src\preSet;src\ideEdit;src\ideEdit\sub_frames;src\maCRO;src\maCRO\maCROs;src\preSETs\setNDF;src\preSETs\setSUB6;src\preSETs\setUSER"/>
+        <OtherUnitFiles Value="src;src\coreObjects;src\coreObjects\SubFRMs;src\coreObjects\McrPRMs;Intf;src\preSet;src\ideEdit;src\ideEdit\sub_frames;src\preSETs\setNDF;src\preSETs\setSUB6;src\preSETs\setUSER"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="38">
+    <Files Count="34">
       <Item1>
         <Filename Value="in0k_lazExt_extIDEM_INI.inc"/>
         <Type Value="Binary"/>
@@ -27,165 +27,145 @@
         <UnitName Value="lazExt_extIDEM"/>
       </Item3>
       <Item4>
-        <Filename Value="src\maCRO\lazExt_extIDEM_maCRO_node.pas"/>
-        <UnitName Value="lazExt_extIDEM_maCRO_node"/>
+        <Filename Value="src\coreObjects\extIDEM_McrPRM_node.pas"/>
+        <UnitName Value="extIDEM_McrPRM_node"/>
       </Item4>
       <Item5>
-        <Filename Value="src\maCRO\lazExt_extIDEM_maCRO_edit.pas"/>
-        <UnitName Value="lazExt_extIDEM_maCRO_edit"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item5>
-      <Item6>
         <Filename Value="src\ideEdit\lazExt_extIDEM_prjOptionEdit.pas"/>
         <UnitName Value="lazExt_extIDEM_prjOptionEdit"/>
         <ResourceBaseClass Value="Frame"/>
-      </Item6>
-      <Item7>
+      </Item5>
+      <Item6>
         <Filename Value="src\ideEdit\lazExt_extIDEM_prjOptionEdit_node.pas"/>
         <UnitName Value="lazExt_extIDEM_prjOptionEdit_node"/>
         <ResourceBaseClass Value="Frame"/>
+      </Item6>
+      <Item7>
+        <Filename Value="Intf\extIDEM_MACROS_Intf.pas"/>
+        <UnitName Value="extIDEM_MACROS_Intf"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item7>
       <Item8>
-        <Filename Value="src\preSet\lazExt_extIDEM_preSet_edit.pas"/>
-        <UnitName Value="lazExt_extIDEM_preSet_edit"/>
-        <ResourceBaseClass Value="Frame"/>
+        <Filename Value="src\coreObjects\extIDEM_MACROS_node.pas"/>
+        <UnitName Value="extIDEM_MACROS_node"/>
       </Item8>
       <Item9>
-        <Filename Value="src\preSet\lazExt_extIDEM_preSet_node.pas"/>
-        <UnitName Value="lazExt_extIDEM_preSet_node"/>
+        <Filename Value="src\preSETs\setNDF\lazExt_extIDEM__NDF_MACROS.pas"/>
+        <UnitName Value="lazExt_extIDEM__NDF_MACROS"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item9>
       <Item10>
-        <Filename Value="src\preSETs\setNDF\lazExt_extIDEM_preSet_NDF.pas"/>
-        <UnitName Value="lazExt_extIDEM_preSet_NDF"/>
+        <Filename Value="src\preSETs\setUSER\lazExt_extIDEM__USER_MACROS.pas"/>
+        <UnitName Value="lazExt_extIDEM__USER_MACROS"/>
         <ResourceBaseClass Value="Frame"/>
       </Item10>
       <Item11>
-        <Filename Value="src\preSETs\setUSER\lazExt_extIDEM_preSet_USER.pas"/>
-        <UnitName Value="lazExt_extIDEM_preSet_USER"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item11>
-      <Item12>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_MACROS.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_MACROS"/>
         <ResourceBaseClass Value="Frame"/>
+      </Item11>
+      <Item12>
+        <Filename Value="src\coreObjects\McrPRMs\extIDEM_McrPRM_NotDEF.pas"/>
+        <UnitName Value="extIDEM_McrPRM_NotDEF"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item12>
       <Item13>
-        <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_maCRO_TextML.pas"/>
-        <UnitName Value="lazExt_extIDEM_maCRO_TextML"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item13>
-      <Item14>
-        <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_mcrPRM_usrFILE.pas"/>
-        <UnitName Value="lazExt_extIDEM_mcrPRM_usrFILE"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item14>
-      <Item15>
-        <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_mcrPRM_NotDEF.pas"/>
-        <UnitName Value="lazExt_extIDEM_mcrPRM_NotDEF"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item15>
-      <Item16>
         <Filename Value="src\lazExt_extIDEM_prjResource.pas"/>
         <UnitName Value="lazExt_extIDEM_prjResource"/>
-      </Item16>
-      <Item17>
-        <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_maCRO_TextSL.pas"/>
-        <UnitName Value="lazExt_extIDEM_maCRO_TextSL"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item17>
-      <Item18>
-        <Filename Value="src\coreObject\extIDEM_coreObject.pas"/>
-        <UnitName Value="extIDEM_coreObject"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item18>
-      <Item19>
+      </Item13>
+      <Item14>
         <Filename Value="src\ideEdit\sub_frames\lazExt_extIDEM_subFrm_core.pas"/>
         <UnitName Value="lazExt_extIDEM_subFrm_core"/>
         <ResourceBaseClass Value="Frame"/>
+      </Item14>
+      <Item15>
+        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_nodeName.pas"/>
+        <UnitName Value="lazExt_extIDEM_frm_nodeName"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item15>
+      <Item16>
+        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_sub.pas"/>
+        <UnitName Value="lazExt_extIDEM_frm_sub"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item16>
+      <Item17>
+        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_sub_RESULT.pas"/>
+        <UnitName Value="lazExt_extIDEM_frm_sub_RESULT"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item17>
+      <Item18>
+        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_sub_valFILE.pas"/>
+        <UnitName Value="lazExt_extIDEM_frm_sub_valFILE"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item18>
+      <Item19>
+        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_sub_valTEXT.pas"/>
+        <UnitName Value="lazExt_extIDEM_frm_sub_valTEXT"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item19>
       <Item20>
-        <Filename Value="src\lazExt_extIDEM_frm_nodeName.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_nodeName"/>
+        <Filename Value="src\coreObjects\McrPRMs\extIDEM_McrPRM_File_CORE.pas"/>
+        <UnitName Value="extIDEM_McrPRM_File_CORE"/>
         <ResourceBaseClass Value="Frame"/>
       </Item20>
       <Item21>
-        <Filename Value="src\lazExt_extIDEM_frm_sub.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub"/>
+        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_sub_COMMENTs.pas"/>
+        <UnitName Value="lazExt_extIDEM_frm_sub_COMMENTs"/>
         <ResourceBaseClass Value="Frame"/>
       </Item21>
       <Item22>
-        <Filename Value="src\lazExt_extIDEM_frm_sub_RESULT.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_RESULT"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item22>
-      <Item23>
-        <Filename Value="src\lazExt_extIDEM_frm_sub_valFILE.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_valFILE"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item23>
-      <Item24>
-        <Filename Value="src\lazExt_extIDEM_frm_sub_valTEXT.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_valTEXT"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item24>
-      <Item25>
-        <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_maCRO_File_CORE.pas"/>
-        <UnitName Value="lazExt_extIDEM_maCRO_File_CORE"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item25>
-      <Item26>
-        <Filename Value="src\lazExt_extIDEM_frm_sub_COMMENTs.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_COMMENTs"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item26>
-      <Item27>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__OriginalFilename.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__OriginalFilename"/>
-      </Item27>
-      <Item28>
-        <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_mcrPRM_usrTEXT.pas"/>
-        <UnitName Value="lazExt_extIDEM_mcrPRM_usrTEXT"/>
-      </Item28>
-      <Item29>
-        <Filename Value="src\maCRO\maCROs\lazExt_extIDEM_maCRO_Text_CORE.pas"/>
-        <UnitName Value="lazExt_extIDEM_maCRO_Text_CORE"/>
-      </Item29>
-      <Item30>
+      </Item22>
+      <Item23>
+        <Filename Value="src\coreObjects\McrPRMs\extIDEM_McrPRM_Text_CORE.pas"/>
+        <UnitName Value="extIDEM_McrPRM_Text_CORE"/>
+      </Item23>
+      <Item24>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__ProductVersion.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__ProductVersion"/>
-      </Item30>
-      <Item31>
+      </Item24>
+      <Item25>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__ProductName.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__ProductName"/>
-      </Item31>
-      <Item32>
+      </Item25>
+      <Item26>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__LegalTrademarks.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__LegalTrademarks"/>
-      </Item32>
-      <Item33>
+      </Item26>
+      <Item27>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__LegalCopyright.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__LegalCopyright"/>
-      </Item33>
-      <Item34>
+      </Item27>
+      <Item28>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__InternalName.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__InternalName"/>
-      </Item34>
-      <Item35>
+      </Item28>
+      <Item29>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__FileVersion.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__FileVersion"/>
-      </Item35>
-      <Item36>
+      </Item29>
+      <Item30>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__FileDescription.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__FileDescription"/>
-      </Item36>
-      <Item37>
+      </Item30>
+      <Item31>
+        <Filename Value="src\coreObjects\extIDEM_coreObject.pas"/>
+        <AddToUsesPkgSection Value="False"/>
+        <UnitName Value="extIDEM_coreObject"/>
+      </Item31>
+      <Item32>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__CompanyName.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__CompanyName"/>
-      </Item37>
-      <Item38>
+      </Item32>
+      <Item33>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__Comments.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__Comments"/>
-      </Item38>
+      </Item33>
+      <Item34>
+        <Filename Value="Intf\extIDEM_McrPRM_Intf.pas"/>
+        <UnitName Value="extIDEM_McrPRM_Intf"/>
+      </Item34>
     </Files>
     <RequiredPkgs Count="3">
       <Item1>

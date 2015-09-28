@@ -7,20 +7,16 @@ unit in0k_lazExt_ideExtMacros;
 interface
 
 uses
-  in0k_lazExt_extIDEM_REG, lazExt_extIDEM, lazExt_extIDEM_maCRO_node, 
-  lazExt_extIDEM_maCRO_edit, lazExt_extIDEM_prjOptionEdit, 
-  lazExt_extIDEM_prjOptionEdit_node, lazExt_extIDEM_preSet_edit, 
-  lazExt_extIDEM_preSet_node, lazExt_extIDEM_preSet_NDF, 
-  lazExt_extIDEM_preSet_USER, lazExt_extIDEM__SUB6_MACROS, 
-  lazExt_extIDEM_maCRO_TextML, lazExt_extIDEM_mcrPRM_usrFILE, 
-  lazExt_extIDEM_mcrPRM_NotDEF, lazExt_extIDEM_prjResource, 
-  lazExt_extIDEM_maCRO_TextSL, extIDEM_coreObject, lazExt_extIDEM_subFrm_core, 
-  lazExt_extIDEM_frm_nodeName, lazExt_extIDEM_frm_sub, 
-  lazExt_extIDEM_frm_sub_RESULT, lazExt_extIDEM_frm_sub_valFILE, 
-  lazExt_extIDEM_frm_sub_valTEXT, lazExt_extIDEM_maCRO_File_CORE, 
-  lazExt_extIDEM_frm_sub_COMMENTs, 
-  lazExt_extIDEM__SUB6_mcrPRM__OriginalFilename, 
-  lazExt_extIDEM_mcrPRM_usrTEXT, lazExt_extIDEM_maCRO_Text_CORE, 
+  in0k_lazExt_extIDEM_REG, lazExt_extIDEM, extIDEM_McrPRM_node, 
+  lazExt_extIDEM_prjOptionEdit, lazExt_extIDEM_prjOptionEdit_node, 
+  extIDEM_MACROS_Intf, extIDEM_MACROS_node, lazExt_extIDEM__NDF_MACROS, 
+  lazExt_extIDEM__USER_MACROS, lazExt_extIDEM__SUB6_MACROS, 
+  extIDEM_McrPRM_NotDEF, lazExt_extIDEM_prjResource, 
+  lazExt_extIDEM_subFrm_core, lazExt_extIDEM_frm_nodeName, 
+  lazExt_extIDEM_frm_sub, lazExt_extIDEM_frm_sub_RESULT, 
+  lazExt_extIDEM_frm_sub_valFILE, lazExt_extIDEM_frm_sub_valTEXT, 
+  extIDEM_McrPRM_File_CORE, lazExt_extIDEM_frm_sub_COMMENTs, 
+  lazExt_extIDEM__SUB6_mcrPRM__OriginalFilename, extIDEM_McrPRM_Text_CORE, 
   lazExt_extIDEM__SUB6_mcrPRM__ProductVersion, 
   lazExt_extIDEM__SUB6_mcrPRM__ProductName, 
   lazExt_extIDEM__SUB6_mcrPRM__LegalTrademarks, 
@@ -29,7 +25,8 @@ uses
   lazExt_extIDEM__SUB6_mcrPRM__FileVersion, 
   lazExt_extIDEM__SUB6_mcrPRM__FileDescription, 
   lazExt_extIDEM__SUB6_mcrPRM__CompanyName, 
-  lazExt_extIDEM__SUB6_mcrPRM__Comments, LazarusPackageIntf;
+  lazExt_extIDEM__SUB6_mcrPRM__Comments, extIDEM_McrPRM_Intf, 
+  LazarusPackageIntf;
 
 implementation
 

@@ -1,0 +1,60 @@
+inherited lazExt_extIDEM_mcrPRM_usrTEXT_frm: TlazExt_extIDEM_mcrPRM_usrTEXT_frm
+  inherited sub_RESULT: TextIDEM_sub_RESULT_frm
+    Height = 38
+    Top = 38
+    Width = 679
+    Align = alTop
+    ClientHeight = 38
+    ClientWidth = 679
+    inherited frm_Caption: TLabel
+      AnchorSideLeft.Control = sub_RESULT
+      AnchorSideTop.Control = sub_RESULT
+    end
+    inherited frm_Data: TPanel
+      AnchorSideLeft.Control = sub_RESULT
+      AnchorSideRight.Control = sub_RESULT
+      Width = 679
+      ClientWidth = 679
+      inherited Shape1: TShape
+        Left = 335
+      end
+      inherited cmb_forIDE: TComboBox
+        Width = 294
+      end
+      inherited lbl_forSRC: TLabel
+        Left = 343
+      end
+      inherited cmb_forSRC: TComboBox
+        Left = 388
+        Width = 291
+      end
+    end
+  end
+  inherited sub_valTEXT: TextIDEM_sub_valTEXT_frm
+    Height = 38
+    Width = 679
+    Align = alTop
+    AutoSize = True
+    ClientHeight = 38
+    ClientWidth = 679
+    TabOrder = 1
+    DesignLeft = 376
+    DesignTop = 120
+    inherited frm_Caption: TLabel
+      AnchorSideLeft.Control = sub_valTEXT
+      AnchorSideTop.Control = sub_valTEXT
+    end
+    inherited frm_Data: TPanel
+      AnchorSideLeft.Control = sub_valTEXT
+      AnchorSideRight.Control = sub_valTEXT
+      Width = 679
+      ClientWidth = 679
+      inherited btn_Dialog: TSpeedButton
+        Left = 656
+      end
+      inherited edt_Value: TEdit
+        Width = 624
+      end
+    end
+  end
+end

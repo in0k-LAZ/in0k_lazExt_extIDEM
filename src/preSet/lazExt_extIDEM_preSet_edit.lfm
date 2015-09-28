@@ -1,5 +1,0 @@
-inherited lazExt_extIDEM_preSet_frmEdit: TlazExt_extIDEM_preSet_frmEdit
-  Width = 630
-  DesignLeft = 276
-  DesignTop = 194
-end

@@ -1,0 +1,9 @@
+object ExtIDEM_McrPRM_edit_custom: TExtIDEM_McrPRM_edit_custom
+  Left = 0
+  Height = 240
+  Top = 0
+  Width = 320
+  TabOrder = 0
+  DesignLeft = 376
+  DesignTop = 120
+end

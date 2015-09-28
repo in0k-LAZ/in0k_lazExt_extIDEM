@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Default"/>
-    <Units Count="10">
+    <Units Count="26">
       <Unit0>
         <Filename Value="uiTests.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -12,7 +12,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
       </Unit0>
       <Unit1>
         <Filename Value="src\wndMain.pas"/>
@@ -21,7 +21,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="20" Y="34"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
       </Unit1>
       <Unit2>
         <Filename Value="src\wndTest\wndTestCORE.pas"/>
@@ -32,7 +32,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="30" Y="6"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
       </Unit2>
       <Unit3>
         <Filename Value="..\..\src\lazExt_extIDEM_frm_sub_valTEXT.pas"/>
@@ -40,20 +40,17 @@
         <ComponentName Value="extIDEM_sub_valTEXT_frm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_valTEXT"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos Y="15"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
       </Unit3>
       <Unit4>
         <Filename Value="src\SetUpListTests.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="SetUpListTests"/>
-        <EditorIndex Value="2"/>
-        <CursorPos X="55" Y="2"/>
-        <UsageCount Value="21"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="63" Y="24"/>
+        <UsageCount Value="22"/>
       </Unit4>
       <Unit5>
         <Filename Value="..\..\src\lazExt_extIDEM_frm_sub_RESULT.pas"/>
@@ -61,82 +58,173 @@
         <ComponentName Value="extIDEM_sub_RESULT_frm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_RESULT"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="3" Y="14"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
       </Unit5>
       <Unit6>
-        <Filename Value="..\..\..\..\LazaRUS\lcl\forms.pp"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="260"/>
-        <CursorPos X="3" Y="278"/>
-        <UsageCount Value="10"/>
-      </Unit6>
-      <Unit7>
-        <Filename Value="..\..\src\lazExt_extIDEM_frm_sub.pas"/>
-        <ComponentName Value="extIDEM_sub_frm"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Frame"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="7"/>
-        <CursorPos Y="23"/>
-        <UsageCount Value="10"/>
-      </Unit7>
-      <Unit8>
         <Filename Value="..\..\src\lazExt_extIDEM_frm_sub_COMMENTs.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="extIDEM_sub_COMMENTs_frm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_COMMENTs"/>
-        <TopLine Value="16"/>
-        <CursorPos X="32" Y="35"/>
-        <UsageCount Value="21"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="73" Y="32"/>
+        <UsageCount Value="22"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="..\..\..\..\LazaRUS\lcl\forms.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="260"/>
+        <CursorPos X="3" Y="278"/>
+        <UsageCount Value="10"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="..\..\src\lazExt_extIDEM_frm_sub.pas"/>
+        <ComponentName Value="extIDEM_sub_frm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="91" Y="26"/>
+        <UsageCount Value="10"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="..\..\src\lazExt_extIDEM_frm_sub_valFILE.pas"/>
+        <IsPartOfProject Value="True"/>
         <ComponentName Value="extIDEM_sub_valFILE_frm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_valFILE"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <CursorPos X="69" Y="14"/>
-        <UsageCount Value="10"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="26" Y="38"/>
+        <UsageCount Value="21"/>
       </Unit9>
+      <Unit10>
+        <Filename Value="..\..\src\maCRO\maCROs\lazExt_extIDEM_maCRO_File_CORE.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="lazExt_extIDEM_maCRO_File_CORE_edit"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="23"/>
+        <CursorPos X="7" Y="74"/>
+        <UsageCount Value="21"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="..\..\src\coreObject\extIDEM_coreObject.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="extIDEM_core_objEDIT"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="35"/>
+        <CursorPos X="102" Y="35"/>
+        <UsageCount Value="21"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="..\..\src\maCRO\maCROs\lazExt_extIDEM_mcrPRM_usrTEXT.pas"/>
+        <ComponentName Value="lazExt_extIDEM_mcrPRM_usrTEXT_frm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="100" Y="32"/>
+        <UsageCount Value="20"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\..\src\maCRO\maCROs\lazExt_extIDEM_maCRO_Text_CORE.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="lazExt_extIDEM_maCRO_Text_CORE_edit"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4"/>
+        <CursorPos X="96" Y="36"/>
+        <UsageCount Value="21"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\..\src\maCRO\maCROs\lazExt_extIDEM_maCRO_Text_CORE.lfm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="64" Y="24"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="..\..\src\maCRO\lazExt_extIDEM_maCRO_node.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="59" Y="39"/>
+        <UsageCount Value="21"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="..\..\src\maCRO\lazExt_extIDEM_maCRO_edit.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="116" Y="32"/>
+        <UsageCount Value="10"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="..\..\src\maCRO\maCROs\lazExt_extIDEM_maCRO_File_CORE.lfm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="77" Y="26"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="..\..\src\lazExt_extIDEM.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="108" Y="23"/>
+        <UsageCount Value="10"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="..\..\src\lazExt_extIDEM_prjResource.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="34"/>
+        <UsageCount Value="10"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="..\..\src\ideEdit\lazExt_extIDEM_prjOptionEdit.pas"/>
+        <ComponentName Value="lazExt_extIDEM_frmPrjOptionEdit"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="108" Y="19"/>
+        <UsageCount Value="10"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="..\..\src\lazExt_extIDEM_frm_nodeName.pas"/>
+        <ComponentName Value="lazExt_extIDEM_nodeName_frm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="87" Y="31"/>
+        <UsageCount Value="10"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="..\..\src\preSet\lazExt_extIDEM_preSet_node.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="..\..\src\preSet\lazExt_extIDEM_preSet_edit.pas"/>
+        <ComponentName Value="lazExt_extIDEM_preSet_frmEdit"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="31"/>
+        <UsageCount Value="10"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="..\..\src\ideEdit\sub_frames\lazExt_extIDEM_subFrm_core.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="..\..\src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__OriginalFilename.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit25>
     </Units>
-    <JumpHistory Count="6" HistoryIndex="5">
-      <Position1>
-        <Filename Value="src\SetUpListTests.pas"/>
-        <Caret Line="20" Column="39"/>
-      </Position1>
-      <Position2>
-        <Filename Value="src\SetUpListTests.pas"/>
-        <Caret Line="10" Column="3"/>
-      </Position2>
-      <Position3>
-        <Filename Value="src\SetUpListTests.pas"/>
-        <Caret Line="2" Column="41"/>
-      </Position3>
-      <Position4>
-        <Filename Value="..\..\src\lazExt_extIDEM_frm_sub_COMMENTs.pas"/>
-        <Caret Line="5" Column="59"/>
-      </Position4>
-      <Position5>
-        <Filename Value="..\..\src\lazExt_extIDEM_frm_sub_COMMENTs.pas"/>
-        <Caret Line="35" Column="19" TopLine="13"/>
-      </Position5>
-      <Position6>
-        <Filename Value="..\..\src\lazExt_extIDEM_frm_sub_valFILE.pas"/>
-        <Caret Column="36"/>
-      </Position6>
-    </JumpHistory>
+    <JumpHistory HistoryIndex="-1"/>
   </ProjectSession>
 </CONFIG>

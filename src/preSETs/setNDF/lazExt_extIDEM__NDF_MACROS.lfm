@@ -1,0 +1,4 @@
+inherited extIDEM_NDF_MACROS_edit: TextIDEM_NDF_MACROS_edit
+  DesignLeft = 246
+  DesignTop = 114
+end

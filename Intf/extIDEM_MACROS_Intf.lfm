@@ -1,0 +1,5 @@
+inherited ExtIDEM_MACROS_edit_custom: TExtIDEM_MACROS_edit_custom
+  Width = 630
+  DesignLeft = 276
+  DesignTop = 194
+end

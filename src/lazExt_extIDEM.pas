@@ -5,15 +5,17 @@ unit lazExt_extIDEM;
 interface
 
 uses IDEOptionsIntf,
-    lazExt_extIDEM_preSet_USER,
-    lazExt_extIDEM_preSet_node,
-    lazExt_extIDEM_preSet_edit,
+
+    extIDEM_MACROS_node,
+    //lazExt_extIDEM__USER_MACROS,
+    //lazExt_extIDEM_preSet_node,
+    //lazExt_extIDEM_preSet_edit,
      Classes, SysUtils;
 
 
 type
 
- tLazExt_extIDEM=class(tLazExt_extIDEM_preSetsList_core)
+ tLazExt_extIDEM=class//(tLazExt_extIDEM_preSetsList_core)
   private
     _ideGRP_Index_:integer;
     _ideEDT_Index_:integer;

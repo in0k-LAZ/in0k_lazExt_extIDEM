@@ -5,20 +5,20 @@ inherited extIDEM_SUB6_mcrPRM__OriginalFilename_frm: TextIDEM_SUB6_mcrPRM__Origi
   ClientWidth = 320
   DesignLeft = 376
   DesignTop = 120
-  inherited extIDEM_sub_COMMENTs_frm1: TextIDEM_sub_COMMENTs_frm
+  inherited sub_COMMENTs: TextIDEM_sub_COMMENTs_frm
     Height = 42
     Top = 63
     Align = alTop
     ClientHeight = 42
     inherited frm_Caption: TLabel
-      AnchorSideLeft.Control = extIDEM_sub_COMMENTs_frm1
+      AnchorSideLeft.Control = sub_COMMENTs
     end
     inherited frm_Data: TPanel
-      AnchorSideLeft.Control = extIDEM_sub_COMMENTs_frm1
-      AnchorSideRight.Control = extIDEM_sub_COMMENTs_frm1
+      AnchorSideLeft.Control = sub_COMMENTs
+      AnchorSideRight.Control = sub_COMMENTs
     end
-    inherited CheckBox1: TCheckBox
-      AnchorSideTop.Control = extIDEM_sub_COMMENTs_frm1
+    inherited chb_Enabled: TCheckBox
+      AnchorSideTop.Control = sub_COMMENTs
     end
   end
   inherited sub_RESULT: TextIDEM_sub_RESULT_frm
@@ -53,19 +53,19 @@ inherited extIDEM_SUB6_mcrPRM__OriginalFilename_frm: TextIDEM_SUB6_mcrPRM__Origi
       end
     end
   end
-  inherited extIDEM_sub_valFILE_frm1: TextIDEM_sub_valFILE_frm
+  inherited sub_valFILE: TextIDEM_sub_valFILE_frm
     Height = 63
     Align = alTop
     AutoSize = True
     ClientHeight = 63
     TabOrder = 2
     inherited frm_Caption: TLabel
-      AnchorSideLeft.Control = extIDEM_sub_valFILE_frm1
-      AnchorSideTop.Control = extIDEM_sub_valFILE_frm1
+      AnchorSideLeft.Control = sub_valFILE
+      AnchorSideTop.Control = sub_valFILE
     end
     inherited frm_Data: TPanel
-      AnchorSideLeft.Control = extIDEM_sub_valFILE_frm1
-      AnchorSideRight.Control = extIDEM_sub_valFILE_frm1
+      AnchorSideLeft.Control = sub_valFILE
+      AnchorSideRight.Control = sub_valFILE
     end
   end
 end

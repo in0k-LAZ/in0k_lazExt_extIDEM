@@ -5,10 +5,10 @@ unit in0k_lazExt_extIDEM_REG;
 interface
 
 uses    lazExt_extIDEM,
-IDEOptionsIntf,  lazExt_extIDEM_preSet_edit,
+IDEOptionsIntf,  //lazExt_extIDEM_preSet_edit,
 
-lazExt_extIDEM_preSet_NDF,
-lazExt_extIDEM_preSet_USER,
+//lazExt_extIDEM__NDF_MACROS,
+lazExt_extIDEM__USER_MACROS,
 lazExt_extIDEM__SUB6_MACROS,
 
 lazExt_extIDEM_prjOptionEdit,
@@ -36,8 +36,8 @@ begin
     RegisterIDEOptionsEditor(GroupProject, tLazExt_extIDEM_frmPrjOptionEdit, edt);
     lazExt_extIDEM_INT(GroupProject,edt);
     //---
-    extIDEM.PreSETs_ADD_Node(tExtIDEM_preSet_USER_node);
-    extIDEM.PreSETs_ADD_Node(tExtIDEM_preSet_SUB6_node);
+    extIDEM.PreSETs_ADD_Node(tExtIDEM_USER_MACROS_node);
+    extIDEM.PreSETs_ADD_Node(tExtIDEM_SUB6_MACROS_node);
     //extIDEM.PreSETs_ADD_Node(tExtIDEM_preSet_NDF_node);
 
 

@@ -1,0 +1,88 @@
+inherited extIDEM_sub_RESULT_frm: TextIDEM_sub_RESULT_frm
+  Width = 606
+  ClientWidth = 606
+  DesignLeft = 508
+  DesignTop = 274
+  inherited frm_Caption: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+  end
+  inherited frm_Data: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = nil
+    Height = 23
+    Width = 606
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    ClientHeight = 23
+    ClientWidth = 606
+    object Shape1: TShape[0]
+      AnchorSideLeft.Control = frm_Data
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Side = asrCenter
+      Left = 299
+      Height = 1
+      Top = 55
+      Width = 8
+      Pen.Style = psClear
+    end
+    object lbl_forIDE: TLabel[1]
+      AnchorSideLeft.Control = frm_Data
+      AnchorSideTop.Control = cmb_forIDE
+      AnchorSideTop.Side = asrCenter
+      Left = 0
+      Height = 15
+      Top = 4
+      Width = 39
+      Caption = 'для IDE'
+      ParentColor = False
+    end
+    object cmb_forIDE: TComboBox[2]
+      AnchorSideLeft.Control = lbl_forIDE
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = frm_Data
+      AnchorSideRight.Control = Shape1
+      Left = 41
+      Height = 23
+      Top = 0
+      Width = 258
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 2
+      ItemHeight = 15
+      OnChange = cmb_forIDEChange
+      Style = csDropDownList
+      TabOrder = 0
+    end
+    object lbl_forSRC: TLabel[3]
+      AnchorSideLeft.Control = Shape1
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = cmb_forSRC
+      AnchorSideTop.Side = asrCenter
+      Left = 307
+      Height = 15
+      Top = 4
+      Width = 43
+      Caption = 'для SRC'
+      ParentColor = False
+    end
+    object cmb_forSRC: TComboBox[4]
+      AnchorSideLeft.Control = lbl_forSRC
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = cmb_forIDE
+      AnchorSideRight.Control = frm_Data
+      AnchorSideRight.Side = asrBottom
+      Left = 352
+      Height = 23
+      Top = 0
+      Width = 254
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 2
+      ItemHeight = 15
+      OnChange = cmb_forSRCChange
+      Style = csDropDownList
+      TabOrder = 1
+    end
+  end
+end

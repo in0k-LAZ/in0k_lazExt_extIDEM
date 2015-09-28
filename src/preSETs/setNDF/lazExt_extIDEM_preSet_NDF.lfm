@@ -1,9 +1,0 @@
-object extIDEM_preSet_NDF_Edit: TextIDEM_preSet_NDF_Edit
-  Left = 0
-  Height = 240
-  Top = 0
-  Width = 320
-  TabOrder = 0
-  DesignLeft = 246
-  DesignTop = 114
-end

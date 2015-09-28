@@ -45,6 +45,8 @@ inherited lazExt_extIDEM_maCRO_Text_CORE_edit: TlazExt_extIDEM_maCRO_Text_CORE_e
     ClientHeight = 38
     ClientWidth = 679
     TabOrder = 1
+    DesignLeft = 376
+    DesignTop = 120
     inherited frm_Caption: TLabel
       AnchorSideLeft.Control = sub_valTEXT
       AnchorSideTop.Control = sub_valTEXT
@@ -54,11 +56,12 @@ inherited lazExt_extIDEM_maCRO_Text_CORE_edit: TlazExt_extIDEM_maCRO_Text_CORE_e
       AnchorSideRight.Control = sub_valTEXT
       Width = 679
       ClientWidth = 679
-      inherited SpeedButton1: TSpeedButton
+      inherited ui_valueDialog: TSpeedButton
         Left = 656
       end
-      inherited Edit1: TEdit
+      inherited ui_Value: TEdit
         Width = 624
+        TabOrder = 1
       end
     end
   end

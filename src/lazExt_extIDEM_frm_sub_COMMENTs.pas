@@ -12,10 +12,13 @@ type
   { TextIDEM_sub_COMMENTs_frm }
 
   TextIDEM_sub_COMMENTs_frm = class(tExtIDEM_sub_frm)
-    CheckBox1: TCheckBox;
-    Edit2: TEdit;
+    chb_Enabled: TCheckBox;
+    edt_CmntSMB: TEdit;
+    procedure chb_EnabledChange(Sender: TObject);
   protected
     function getFRM_caption:string; override;
+  public
+    constructor Create(AOwner:TComponent); override;
   end;
 
 implementation
@@ -24,11 +27,24 @@ const _cTXT_frmCaption_='Комментарии';
 
 {$R *.lfm}
 
+
+
+constructor TextIDEM_sub_COMMENTs_frm.Create(AOwner:TComponent);
+begin
+    inherited;
+    chb_Enabled.Checked:=false;
+    chb_EnabledChange(chb_Enabled);
+end;
+
+procedure TextIDEM_sub_COMMENTs_frm.chb_EnabledChange(Sender: TObject);
+begin
+    edt_CmntSMB.Enabled:=TCheckBox(sender).Checked;
+end;
+
 function TextIDEM_sub_COMMENTs_frm.getFRM_caption:string;
 begin
     result:=_cTXT_frmCaption_;
 end;
-
 
 end.
 

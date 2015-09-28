@@ -13,7 +13,7 @@ interface
 
 
 uses lazExt_extIDEM_maCRO_node, lazExt_extIDEM_maCRO_edit, extIDEM_coreObject,
-  lazExt_extIDEM_maCRO_Text_CORE,
+  lazExt_extIDEM_maCRO_Text_CORE,          Laz2_XMLCfg,  Dialogs,
   lazExt_extIDEM_frm_sub_valTEXT, lazExt_extIDEM_frm_sub_COMMENTs,
   lazExt_extIDEM_frm_sub_RESULT, lazExt_extIDEM_frm_sub_valFILE, Classes,
   SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, EditBtn, Buttons;
@@ -23,8 +23,8 @@ type
  { TlazExt_extIDEM_maCRO_File_CORE_edit }
 
  TlazExt_extIDEM_maCRO_File_CORE_edit=class(tExtIDEM_core_objEDIT)
-    extIDEM_sub_COMMENTs_frm1: TextIDEM_sub_COMMENTs_frm;
-    extIDEM_sub_valFILE_frm1: TextIDEM_sub_valFILE_frm;
+    sub_COMMENTs: TextIDEM_sub_COMMENTs_frm;
+    sub_valFILE: TextIDEM_sub_valFILE_frm;
     sub_RESULT: TextIDEM_sub_RESULT_frm;
   public
     class function Value_label_TEXT:string; virtual;
@@ -42,6 +42,9 @@ type
     class function Obj_IDNT:string;                    override;
     class function Obj_Name:string;                    override;
     class function Obj_Desc:string;                    override;
+  public    //<
+    procedure node_Save(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); override;
+    procedure node_Load(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); override;
   end;
 
 
@@ -63,12 +66,12 @@ end;
 
 procedure TlazExt_extIDEM_maCRO_File_CORE_edit.Settings_Read(const node:tExtIDEM_core_objNODE);
 begin
-    //Value_Memo.Text:=tLazExt_extIDEM_maCRO_File_CORE_node(node).value;
+    sub_valFILE.Edit2.Text:=tLazExt_extIDEM_maCRO_File_CORE_node(node).value;
 end;
 
 procedure TlazExt_extIDEM_maCRO_File_CORE_edit.Settings_Write(const node:tExtIDEM_core_objNODE);
 begin
-    //tLazExt_extIDEM_maCRO_File_CORE_node(node).value:=Value_Memo.Text;
+    tLazExt_extIDEM_maCRO_File_CORE_node(node).value:=sub_valFILE.Edit2.Text;
 end;
 
 //------------------------------------------------------------------------------
@@ -82,6 +85,20 @@ begin
 end;
 
 //==============================================================================
+
+procedure tLazExt_extIDEM_maCRO_File_CORE_node.node_Save(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String);
+begin
+    inherited;
+    ShowMessage(self.ClassName+'node_Save');
+    AConfig.SetDeleteValue(Path+'Text',Value,'');
+end;
+
+procedure tLazExt_extIDEM_maCRO_File_CORE_node.node_Load(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String);
+begin
+    inherited;
+end;
+
+//------------------------------------------------------------------------------
 
 class function tLazExt_extIDEM_maCRO_File_CORE_node.PUBLISED:boolean;
 begin

@@ -1,0 +1,8 @@
+object TestCOREwnd: TTestCOREwnd
+  Left = 293
+  Height = 240
+  Top = 133
+  Width = 320
+  Caption = 'TestCOREwnd'
+  LCLVersion = '1.4.0.4'
+end

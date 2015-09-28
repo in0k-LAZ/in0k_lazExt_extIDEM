@@ -3,13 +3,13 @@ inherited extIDEM_sub_COMMENTs_frm: TextIDEM_sub_COMMENTs_frm
   DesignTop = 126
   inherited frm_Caption: TLabel
     AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = CheckBox1
+    AnchorSideTop.Control = chb_Enabled
     AnchorSideTop.Side = asrCenter
     Top = 2
   end
   inherited frm_Data: TPanel
     AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = CheckBox1
+    AnchorSideTop.Control = chb_Enabled
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = nil
     Height = 23
@@ -17,7 +17,7 @@ inherited extIDEM_sub_COMMENTs_frm: TextIDEM_sub_COMMENTs_frm
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
     ClientHeight = 23
-    object Edit2: TEdit[0]
+    object edt_CmntSMB: TEdit[0]
       AnchorSideLeft.Control = frm_Data
       AnchorSideTop.Control = frm_Data
       AnchorSideRight.Control = frm_Data
@@ -31,7 +31,7 @@ inherited extIDEM_sub_COMMENTs_frm: TextIDEM_sub_COMMENTs_frm
       Text = ';;#;//;'
     end
   end
-  object CheckBox1: TCheckBox[2]
+  object chb_Enabled: TCheckBox[2]
     AnchorSideLeft.Control = frm_Caption
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
@@ -42,6 +42,7 @@ inherited extIDEM_sub_COMMENTs_frm: TextIDEM_sub_COMMENTs_frm
     BorderSpacing.Left = 2
     Caption = 'исключать строки начинающиеся с '
     Checked = True
+    OnChange = chb_EnabledChange
     State = cbChecked
     TabOrder = 1
   end

@@ -14,8 +14,8 @@ inherited extIDEM_sub_valFILE_frm: TextIDEM_sub_valFILE_frm
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
     ClientHeight = 48
-    object SpeedButton1: TSpeedButton[0]
-      AnchorSideTop.Control = Edit1
+    object spb_fileDialog: TSpeedButton[0]
+      AnchorSideTop.Control = edt_fileName
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = frm_Data
       AnchorSideRight.Side = asrBottom
@@ -25,11 +25,11 @@ inherited extIDEM_sub_valFILE_frm: TextIDEM_sub_valFILE_frm
       Width = 23
       Anchors = [akTop, akRight]
     end
-    object Edit1: TEdit[1]
-      AnchorSideLeft.Control = Label6
+    object edt_fileName: TEdit[1]
+      AnchorSideLeft.Control = lbl_file
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = frm_Data
-      AnchorSideRight.Control = SpeedButton1
+      AnchorSideRight.Control = spb_fileDialog
       Left = 31
       Height = 23
       Top = 0
@@ -37,11 +37,11 @@ inherited extIDEM_sub_valFILE_frm: TextIDEM_sub_valFILE_frm
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 2
       TabOrder = 0
-      Text = 'Edit1'
+      Text = 'edt_fileName'
     end
-    object Label6: TLabel[2]
+    object lbl_file: TLabel[2]
       AnchorSideLeft.Control = frm_Data
-      AnchorSideTop.Control = Edit1
+      AnchorSideTop.Control = edt_fileName
       AnchorSideTop.Side = asrCenter
       Left = 0
       Height = 15
@@ -50,34 +50,23 @@ inherited extIDEM_sub_valFILE_frm: TextIDEM_sub_valFILE_frm
       Caption = 'Файл'
       ParentColor = False
     end
-    object Label7: TLabel[3]
-      AnchorSideLeft.Control = frm_Data
-      AnchorSideTop.Control = Edit2
-      AnchorSideTop.Side = asrCenter
-      Left = 0
-      Height = 15
-      Top = 29
-      Width = 30
-      Caption = 'Текст'
-      ParentColor = False
-    end
-    object Edit2: TEdit[4]
-      AnchorSideLeft.Control = Label7
+    object edt_altText: TEdit[3]
+      AnchorSideLeft.Control = rdb_Alt
       AnchorSideLeft.Side = asrBottom
-      AnchorSideTop.Control = Edit1
+      AnchorSideTop.Control = edt_fileName
       AnchorSideTop.Side = asrBottom
-      Left = 32
+      Left = 79
       Height = 23
       Top = 25
-      Width = 265
+      Width = 218
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 2
       BorderSpacing.Top = 2
       TabOrder = 1
-      Text = 'Edit2'
+      Text = 'edt_altText'
     end
-    object SpeedButton2: TSpeedButton[5]
-      AnchorSideTop.Control = Edit2
+    object spb_textDialog: TSpeedButton[4]
+      AnchorSideTop.Control = edt_altText
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = frm_Data
       AnchorSideRight.Side = asrBottom
@@ -86,7 +75,30 @@ inherited extIDEM_sub_valFILE_frm: TextIDEM_sub_valFILE_frm
       Top = 25
       Width = 23
       Anchors = [akTop, akRight]
-      OnClick = SpeedButton2Click
+      OnClick = spb_textDialogClick
+    end
+    object rdb_Halt: TRadioButton[5]
+      AnchorSideLeft.Control = frm_Data
+      AnchorSideTop.Control = edt_altText
+      AnchorSideTop.Side = asrCenter
+      Left = 0
+      Height = 19
+      Top = 27
+      Width = 42
+      Caption = 'Halt'
+      TabOrder = 2
+    end
+    object rdb_Alt: TRadioButton[6]
+      AnchorSideLeft.Control = rdb_Halt
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = edt_altText
+      AnchorSideTop.Side = asrCenter
+      Left = 42
+      Height = 19
+      Top = 27
+      Width = 35
+      Caption = 'Alt'
+      TabOrder = 3
     end
   end
 end

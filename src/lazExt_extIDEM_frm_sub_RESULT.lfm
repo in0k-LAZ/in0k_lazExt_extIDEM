@@ -1,7 +1,7 @@
 inherited extIDEM_sub_RESULT_frm: TextIDEM_sub_RESULT_frm
   Width = 606
   ClientWidth = 606
-  DesignLeft = 507
+  DesignLeft = 508
   DesignTop = 274
   inherited frm_Caption: TLabel
     AnchorSideLeft.Control = Owner
@@ -51,8 +51,9 @@ inherited extIDEM_sub_RESULT_frm: TextIDEM_sub_RESULT_frm
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 2
       ItemHeight = 15
+      OnChange = cmb_forIDEChange
+      Style = csDropDownList
       TabOrder = 0
-      Text = 'cmb_forIDE'
     end
     object lbl_forSRC: TLabel[3]
       AnchorSideLeft.Control = Shape1
@@ -79,8 +80,9 @@ inherited extIDEM_sub_RESULT_frm: TextIDEM_sub_RESULT_frm
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 2
       ItemHeight = 15
+      OnChange = cmb_forSRCChange
+      Style = csDropDownList
       TabOrder = 1
-      Text = 'cmb_forSRC'
     end
   end
 end

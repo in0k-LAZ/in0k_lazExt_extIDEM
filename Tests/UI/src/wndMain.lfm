@@ -1,0 +1,37 @@
+object mainWnd: TmainWnd
+  Left = 381
+  Height = 240
+  Top = 201
+  Width = 310
+  Caption = 'mainWnd'
+  ClientHeight = 240
+  ClientWidth = 310
+  LCLVersion = '1.4.0.4'
+  object ListBox1: TListBox
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Button1
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 0
+    Height = 240
+    Top = 0
+    Width = 235
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    ItemHeight = 0
+    TabOrder = 0
+  end
+  object Button1: TButton
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 235
+    Height = 25
+    Top = 0
+    Width = 75
+    Anchors = [akTop, akRight]
+    Caption = 'Open'
+    OnClick = Button1Click
+    TabOrder = 1
+  end
+end

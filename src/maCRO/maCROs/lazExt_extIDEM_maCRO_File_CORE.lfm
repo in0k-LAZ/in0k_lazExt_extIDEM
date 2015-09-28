@@ -6,7 +6,7 @@ inherited lazExt_extIDEM_maCRO_File_CORE_edit: TlazExt_extIDEM_maCRO_File_CORE_e
   ClientWidth = 679
   DesignLeft = 410
   DesignTop = 219
-  inline extIDEM_sub_COMMENTs_frm1: TextIDEM_sub_COMMENTs_frm[0]
+  inline sub_COMMENTs: TextIDEM_sub_COMMENTs_frm[0]
     Height = 42
     Top = 63
     Width = 679
@@ -14,11 +14,11 @@ inherited lazExt_extIDEM_maCRO_File_CORE_edit: TlazExt_extIDEM_maCRO_File_CORE_e
     ClientHeight = 42
     ClientWidth = 679
     inherited frm_Caption: TLabel
-      AnchorSideLeft.Control = extIDEM_sub_COMMENTs_frm1
+      AnchorSideLeft.Control = sub_COMMENTs
     end
     inherited frm_Data: TPanel
-      AnchorSideLeft.Control = extIDEM_sub_COMMENTs_frm1
-      AnchorSideRight.Control = extIDEM_sub_COMMENTs_frm1
+      AnchorSideLeft.Control = sub_COMMENTs
+      AnchorSideRight.Control = sub_COMMENTs
       Width = 679
       ClientWidth = 679
       inherited Edit2: TEdit
@@ -26,7 +26,7 @@ inherited lazExt_extIDEM_maCRO_File_CORE_edit: TlazExt_extIDEM_maCRO_File_CORE_e
       end
     end
     inherited CheckBox1: TCheckBox
-      AnchorSideTop.Control = extIDEM_sub_COMMENTs_frm1
+      AnchorSideTop.Control = sub_COMMENTs
     end
   end
   inline sub_RESULT: TextIDEM_sub_RESULT_frm[1]
@@ -61,7 +61,7 @@ inherited lazExt_extIDEM_maCRO_File_CORE_edit: TlazExt_extIDEM_maCRO_File_CORE_e
       end
     end
   end
-  inline extIDEM_sub_valFILE_frm1: TextIDEM_sub_valFILE_frm[2]
+  inline sub_valFILE: TextIDEM_sub_valFILE_frm[2]
     Height = 63
     Width = 679
     Align = alTop
@@ -70,12 +70,12 @@ inherited lazExt_extIDEM_maCRO_File_CORE_edit: TlazExt_extIDEM_maCRO_File_CORE_e
     ClientWidth = 679
     TabOrder = 2
     inherited frm_Caption: TLabel
-      AnchorSideLeft.Control = extIDEM_sub_valFILE_frm1
-      AnchorSideTop.Control = extIDEM_sub_valFILE_frm1
+      AnchorSideLeft.Control = sub_valFILE
+      AnchorSideTop.Control = sub_valFILE
     end
     inherited frm_Data: TPanel
-      AnchorSideLeft.Control = extIDEM_sub_valFILE_frm1
-      AnchorSideRight.Control = extIDEM_sub_valFILE_frm1
+      AnchorSideLeft.Control = sub_valFILE
+      AnchorSideRight.Control = sub_valFILE
       Width = 679
       ClientWidth = 679
       inherited SpeedButton1: TSpeedButton

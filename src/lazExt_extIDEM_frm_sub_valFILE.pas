@@ -12,13 +12,14 @@ type
   { TextIDEM_sub_valFILE_frm }
 
   TextIDEM_sub_valFILE_frm = class(tExtIDEM_sub_frm)
-    Edit1: TEdit;
-    Edit2: TEdit;
-    Label6: TLabel;
-    Label7: TLabel;
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
-    procedure SpeedButton2Click(Sender: TObject);
+    edt_fileName: TEdit;
+    edt_altText: TEdit;
+    lbl_file: TLabel;
+    rdb_Halt: TRadioButton;
+    rdb_Alt: TRadioButton;
+    spb_fileDialog: TSpeedButton;
+    spb_textDialog: TSpeedButton;
+    procedure spb_textDialogClick(Sender: TObject);
   protected
     function getFRM_caption:string; override;
   end;
@@ -29,12 +30,12 @@ const _cTXT_frmCaption_='Значение';
 
 {$R *.lfm}
 
-procedure TextIDEM_sub_valFILE_frm.SpeedButton2Click(Sender: TObject);
+procedure TextIDEM_sub_valFILE_frm.spb_textDialogClick(Sender: TObject);
 begin
     with TStringsPropEditorFrm.Create(Application) do begin
-        Memo.Text:=Edit2.Text;
+        Memo.Text:=edt_altText.Text;
         if mrOK=ShowModal then begin
-            Edit2.Text:=Memo.Text;
+            edt_altText.Text:=Memo.Text;
         end;
         FREE;
     end;

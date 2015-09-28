@@ -13,6 +13,8 @@ interface
 
 
 uses lazExt_extIDEM_maCRO_node, lazExt_extIDEM_maCRO_edit, extIDEM_coreObject,
+
+  Laz2_XMLCfg,
   lazExt_extIDEM_frm_sub_RESULT, lazExt_extIDEM_frm_sub_valTEXT, Classes,
   SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, EditBtn, Buttons;
 
@@ -47,6 +49,9 @@ type
     class function Obj_IDNT:string;                    override;
     class function Obj_Name:string;                    override;
     class function Obj_Desc:string;                    override;
+  public    //<
+    procedure node_Save(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); override;
+    procedure node_Load(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); override;
   end;
 
 
@@ -68,12 +73,15 @@ end;
 
 procedure TlazExt_extIDEM_maCRO_Text_CORE_edit.Settings_Read(const node:tExtIDEM_core_objNODE);
 begin
-    //Value_Memo.Text:=tLazExt_extIDEM_maCRO_Text_CORE_node(node).value;
+    if node is tLazExt_extIDEM_maCRO_Text_CORE_node
+    then sub_valTEXT.TextValue:=tLazExt_extIDEM_maCRO_Text_CORE_node(node).Value
+    else sub_valTEXT.TextValue:='';
 end;
 
 procedure TlazExt_extIDEM_maCRO_Text_CORE_edit.Settings_Write(const node:tExtIDEM_core_objNODE);
 begin
-    //tLazExt_extIDEM_maCRO_Text_CORE_node(node).value:=Value_Memo.Text;
+    if node is tLazExt_extIDEM_maCRO_Text_CORE_node
+    then tLazExt_extIDEM_maCRO_Text_CORE_node(node).Value:=sub_valTEXT.TextValue;
 end;
 
 //------------------------------------------------------------------------------
@@ -93,6 +101,20 @@ begin
     inherited Create(prmNAME,EDITor);
    _value_:='';
 end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_maCRO_Text_CORE_node.node_Save(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String);
+begin
+    inherited;
+end;
+
+procedure tLazExt_extIDEM_maCRO_Text_CORE_node.node_Load(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String);
+begin
+    inherited;
+end;
+
+//------------------------------------------------------------------------------
 
 class function tLazExt_extIDEM_maCRO_Text_CORE_node.PUBLISED:boolean;
 begin

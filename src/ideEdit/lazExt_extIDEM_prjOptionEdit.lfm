@@ -228,6 +228,7 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
     Align = alLeft
     DefaultItemHeight = 18
     TabOrder = 4
+    OnAdvancedCustomDrawItem = TreeView1AdvancedCustomDrawItem
     OnChange = TreeView1Change
     OnChanging = TreeView1Changing
     OnDeletion = TreeView1Deletion

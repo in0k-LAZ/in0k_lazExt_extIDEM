@@ -13,9 +13,10 @@ interface
 {$endIf}
 
 uses {$ifDef lazExt_Sub6_EventLOG_mode}Sub6_wndDebug,{$endIf}
-   Laz2_XMLCfg, //< !!! для работы ОБЯЗАТЕЛЬНО пользоваться этой библиотекой
-   ProjectResourcesIntf,            Dialogs,
+   Laz2_XMLCfg, Laz2_DOM, //< !!! для работы ОБЯЗАТЕЛЬНО пользоваться этой библиотекой
+   ProjectResourcesIntf,            Dialogs,   lazExt_extIDEM,
    extIDEM_coreObject, extIDEM_MACROS_node, extIDEM_McrPRM_node,
+   extIDEM_McrPRM_NotDEF,
    //lazExt_extIDEM__NDF_MACROS,
    //lazExt_extIDEM_maCRO_node,
    LazIDEIntf;//,
@@ -142,7 +143,6 @@ begin
     with TXMLConfig(AConfig) do begin
         if not _mustDel_ then begin // тут сохранение идет
             SetDeleteValue(_getConfigPATH_(Path)+'Enabled',_enabled_,true);
-            //---
            _MacroITMs_Save_(_list_,TXMLConfig(AConfig),_getConfigPATH_(Path));
         end;
         //--- а может и не надо?
@@ -159,7 +159,8 @@ begin
    _list_reIni_; //< мы юудем его ПЕРЕЗАГРУЖАТЬ полностью
    _mustDel_:=FALSE;
     with TXMLConfig(AConfig) do begin
-       _enabled_:=GetValue(_getConfigPATH_(Path)+'Enabled',HasChildPaths(_getConfigPATH_(Path)))
+       _enabled_:=GetValue(_getConfigPATH_(Path)+'Enabled',HasChildPaths(_getConfigPATH_(Path)));
+       _MacroITMs_Load_(_list_, TXMLConfig(AConfig),_getConfigPATH_(Path));
     end;
     //---
     {$ifDef lazExt_Sub6_EventLOG_mode}
@@ -201,7 +202,9 @@ end;
 
 procedure tExtIDEM_prjResources._MacroPRM_Load_(const macroPRM:tExtIDEM_McrPRM_node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
 begin
-    {todo}
+    ShowMessage('_MacroPRM_Load_ :'+_MacroPRM_PATH_(macroPRM,prntPath));
+    macroPRM.Enabled:=AConfig.GetValue(_MacroPRM_PATH_(macroPRM,prntPath)+_cTXT_Enables_,true);
+    macroPRM.node_Load(AConfig,_MacroPRM_PATH_(macroPRM,prntPath));
 end;
 
 {%endRegion}
@@ -229,8 +232,41 @@ begin
 end;
 
 procedure tExtIDEM_prjResources._MacroPRMs_Load_(const macroITM:tLazExt_extIDEM_preSet_Node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
+var dom_Node:TDomNode;
+    macroPRM:tExtIDEM_McrPRM_node;
+    ide__PRM:tExtIDEM_McrPRM_node;
+    //cccITM:tLazExt_extIDEM_preSet_Node;
 begin
-    {todo}
+    ShowMessage('_MacroPRMs_Load_ :'+_MacroPRMs_PATH_(prntPath));
+
+    dom_Node:=AConfig.FindNode(_MacroPRMs_PATH_(prntPath),false);
+    if Assigned(dom_Node) then begin
+        dom_Node:=dom_Node.FirstChild;
+        while Assigned(dom_Node) do begin
+            macroPRM:=macroITM.Param_FND(dom_Node.NodeName);
+            if not Assigned(macroPRM) then begin //< такого еще нет
+                ide__PRM:=extIDEM.FIND_IDNT(macroITM.node_IDNT,dom_Node.NodeName);
+                if Assigned(ide__PRM) then begin
+                    ShowMessage('_MacroPRMs_Load_ : COPY ===');
+                    macroPRM:=tLazExt_extIDEM_nodeTYPE(ide__PRM.ClassType).Create;
+                    macroPRM.Copy(ide__PRM);
+                    ShowMessage('_MacroPRMs_Load_ : COPY +++');
+                end
+                else begin
+                    macroPRM:=tExtIDEM_McrPRM_NotDEF_node.Create(dom_Node.NodeName);
+                end;
+                if Assigned(macroPRM) then begin
+                    macroITM.Param_INS(macroPRM);
+                end;
+            end;
+            //---
+            if Assigned(macroPRM) then begin
+               _MacroPRM_Load_(macroPRM,AConfig,_MacroPRMs_PATH_(prntPath))
+            end;
+            //---
+            dom_Node:=dom_Node.NextSibling;
+        end;
+    end;
 end;
 
 {%endRegion}
@@ -260,7 +296,12 @@ end;
 
 procedure tExtIDEM_prjResources._MacroITM_Load_(const macroITM:tLazExt_extIDEM_preSet_Node; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
 begin
-    {todo}
+    // загружаем САМ узел
+    macroITM.Enabled:=AConfig.GetValue(_MacroITM_PATH_(macroITM,prntPath)+_cTXT_Enables_,true);
+    macroITM.node_Load(AConfig,_MacroITM_PATH_(macroITM,prntPath));
+    ShowMessage('LOAD :'+_MacroITM_PATH_(macroITM,prntPath));
+    // идем по ВЛОЖЕННЫМ узлам и пытаемся их ЗАГРУЗИТЬ
+   _MacroPRMs_Load_(macroITM, AConfig, _MacroITM_PATH_(macroITM,prntPath));
 end;
 
 {%endRegion}
@@ -288,8 +329,34 @@ begin
 end;
 
 procedure tExtIDEM_prjResources._MacroITMs_Load_(const list:tLazExt_extIDEM_preSetsList_core; const AConfig:Laz2_XMLCfg.TXMLConfig; const prntPath:String);
+var dom_Node:TDomNode;
+    macroITM:tLazExt_extIDEM_preSet_Node;
 begin
-
+    dom_Node:=AConfig.FindNode(_MacroITMs_PATH_(prntPath),false);
+    if Assigned(dom_Node) then begin
+        dom_Node:=dom_Node.FirstChild;
+        while Assigned(dom_Node) do begin
+            macroITM:=list.PreSETs_Find_IDNT(dom_Node.NodeName);
+            if not Assigned(macroITM) then begin //< её ещё НЕТ в списке ... надо создать
+                macroITM:=extIDEM.FIND_IDNT(dom_Node.NodeName);
+                if Assigned(macroITM) then begin //< ага, идже её поддерживает
+                    macroITM:=tLazExt_extIDEM_preSet_NodeTYPE(macroITM.ClassType).Create;
+                    list.PreSETs_ADD(macroITM);
+                end
+                else begin //< неизвестный тип ... создаем сответствующий
+                    {todo}
+                    ShowMessage('fail _MacroITMs_Load_ '+prntPath);
+                end;
+            end;
+            //---
+            if Assigned(macroITM) then begin
+                _MacroITM_Load_(macroITM, AConfig, _MacroITMs_PATH_(prntPath));
+            end;
+            macroITM:=nil;
+            //---
+            dom_Node:=dom_Node.NextSibling;
+        end;
+    end;
 end;
 
 {%endRegion}

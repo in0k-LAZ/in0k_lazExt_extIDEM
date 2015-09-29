@@ -57,6 +57,9 @@ type
     TreeView1: TTreeView;
     procedure chb_nodeEnabledChange(Sender: TObject);
     procedure chb_nodeEnabledClick(Sender: TObject);
+    procedure TreeView1AdvancedCustomDrawItem(Sender: TCustomTreeView;
+      Node: TTreeNode; State: TCustomDrawState; Stage: TCustomDrawStage;
+      var PaintImages, DefaultDraw: Boolean);
     procedure ui_ExtIDEM_EnabledChange(Sender: TObject);
     procedure Label2Click(Sender: TObject);
     procedure lst_preSetDragOver(Sender, Source: TObject; X, Y: Integer;
@@ -157,6 +160,7 @@ type
     function  _node_get_NAME:string;
     function  _node_get_DESC:string;
     function  _node_get_ENBL:boolean;
+    function  _node_get_DLTD:boolean;
   strict private
    _was_load_:boolean;
 
@@ -187,6 +191,7 @@ type
   public
     property  NodeTEDT:tExtIDEM_core_objEditTYPE read _node_get_EDIT;
     property  NodeENBL:boolean read _node_get_ENBL;
+    property  NodeDLTD:boolean read _node_get_DLTD;
     property  NodeIDNT:string  read _node_get_IDNT;
     property  NodeNAME:string  read _node_get_NAME;
     property  NodeDESC:string  read _node_get_DESC;
@@ -314,6 +319,18 @@ begin
     end
     else begin //< иначе читаем прямо из объекта
         result:=Assigned(_node_prj_)and (not _node_is_MacroNDF_) and _node_prj_.Enabled;
+    end;
+end;
+
+
+function tNodeDATA._node_get_DLTD:boolean;
+begin
+    result:=false;
+    if Assigned(_edit_frm_) and (_was_load_) then begin //< есть фрейм редактор и данные загружены,
+        result:=_edit_frm_.NodeMustDEL; //< то данные мы ДОЛЖНЫ брать из него
+    end
+    else begin //< иначе читаем прямо из объекта
+        result:=Assigned(_node_prj_)and (not _node_is_MacroNDF_) and _node_prj_.MustDEL;
     end;
 end;
 
@@ -766,6 +783,36 @@ end;
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit.chb_nodeEnabledClick(Sender: TObject);
 begin
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit.TreeView1AdvancedCustomDrawItem(
+  Sender: TCustomTreeView; Node: TTreeNode; State: TCustomDrawState;
+  Stage: TCustomDrawStage; var PaintImages, DefaultDraw: Boolean);
+var nodeData:tNodeDATA;
+var Rect:tRect;
+var TextStyle:TTextStyle;
+begin
+    DefaultDraw := true;
+    if Stage=cdPrePaint then begin
+        nodeData:=tNodeDATA(Node.Data);
+        if Assigned(nodeData) then begin
+            if nodeData.NodeDLTD
+            then Sender.Canvas.Font.Style:=Sender.Canvas.Font.Style+[fsStrikeOut]
+            else Sender.Canvas.Font.Style:=Sender.Canvas.Font.Style-[fsStrikeOut];
+            if nodeData.NodeENBL
+            then Sender.Canvas.Font.Style:=Sender.Canvas.Font.Style+[fsBold]
+            else Sender.Canvas.Font.Style:=Sender.Canvas.Font.Style-[fsBold];
+            {if not node.Selected then begin
+                Sender.Canvas.Font.Color:=clGrayText;
+            end; }
+            //---
+            {TextStyle:=sender.Canvas.TextStyle;
+            TextStyle.Alignment:=taCenter;
+            TextStyle.Layout   :=tlCenter;
+            Rect:=Node.DisplayRect(True);
+            Sender.Canvas.TextRect(Rect,Rect.Left,Rect.Top,Node.Text,TextStyle);}
+        end;
+    end;
 end;
 
 

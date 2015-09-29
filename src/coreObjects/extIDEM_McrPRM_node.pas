@@ -82,6 +82,10 @@ type
     function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tExtIDEM_core_objEditTYPE):boolean;
     function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
     function ADD(const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
+
+    function FND(const prmName:string):tExtIDEM_McrPRM_node;
+
+
   public
     function Nodes_First:tExtIDEM_McrPRM_node;
     function Nodes_Next(const node:tExtIDEM_McrPRM_node):tExtIDEM_McrPRM_node;
@@ -251,6 +255,10 @@ begin
     result:=ADD('',nodeType,nil)
 end;
 
+function tLazExt_extIDEM_nodesList_core.FND(const prmName:string):tExtIDEM_McrPRM_node;
+begin
+    result:=_nodes_FND_(prmName);
+end;
 
 function tLazExt_extIDEM_nodesList_core.Nodes_First:tExtIDEM_McrPRM_node;
 begin

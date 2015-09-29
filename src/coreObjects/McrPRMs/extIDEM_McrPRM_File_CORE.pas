@@ -71,11 +71,11 @@ procedure TlazExt_extIDEM_maCRO_File_CORE_edit.Settings_Read(const node:tExtIDEM
 begin
     if node is tLazExt_extIDEM_maCRO_File_CORE_node then begin
         sub_valFILE.FileName:=tLazExt_extIDEM_maCRO_File_CORE_node(node).FileName;
-        sub_valFILE.Alt_Text:=tLazExt_extIDEM_maCRO_File_CORE_node(node).Alt_Text;
         sub_valFILE.Alt_Used:=tLazExt_extIDEM_maCRO_File_CORE_node(node).Alt_Used;
+        sub_valFILE.Alt_Text:=tLazExt_extIDEM_maCRO_File_CORE_node(node).Alt_Text;
         //---
-        sub_COMMENTs.CmntSMBs:=tLazExt_extIDEM_maCRO_File_CORE_node(node).CMT_Text;
         sub_COMMENTs.CmntUsed:=tLazExt_extIDEM_maCRO_File_CORE_node(node).CMT_Used;
+        sub_COMMENTs.CmntSMBs:=tLazExt_extIDEM_maCRO_File_CORE_node(node).CMT_Text;
         //---
         sub_RESULT.ForIde_Value:=tLazExt_extIDEM_maCRO_File_CORE_node(node).ResultForIDE;
         sub_RESULT.ForSRC_Value:=tLazExt_extIDEM_maCRO_File_CORE_node(node).ResultForSRC;
@@ -91,21 +91,25 @@ begin
         sub_RESULT.ForIde_Value:=0;
         sub_RESULT.ForSRC_Value:=0;
     end;
+    //---
+    inherited;
 end;
 
 procedure TlazExt_extIDEM_maCRO_File_CORE_edit.Settings_Write(const node:tExtIDEM_core_objNODE);
 begin
     if node is tLazExt_extIDEM_maCRO_File_CORE_node then begin
         tLazExt_extIDEM_maCRO_File_CORE_node(node).FileName:=sub_valFILE.FileName;
-        tLazExt_extIDEM_maCRO_File_CORE_node(node).Alt_Text:=sub_valFILE.Alt_Text;
         tLazExt_extIDEM_maCRO_File_CORE_node(node).Alt_Used:=sub_valFILE.Alt_Used;
+        tLazExt_extIDEM_maCRO_File_CORE_node(node).Alt_Text:=sub_valFILE.Alt_Text;
         //---
-        tLazExt_extIDEM_maCRO_File_CORE_node(node).CMT_Text:=sub_COMMENTs.CmntSMBs;
         tLazExt_extIDEM_maCRO_File_CORE_node(node).CMT_Used:=sub_COMMENTs.CmntUsed;
+        tLazExt_extIDEM_maCRO_File_CORE_node(node).CMT_Text:=sub_COMMENTs.CmntSMBs;
         //---
         tLazExt_extIDEM_maCRO_File_CORE_node(node).ResultForIDE:=sub_RESULT.ForIde_Value;
         tLazExt_extIDEM_maCRO_File_CORE_node(node).ResultForSRC:=sub_RESULT.ForSRC_Value;
-    end
+    end;
+    //---
+    inherited;
 end;
 
 //==============================================================================
@@ -185,6 +189,7 @@ begin
     AConfig.SetDeleteValue(Path+_cTXT_comments_+_cTXT_delimetr_+_cTXT_used_ ,_cmt_U_,true);
     //---
     AConfig_setResultValue(AConfig,Path,0,0);
+    //---
     inherited;
 end;
 
@@ -196,10 +201,11 @@ begin
    _alt_T_:=AConfig.GetValue(Path+_cTXT_alt_Text_+_cTXT_delimetr_+_cTXT_value_,'');
    _alt_U_:=AConfig.GetValue(Path+_cTXT_alt_Text_+_cTXT_delimetr_+_cTXT_used_ ,true);
     //---
-   _cmt_T_:=AConfig.GetValue(Path+_cTXT_alt_Text_+_cTXT_comments_+_cTXT_value_,'');
-   _cmt_U_:=AConfig.GetValue(Path+_cTXT_alt_Text_+_cTXT_comments_+_cTXT_used_ ,true);
+   _cmt_T_:=AConfig.GetValue(Path+_cTXT_comments_+_cTXT_delimetr_+_cTXT_value_,'');
+   _cmt_U_:=AConfig.GetValue(Path+_cTXT_comments_+_cTXT_delimetr_+_cTXT_used_ ,true);
     //---
-    AConfig_getResultValue  (AConfig,ConfigPath(Path),0,0);
+    AConfig_getResultValue  (AConfig,Path,0,0);
+    //---
     inherited;
 end;
 

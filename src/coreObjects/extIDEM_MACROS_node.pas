@@ -39,6 +39,7 @@ type
     function Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE; const prmEdit:tExtIDEM_core_objEditTYPE):boolean;
     function Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
     function Param_ADD(const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
+    function Param_FND(const prmName:string):tExtIDEM_McrPRM_node;
     function Param_First:tExtIDEM_McrPRM_node;
     function Param_Next(const node:tExtIDEM_McrPRM_node):tExtIDEM_McrPRM_node;
   end;
@@ -144,6 +145,11 @@ end;
 function tLazExt_extIDEM_preSet_Node.Param_ADD(const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
 begin
     result:=Param_ADD('',prmType,nil);
+end;
+
+function tLazExt_extIDEM_preSet_Node.Param_FND(const prmName:string):tExtIDEM_McrPRM_node;
+begin
+   _param_list_.FND(prmName);
 end;
 
 //------------------------------------------------------------------------------

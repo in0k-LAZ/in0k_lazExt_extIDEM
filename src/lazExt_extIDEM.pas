@@ -7,6 +7,7 @@ interface
 uses IDEOptionsIntf,
 
     extIDEM_MACROS_node,
+    extIDEM_McrPRM_node,
     //lazExt_extIDEM__USER_MACROS,
     //lazExt_extIDEM_preSet_node,
     //lazExt_extIDEM_preSet_edit,
@@ -28,6 +29,11 @@ type
     property preSets:tLazExt_extIDEM_preSetsList_core read _list_preSets_;
 //    function preSet_FiND(const INDX:integer):tLazExt_extIDEM_preSet_Node;
     function PreSETs_ADD_Node(const Node:tLazExt_extIDEM_preSet_NodeTYPE):tLazExt_extIDEM_preSet_Node;
+
+
+  public
+    function FIND_IDNT(const MACROS:string):tLazExt_extIDEM_preSet_Node;
+    function FIND_IDNT(const MACROS,McrPRM:string):tExtIDEM_McrPRM_node;
   end;
 
 
@@ -50,6 +56,25 @@ begin
 end;
 
 //------------------------------------------------------------------------------
+
+function tLazExt_extIDEM.FIND_IDNT(const MACROS:string):tLazExt_extIDEM_preSet_Node;
+begin
+    result:=nil;
+    if Assigned(_list_preSets_) then begin
+        result:=_list_preSets_.PreSETs_Find_IDNT(MACROS);
+    end;
+end;
+
+function tLazExt_extIDEM.FIND_IDNT(const MACROS,McrPRM:string):tExtIDEM_McrPRM_node;
+begin
+    result:=tExtIDEM_McrPRM_node(pointer(FIND_IDNT(MACROS)));
+    if Assigned(result) then begin
+        result:=tLazExt_extIDEM_preSet_Node(result).Param_FND(McrPRM);
+    end;
+end;
+
+//------------------------------------------------------------------------------
+
 
 {function tLazExt_extIDEM.preSet_FiND(const INDX:integer):tLazExt_extIDEM_preSet_Node;
 begin

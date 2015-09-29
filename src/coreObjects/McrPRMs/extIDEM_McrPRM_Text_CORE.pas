@@ -69,6 +69,8 @@ begin
         sub_RESULT.ForIde_Value:=0;
         sub_RESULT.ForSRC_Value:=0;
     end;
+    //---
+    inherited;
 end;
 
 procedure TlazExt_extIDEM_maCRO_Text_CORE_edit.Settings_Write(const node:tExtIDEM_core_objNODE);
@@ -79,6 +81,8 @@ begin
         tLazExt_extIDEM_maCRO_Text_CORE_node(node).ResultForIDE:=sub_RESULT.ForIde_Value;
         tLazExt_extIDEM_maCRO_Text_CORE_node(node).ResultForSRC:=sub_RESULT.ForSRC_Value;
     end;
+    //---
+    inherited;
 end;
 
 //------------------------------------------------------------------------------

@@ -25,7 +25,8 @@ uses
   lazExt_extIDEM__SUB6_mcrPRM__FileDescription, 
   lazExt_extIDEM__SUB6_mcrPRM__CompanyName, 
   lazExt_extIDEM__SUB6_mcrPRM__Comments, extIDEM_McrPRM_Intf, 
-  LazarusPackageIntf;
+  lazExt_extIDEM__USER_mcrPRM__FILE, lazExt_extIDEM__USER_mcrPRM__TEXT, 
+  ExtIDEM_frm_sub_UserPrmName, LazarusPackageIntf;
 
 implementation
 

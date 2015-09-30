@@ -19,6 +19,7 @@ inherited ExtIDEM_sub_NotDEF_frm: TExtIDEM_sub_NotDEF_frm
       Lines.Strings = (
         'Memo1'
       )
+      ScrollBars = ssAutoBoth
       TabOrder = 0
     end
   end

@@ -31,11 +31,12 @@ const _cINT_bsLeft=8;
 constructor tExtIDEM_sub_frm.Create(AOwner: TComponent);
 begin
     inherited;
+    //
     frm_Caption.Caption:=getFRM_caption;
     frm_Data.BorderSpacing.Left:=_cINT_bsLeft;
     frm_Data.Anchors:=frm_Data.Anchors-[akBottom];
     frm_Data.AutoSize:=TRUE;
-    self  .AutoSize:=TRUE;
+    self    .AutoSize:=TRUE;
 end;
 
 //------------------------------------------------------------------------------

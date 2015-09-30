@@ -1,0 +1,119 @@
+inherited ExtIDEM__USER_mcrPRM__FILE_frm: TExtIDEM__USER_mcrPRM__FILE_frm
+  inherited sub_COMMENTs: TextIDEM_sub_COMMENTs_frm
+    Height = 42
+    Top = 124
+    Width = 679
+    Align = alTop
+    ClientHeight = 42
+    ClientWidth = 679
+    inherited frm_Caption: TLabel
+      AnchorSideLeft.Control = sub_COMMENTs
+    end
+    inherited frm_Data: TPanel
+      AnchorSideLeft.Control = sub_COMMENTs
+      AnchorSideRight.Control = sub_COMMENTs
+      Width = 679
+      ClientWidth = 679
+      inherited edt_CmntSMB: TEdit
+        Width = 679
+      end
+    end
+    inherited chb_Enabled: TCheckBox
+      AnchorSideTop.Control = sub_COMMENTs
+    end
+  end
+  inherited sub_RESULT: TextIDEM_sub_RESULT_frm
+    Height = 38
+    Top = 166
+    Width = 679
+    Align = alTop
+    ClientHeight = 38
+    ClientWidth = 679
+    TabOrder = 1
+    inherited frm_Caption: TLabel
+      AnchorSideLeft.Control = sub_RESULT
+      AnchorSideTop.Control = sub_RESULT
+    end
+    inherited frm_Data: TPanel
+      AnchorSideLeft.Control = sub_RESULT
+      AnchorSideRight.Control = sub_RESULT
+      Width = 679
+      ClientWidth = 679
+      inherited Shape1: TShape
+        Left = 335
+      end
+      inherited cmb_forIDE: TComboBox
+        Width = 294
+      end
+      inherited lbl_forSRC: TLabel
+        Left = 343
+      end
+      inherited cmb_forSRC: TComboBox
+        Left = 388
+        Width = 291
+      end
+    end
+  end
+  inherited sub_valFILE: TextIDEM_sub_valFILE_frm
+    Height = 63
+    Top = 61
+    Width = 679
+    Align = alTop
+    AutoSize = True
+    ClientHeight = 63
+    ClientWidth = 679
+    TabOrder = 2
+    inherited frm_Caption: TLabel
+      AnchorSideLeft.Control = sub_valFILE
+      AnchorSideTop.Control = sub_valFILE
+    end
+    inherited frm_Data: TPanel
+      AnchorSideLeft.Control = sub_valFILE
+      AnchorSideRight.Control = sub_valFILE
+      Width = 679
+      ClientWidth = 679
+      inherited spb_fileDialog: TSpeedButton
+        Left = 656
+      end
+      inherited edt_fileName: TEdit
+        Width = 625
+      end
+      inherited edt_altText: TEdit
+        Width = 577
+      end
+      inherited spb_textDialog: TSpeedButton
+        Left = 656
+      end
+    end
+  end
+  inline sub_UserPrmName: TExtIDEM_sub_UserPrmName_frm[3]
+    Height = 61
+    Width = 679
+    Align = alTop
+    ClientHeight = 61
+    ClientWidth = 679
+    TabOrder = 3
+    inherited frm_Caption: TLabel
+      AnchorSideLeft.Control = sub_UserPrmName
+      AnchorSideTop.Control = sub_UserPrmName
+    end
+    inherited frm_Data: TPanel
+      AnchorSideLeft.Control = sub_UserPrmName
+      AnchorSideRight.Control = sub_UserPrmName
+      AnchorSideBottom.Control = sub_UserPrmName
+      Height = 46
+      Width = 679
+      ClientHeight = 46
+      ClientWidth = 679
+      inherited Edit1: TEdit
+        Width = 654
+      end
+      inherited Edit2: TEdit
+        Width = 631
+      end
+      inherited SpeedButton1: TSpeedButton
+        Left = 656
+      end
+    end
+  end
+end

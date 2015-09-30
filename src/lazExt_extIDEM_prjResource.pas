@@ -302,7 +302,8 @@ begin
     macroITM.node_Load(AConfig,_MacroITM_PATH_(macroITM,prntPath));
     ShowMessage('LOAD :'+_MacroITM_PATH_(macroITM,prntPath));
     // идем по ВЛОЖЕННЫМ узлам и пытаемся их ЗАГРУЗИТЬ
-   _MacroPRMs_Load_(macroITM, AConfig, _MacroITM_PATH_(macroITM,prntPath));
+    if not (macroITM is tExtIDEM_NDF_MACROS_node)
+    then _MacroPRMs_Load_(macroITM, AConfig, _MacroITM_PATH_(macroITM,prntPath));
 end;
 
 {%endRegion}
@@ -342,18 +343,21 @@ begin
                 macroITM:=extIDEM.FIND_IDNT(dom_Node.NodeName);
                 if Assigned(macroITM) then begin //< ага, идже её поддерживает
                     macroITM:=tLazExt_extIDEM_preSet_NodeTYPE(macroITM.ClassType).Create;
-                    list.PreSETs_ADD(macroITM);
                 end
                 else begin //< неизвестный тип ... создаем сответствующий
-                    macroITM:=tExtIDEM_NDF_MACROS_node.Create;//(dom_Node.NodeName);
+                    macroITM:=tExtIDEM_NDF_MACROS_node.Create(dom_Node.NodeName);
                 end;
+                list.PreSETs_ADD(macroITM);
             end;
             //---
             if Assigned(macroITM) then begin
-                _MacroITM_Load_(macroITM, AConfig, _MacroITMs_PATH_(prntPath));
+                 _MacroITM_Load_(macroITM, AConfig, _MacroITMs_PATH_(prntPath));
+
             end;
-            macroITM:=nil;
+
+
             //---
+            macroITM:=nil;
             dom_Node:=dom_Node.NextSibling;
         end;
     end;

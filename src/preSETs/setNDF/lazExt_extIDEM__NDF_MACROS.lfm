@@ -1,4 +1,24 @@
 inherited ExtIDEM_NDF_MACROS_edit: TExtIDEM_NDF_MACROS_edit
-  DesignLeft = 246
-  DesignTop = 114
+  inline sub_NotDEF: TExtIDEM_sub_NotDEF_frm[0]
+    Height = 105
+    Width = 150
+    ClientHeight = 105
+    ClientWidth = 150
+    inherited frm_Caption: TLabel
+      AnchorSideLeft.Control = sub_NotDEF
+      AnchorSideTop.Control = sub_NotDEF
+    end
+    inherited frm_Data: TPanel
+      AnchorSideLeft.Control = sub_NotDEF
+      AnchorSideRight.Control = sub_NotDEF
+      AnchorSideBottom.Control = sub_NotDEF
+      Height = 90
+      Width = 150
+      ClientHeight = 90
+      ClientWidth = 150
+      inherited Memo1: TMemo
+        Width = 150
+      end
+    end
+  end
 end

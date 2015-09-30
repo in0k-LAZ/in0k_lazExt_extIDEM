@@ -1,25 +1,62 @@
-object extIDEM_USER_MACROS_edit: TextIDEM_USER_MACROS_edit
-  Left = 272
-  Height = 240
-  Top = 122
-  Width = 320
-  ClientHeight = 240
-  ClientWidth = 320
-  LCLVersion = '1.4.2.0'
-  object Label1: TLabel
-    Left = 22
+inherited extIDEM_USER_MACROS_edit: TextIDEM_USER_MACROS_edit
+  Width = 545
+  ClientWidth = 545
+  DesignLeft = 415
+  DesignTop = 205
+  object Label1: TLabel[0]
+    AnchorSideLeft.Control = Label2
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = ComboBox1
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Button1
+    Left = 36
     Height = 15
-    Top = 42
-    Width = 34
+    Top = 23
+    Width = 432
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 2
+    BorderSpacing.Right = 2
     Caption = 'Label1'
     ParentColor = False
+    WordWrap = True
   end
-  object Label2: TLabel
-    Left = 68
+  object Label2: TLabel[1]
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = ComboBox1
+    AnchorSideTop.Side = asrBottom
+    Left = 0
     Height = 15
-    Top = 46
+    Top = 23
     Width = 34
     Caption = 'Label2'
     ParentColor = False
+  end
+  object ComboBox1: TComboBox[2]
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 0
+    Height = 23
+    Top = 0
+    Width = 545
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    OnChange = ComboBox1Change
+    Style = csDropDownList
+    TabOrder = 0
+  end
+  object Button1: TButton[3]
+    AnchorSideTop.Control = ComboBox1
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 470
+    Height = 25
+    Top = 23
+    Width = 75
+    Anchors = [akTop, akRight]
+    Caption = 'Добавить'
+    TabOrder = 1
   end
 end

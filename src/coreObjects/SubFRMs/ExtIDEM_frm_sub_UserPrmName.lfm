@@ -1,0 +1,74 @@
+inherited ExtIDEM_sub_UserPrmName_frm: TExtIDEM_sub_UserPrmName_frm
+  DesignLeft = 306
+  DesignTop = 114
+  inherited frm_Caption: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+  end
+  inherited frm_Data: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+    object Edit1: TEdit[0]
+      AnchorSideLeft.Control = Label2
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = frm_Data
+      AnchorSideRight.Control = frm_Data
+      AnchorSideRight.Side = asrBottom
+      Left = 25
+      Height = 23
+      Top = 0
+      Width = 295
+      Anchors = [akTop, akLeft, akRight]
+      TabOrder = 0
+      Text = 'Edit1'
+    end
+    object Label1: TLabel[1]
+      AnchorSideLeft.Control = frm_Data
+      AnchorSideTop.Control = Edit1
+      AnchorSideTop.Side = asrCenter
+      Left = 0
+      Height = 15
+      Top = 4
+      Width = 11
+      Caption = 'ID'
+      ParentColor = False
+    end
+    object Edit2: TEdit[2]
+      AnchorSideLeft.Control = Label2
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Edit1
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Control = SpeedButton1
+      Left = 25
+      Height = 23
+      Top = 23
+      Width = 272
+      Anchors = [akTop, akLeft, akRight]
+      TabOrder = 1
+      Text = 'Edit2'
+    end
+    object Label2: TLabel[3]
+      AnchorSideLeft.Control = frm_Data
+      AnchorSideTop.Control = Edit2
+      AnchorSideTop.Side = asrCenter
+      Left = 0
+      Height = 15
+      Top = 27
+      Width = 25
+      Caption = 'Desc'
+      ParentColor = False
+    end
+    object SpeedButton1: TSpeedButton[4]
+      AnchorSideTop.Control = Edit2
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = frm_Data
+      AnchorSideRight.Side = asrBottom
+      Left = 297
+      Height = 22
+      Top = 23
+      Width = 23
+      Anchors = [akTop, akRight]
+    end
+  end
+end

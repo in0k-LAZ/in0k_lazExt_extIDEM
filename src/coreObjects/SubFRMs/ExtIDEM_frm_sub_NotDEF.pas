@@ -4,7 +4,7 @@ unit ExtIDEM_frm_sub_NotDEF;
 
 interface
 
-uses  ExtIDEM_frm_sub,
+uses  ExtIDEM_frm_sub, Laz2_XMLCfg,Laz2_DOM, laz2_XMLWrite,
   Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls;
 
 type
@@ -22,7 +22,27 @@ type
     property xmlNode_Text:string read _xmlNode_Text_GET_ write _xmlNode_Text_SET_;
   end;
 
+
+function LoadNodeXML_TextSource(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String):string;
+
 implementation
+
+function LoadNodeXML_TextSource(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String):string;
+var node:TDOMNode;
+    strm:TStringStream;
+begin
+    result:='';
+    node:=AConfig.FindNode(Path,false);
+    if Assigned(node) then begin
+        strm:=TStringStream.Create('');
+        try WriteXML(node,strm,[]);
+            strm.Position:=0; //< ??? {todo: think}
+            result:=trim(strm.DataString);
+        finally
+            strm.Free;
+        end;
+    end;
+end;
 
 {$R *.lfm}
 

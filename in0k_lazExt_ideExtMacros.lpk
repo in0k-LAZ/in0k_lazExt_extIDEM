@@ -12,7 +12,7 @@
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="35">
+    <Files Count="38">
       <Item1>
         <Filename Value="in0k_lazExt_extIDEM_INI.inc"/>
         <Type Value="Binary"/>
@@ -77,6 +77,7 @@
         <Filename Value="src\coreObjects\extIDEM_coreObject.pas"/>
         <AddToUsesPkgSection Value="False"/>
         <UnitName Value="extIDEM_coreObject"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item14>
       <Item15>
         <Filename Value="src\coreObjects\SubFRMs\ExtIDEM_frm_nodeName.pas"/>
@@ -91,6 +92,7 @@
       <Item17>
         <Filename Value="src\coreObjects\SubFRMs\ExtIDEM_frm_sub_NotDEF.pas"/>
         <UnitName Value="ExtIDEM_frm_sub_NotDEF"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item17>
       <Item18>
         <Filename Value="src\coreObjects\SubFRMs\ExtIDEM_frm_sub_RESULT.pas"/>
@@ -125,51 +127,78 @@
       <Item24>
         <Filename Value="src\coreObjects\McrPRMs\extIDEM_McrPRM_Text_CORE.pas"/>
         <UnitName Value="extIDEM_McrPRM_Text_CORE"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item24>
       <Item25>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__OriginalFilename.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__OriginalFilename"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item25>
       <Item26>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__ProductVersion.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__ProductVersion"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item26>
       <Item27>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__ProductName.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__ProductName"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item27>
       <Item28>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__LegalTrademarks.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__LegalTrademarks"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item28>
       <Item29>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__LegalCopyright.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__LegalCopyright"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item29>
       <Item30>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__InternalName.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__InternalName"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item30>
       <Item31>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__FileVersion.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__FileVersion"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item31>
       <Item32>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__FileDescription.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__FileDescription"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item32>
       <Item33>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__CompanyName.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__CompanyName"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item33>
       <Item34>
         <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__Comments.pas"/>
         <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__Comments"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item34>
       <Item35>
         <Filename Value="Intf\extIDEM_McrPRM_Intf.pas"/>
         <UnitName Value="extIDEM_McrPRM_Intf"/>
+        <ResourceBaseClass Value="Frame"/>
       </Item35>
+      <Item36>
+        <Filename Value="src\preSETs\setUSER\lazExt_extIDEM__USER_mcrPRM__FILE.pas"/>
+        <UnitName Value="lazExt_extIDEM__USER_mcrPRM__FILE"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item36>
+      <Item37>
+        <Filename Value="src\preSETs\setUSER\lazExt_extIDEM__USER_mcrPRM__TEXT.pas"/>
+        <UnitName Value="lazExt_extIDEM__USER_mcrPRM__TEXT"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item37>
+      <Item38>
+        <Filename Value="src\coreObjects\SubFRMs\ExtIDEM_frm_sub_UserPrmName.pas"/>
+        <UnitName Value="ExtIDEM_frm_sub_UserPrmName"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item38>
     </Files>
     <RequiredPkgs Count="3">
       <Item1>

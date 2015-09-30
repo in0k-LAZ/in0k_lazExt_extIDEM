@@ -17,6 +17,46 @@
     <VersionInfo>
       <StringTable ProductVersion=""/>
     </VersionInfo>
+    <extIDEM>
+      <ITEMs>
+        <SUB6 Enabled="True">
+          <ITEMs>
+            <InternalName1 Enabled="True">
+              <Alt_Text used="False"/>
+              <Comments used="False"/>
+            </InternalName1>
+            <OriginalFilename Enabled="True">
+              <Alt_Text used="False"/>
+              <Comments used="False"/>
+            </OriginalFilename>
+            <ProductVersion1 Enabled="True">
+              <FileName value="asd"/>
+              <Alt_Text value="aasss"/>
+              <Comments value="asdasd"/>
+              <RESULT forIDE="2" forSRC="3"/>
+            </ProductVersion1>
+          </ITEMs>
+        </SUB6>
+       <SUB6ttt Enabled="True">
+          <ITEMs>
+            <InternalName1 Enabled="True">
+              <Alt_Text used="False"/>
+              <Comments used="False"/>
+            </InternalName1>
+            <OriginalFilename Enabled="True">
+              <Alt_Text used="False"/>
+              <Comments used="False"/>
+            </OriginalFilename>
+            <ProductVersion1 Enabled="True">
+              <FileName value="asd"/>
+              <Alt_Text value="aasss"/>
+              <Comments value="asdasd"/>
+              <RESULT forIDE="2" forSRC="3"/>
+            </ProductVersion1>
+          </ITEMs>
+        </SUB6ttt>
+      </ITEMs>
+    </extIDEM>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
     </BuildModes>

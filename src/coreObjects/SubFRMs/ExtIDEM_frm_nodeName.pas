@@ -1,4 +1,4 @@
-unit lazExt_extIDEM_frm_nodeName;
+unit ExtIDEM_frm_nodeName;
 
 {$mode objfpc}{$H+}
 

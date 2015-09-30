@@ -12,7 +12,7 @@
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="34">
+    <Files Count="35">
       <Item1>
         <Filename Value="in0k_lazExt_extIDEM_INI.inc"/>
         <Type Value="Binary"/>
@@ -65,107 +65,111 @@
         <ResourceBaseClass Value="Frame"/>
       </Item11>
       <Item12>
-        <Filename Value="src\coreObjects\McrPRMs\extIDEM_McrPRM_NotDEF.pas"/>
-        <UnitName Value="extIDEM_McrPRM_NotDEF"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item12>
-      <Item13>
         <Filename Value="src\lazExt_extIDEM_prjResource.pas"/>
         <UnitName Value="lazExt_extIDEM_prjResource"/>
-      </Item13>
-      <Item14>
+      </Item12>
+      <Item13>
         <Filename Value="src\ideEdit\sub_frames\lazExt_extIDEM_subFrm_core.pas"/>
         <UnitName Value="lazExt_extIDEM_subFrm_core"/>
         <ResourceBaseClass Value="Frame"/>
-      </Item14>
-      <Item15>
-        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_nodeName.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_nodeName"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item15>
-      <Item16>
-        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_sub.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item16>
-      <Item17>
-        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_sub_RESULT.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_RESULT"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item17>
-      <Item18>
-        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_sub_valFILE.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_valFILE"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item18>
-      <Item19>
-        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_sub_valTEXT.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_valTEXT"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item19>
-      <Item20>
-        <Filename Value="src\coreObjects\McrPRMs\extIDEM_McrPRM_File_CORE.pas"/>
-        <UnitName Value="extIDEM_McrPRM_File_CORE"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item20>
-      <Item21>
-        <Filename Value="src\coreObjects\subFRMs\lazExt_extIDEM_frm_sub_COMMENTs.pas"/>
-        <UnitName Value="lazExt_extIDEM_frm_sub_COMMENTs"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Item21>
-      <Item22>
-        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__OriginalFilename.pas"/>
-        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__OriginalFilename"/>
-      </Item22>
-      <Item23>
-        <Filename Value="src\coreObjects\McrPRMs\extIDEM_McrPRM_Text_CORE.pas"/>
-        <UnitName Value="extIDEM_McrPRM_Text_CORE"/>
-      </Item23>
-      <Item24>
-        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__ProductVersion.pas"/>
-        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__ProductVersion"/>
-      </Item24>
-      <Item25>
-        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__ProductName.pas"/>
-        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__ProductName"/>
-      </Item25>
-      <Item26>
-        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__LegalTrademarks.pas"/>
-        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__LegalTrademarks"/>
-      </Item26>
-      <Item27>
-        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__LegalCopyright.pas"/>
-        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__LegalCopyright"/>
-      </Item27>
-      <Item28>
-        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__InternalName.pas"/>
-        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__InternalName"/>
-      </Item28>
-      <Item29>
-        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__FileVersion.pas"/>
-        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__FileVersion"/>
-      </Item29>
-      <Item30>
-        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__FileDescription.pas"/>
-        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__FileDescription"/>
-      </Item30>
-      <Item31>
+      </Item13>
+      <Item14>
         <Filename Value="src\coreObjects\extIDEM_coreObject.pas"/>
         <AddToUsesPkgSection Value="False"/>
         <UnitName Value="extIDEM_coreObject"/>
+      </Item14>
+      <Item15>
+        <Filename Value="src\coreObjects\SubFRMs\ExtIDEM_frm_nodeName.pas"/>
+        <UnitName Value="ExtIDEM_frm_nodeName"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item15>
+      <Item16>
+        <Filename Value="src\coreObjects\SubFRMs\ExtIDEM_frm_sub.pas"/>
+        <UnitName Value="ExtIDEM_frm_sub"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item16>
+      <Item17>
+        <Filename Value="src\coreObjects\SubFRMs\ExtIDEM_frm_sub_NotDEF.pas"/>
+        <UnitName Value="ExtIDEM_frm_sub_NotDEF"/>
+      </Item17>
+      <Item18>
+        <Filename Value="src\coreObjects\SubFRMs\ExtIDEM_frm_sub_RESULT.pas"/>
+        <UnitName Value="ExtIDEM_frm_sub_RESULT"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item18>
+      <Item19>
+        <Filename Value="src\coreObjects\SubFRMs\ExtIDEM_frm_sub_valFILE.pas"/>
+        <UnitName Value="ExtIDEM_frm_sub_valFILE"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item19>
+      <Item20>
+        <Filename Value="src\coreObjects\SubFRMs\ExtIDEM_frm_sub_valTEXT.pas"/>
+        <UnitName Value="ExtIDEM_frm_sub_valTEXT"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item20>
+      <Item21>
+        <Filename Value="src\coreObjects\SubFRMs\ExtIDEM_frm_sub_COMMENTs.pas"/>
+        <UnitName Value="ExtIDEM_frm_sub_COMMENTs"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item21>
+      <Item22>
+        <Filename Value="src\coreObjects\McrPRMs\extIDEM_McrPRM_NotDEF.pas"/>
+        <UnitName Value="extIDEM_McrPRM_NotDEF"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item22>
+      <Item23>
+        <Filename Value="src\coreObjects\McrPRMs\extIDEM_McrPRM_File_CORE.pas"/>
+        <UnitName Value="extIDEM_McrPRM_File_CORE"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Item23>
+      <Item24>
+        <Filename Value="src\coreObjects\McrPRMs\extIDEM_McrPRM_Text_CORE.pas"/>
+        <UnitName Value="extIDEM_McrPRM_Text_CORE"/>
+      </Item24>
+      <Item25>
+        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__OriginalFilename.pas"/>
+        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__OriginalFilename"/>
+      </Item25>
+      <Item26>
+        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__ProductVersion.pas"/>
+        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__ProductVersion"/>
+      </Item26>
+      <Item27>
+        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__ProductName.pas"/>
+        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__ProductName"/>
+      </Item27>
+      <Item28>
+        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__LegalTrademarks.pas"/>
+        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__LegalTrademarks"/>
+      </Item28>
+      <Item29>
+        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__LegalCopyright.pas"/>
+        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__LegalCopyright"/>
+      </Item29>
+      <Item30>
+        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__InternalName.pas"/>
+        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__InternalName"/>
+      </Item30>
+      <Item31>
+        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__FileVersion.pas"/>
+        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__FileVersion"/>
       </Item31>
       <Item32>
-        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__CompanyName.pas"/>
-        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__CompanyName"/>
+        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__FileDescription.pas"/>
+        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__FileDescription"/>
       </Item32>
       <Item33>
-        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__Comments.pas"/>
-        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__Comments"/>
+        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__CompanyName.pas"/>
+        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__CompanyName"/>
       </Item33>
       <Item34>
+        <Filename Value="src\preSETs\setSUB6\lazExt_extIDEM__SUB6_mcrPRM__Comments.pas"/>
+        <UnitName Value="lazExt_extIDEM__SUB6_mcrPRM__Comments"/>
+      </Item34>
+      <Item35>
         <Filename Value="Intf\extIDEM_McrPRM_Intf.pas"/>
         <UnitName Value="extIDEM_McrPRM_Intf"/>
-      </Item34>
+      </Item35>
     </Files>
     <RequiredPkgs Count="3">
       <Item1>

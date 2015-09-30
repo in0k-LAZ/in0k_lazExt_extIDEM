@@ -14,7 +14,7 @@ interface
 
 uses Laz2_XMLCfg,
     extIDEM_coreObject, extIDEM_McrPRM_Intf,
-    lazExt_extIDEM_frm_sub_RESULT, lazExt_extIDEM_frm_sub_valTEXT;
+    extIDEM_frm_sub_RESULT, extIDEM_frm_sub_valTEXT;
 
 type
 

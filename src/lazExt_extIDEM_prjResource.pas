@@ -17,6 +17,7 @@ uses {$ifDef lazExt_Sub6_EventLOG_mode}Sub6_wndDebug,{$endIf}
    ProjectResourcesIntf,            Dialogs,   lazExt_extIDEM,
    extIDEM_coreObject, extIDEM_MACROS_node, extIDEM_McrPRM_node,
    extIDEM_McrPRM_NotDEF,
+   lazExt_extIDEM__NDF_MACROS,
    //lazExt_extIDEM__NDF_MACROS,
    //lazExt_extIDEM_maCRO_node,
    LazIDEIntf;//,
@@ -344,8 +345,7 @@ begin
                     list.PreSETs_ADD(macroITM);
                 end
                 else begin //< неизвестный тип ... создаем сответствующий
-                    {todo}
-                    ShowMessage('fail _MacroITMs_Load_ '+prntPath);
+                    macroITM:=tExtIDEM_NDF_MACROS_node.Create;//(dom_Node.NodeName);
                 end;
             end;
             //---

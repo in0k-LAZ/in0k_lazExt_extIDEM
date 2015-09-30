@@ -26,7 +26,7 @@ extIDEM_coreObject,
 //lazExt_extIDEM_preSet_node,
 Classes,                    extIDEM_MACROS_node,extIDEM_McrPRM_node,
   SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, ComCtrls,
-  lazExt_extIDEM_prjResource, lazExt_extIDEM_frm_nodeName, types;
+  lazExt_extIDEM_prjResource, extIDEM_frm_nodeName, types;
 
 type
 
@@ -147,22 +147,25 @@ type
   strict private
    _node_ide_:tExtIDEM_core_objNODE; //< что предоставляет IDE
    _node_prj_:tExtIDEM_core_objNODE; //< что записано в ПРОЕКТ
-   _edit_frm_:tExtIDEM_core_objEDIT; //< tLazExt_extIDEM_preSet_frmEdit;
+   _edit_frm_:tExtIDEM_core_objEDIT; //< редактор для объекта
     procedure _node_prj_set_(const value:tExtIDEM_core_objNODE);
+    function  _node_prj_vld_:boolean; inline;
     function  _node_getACTV_:tExtIDEM_core_objNODE; inline;
+    function  _edit_exist_:boolean; inline;
     //-------
     function  _node_is_MacroITM_:boolean;
     function  _node_is_MacroPRM_:boolean;
     function  _node_is_MacroNDF_:boolean;
     //-------
-    function  _node_get_EDIT:tExtIDEM_core_objEditTYPE;
     function  _node_get_IDNT:string;
     function  _node_get_NAME:string;
     function  _node_get_DESC:string;
+    //-------
+    function  _node_get_EDIT:tExtIDEM_core_objEditTYPE;
     function  _node_get_ENBL:boolean;
     function  _node_get_DLTD:boolean;
   strict private
-   _was_load_:boolean;
+   _was_load_:boolean; //< данные "ЗАГРУЖЕНЫ" из объекта в `_edit_frm_`
 
   public
     constructor Create;
@@ -280,14 +283,6 @@ end;
 
 //------------------------------------------------------------------------------
 
-function tNodeDATA._node_get_EDIT:tExtIDEM_core_objEditTYPE;
-begin
-    result:=nil;
-    if Assigned(_node_getACTV_) then begin //< тут все сложнее
-        result:=_node_getACTV_.nodeTEdit;
-    end;
-end;
-
 function tNodeDATA._node_get_IDNT:string;
 begin
     result:='nil';
@@ -312,25 +307,34 @@ begin
     end;
 end;
 
-function tNodeDATA._node_get_ENBL:boolean;
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function tNodeDATA._node_get_EDIT:tExtIDEM_core_objEditTYPE;
 begin
-    if Assigned(_edit_frm_) and (_was_load_) then begin //< есть фрейм редактор и данные загружены,
-        result:=_edit_frm_.NodeEnabled; //< то данные мы ДОЛЖНЫ брать из него
-    end
-    else begin //< иначе читаем прямо из объекта
-        result:=Assigned(_node_prj_)and (not _node_is_MacroNDF_) and _node_prj_.Enabled;
+    result:=tExtIDEM_core_objEditTYPE(_node_getACTV_);
+    if Assigned(result) then begin
+        result:=tExtIDEM_core_objNODE(result).nodeTEdit;
+    end;
+end;
+
+function tNodeDATA._node_get_ENBL:boolean;
+begin //<  может быть тока из проекта и НЕ ndf
+    result:=_node_prj_vld_;
+    if result then begin
+        if _edit_exist_ and _was_load_ //< есть фрейм редактор и данные загружены
+        then result:=_edit_frm_.NodeEnabled //< то данные мы ДОЛЖНЫ брать из него
+        else result:=_node_prj_.Enabled;    //< иначе читаем прямо из объекта
     end;
 end;
 
 
 function tNodeDATA._node_get_DLTD:boolean;
-begin
-    result:=false;
-    if Assigned(_edit_frm_) and (_was_load_) then begin //< есть фрейм редактор и данные загружены,
-        result:=_edit_frm_.NodeMustDEL; //< то данные мы ДОЛЖНЫ брать из него
-    end
-    else begin //< иначе читаем прямо из объекта
-        result:=Assigned(_node_prj_)and (not _node_is_MacroNDF_) and _node_prj_.MustDEL;
+begin //< может быть тока из проекта и НЕ ndf
+    result:=_node_prj_vld_;
+    if result then begin
+        if _edit_exist_ and _was_load_ //< есть фрейм редактор и данные загружены
+        then result:=_edit_frm_.NodeMustDEL //< то данные мы ДОЛЖНЫ брать из него
+        else result:=_node_prj_.MustDEL;    //< иначе читаем прямо из объекта
     end;
 end;
 
@@ -339,6 +343,12 @@ end;
 procedure tNodeDATA._node_prj_set_(const value:tExtIDEM_core_objNODE);
 begin
    _node_prj_:=value;
+end;
+
+function tNodeDATA._node_prj_vld_:boolean;
+begin //< существует и ТОЧНО определен
+    result:=Assigned(_node_prj_) and
+    (NOT ( (_node_prj_ is tExtIDEM_McrPRM_NotDEF_node)or(_node_prj_ is tExtIDEM_NDF_MACROS_node ) ) );
 end;
 
 //------------------------------------------------------------------------------
@@ -353,8 +363,18 @@ end;
 // получить указатель на ТЕКУЩИЙ активный объект
 function tNodeDATA._node_getACTV_:tExtIDEM_core_objNODE;
 begin
-    result:=_node_prj_;
+    result:=_node_prj_; //< порядок ВАЖЕН :-)
     if not Assigned(result) then result:=_node_ide_;
+
+    if not Assigned(result)
+            then ShowMessage('_node_getACTV_ ERRRRRRRRRRRRRRRRRRRR');
+
+end;
+
+// редактор для объекта СОЗДАН
+function tNodeDATA._edit_exist_:boolean; inline;
+begin
+    result:=Assigned(_edit_frm_);
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -416,7 +436,6 @@ begin
     if Assigned(tmpNode) and Assigned(_edit_frm_) then begin
         if not _was_load_ then begin //< если ещё не загружено, то грузим
            _edit_frm_.Settings_Read(tmpNode);
-            //ShowMessage('EDITOR_Settings_READ');
            _was_load_:=TRUE;
         end;
     end
@@ -424,16 +443,11 @@ begin
 end;
 
 function tNodeDATA.EDITOR_Settings_WRITE:boolean;
-var tmpNode:tExtIDEM_core_objNODE;
 begin // !!! сохранение идет ТОЛЬКО в `_node_prj_`
     result:=false;
-    //tmpNode:=_node_getACTV_;
     if Assigned(_node_prj_) and Assigned(_edit_frm_) then begin
        _edit_frm_.Settings_Write(_node_prj_);
         result:=_node_prj_.Changed;
-        //if result
-        //then ShowMessage('EDITOR_Settings_WRITE '+_node_prj_.node_IDNT+':TRUE')
-        //else ShowMessage('EDITOR_Settings_WRITE '+_node_prj_.node_IDNT+':false');
     end;
 end;
 
@@ -790,27 +804,45 @@ procedure tLazExt_extIDEM_frmPrjOptionEdit.TreeView1AdvancedCustomDrawItem(
   Stage: TCustomDrawStage; var PaintImages, DefaultDraw: Boolean);
 var nodeData:tNodeDATA;
 var Rect:tRect;
+    i:integer;
 var TextStyle:TTextStyle;
 begin
     DefaultDraw := true;
-    if Stage=cdPrePaint then begin
-        nodeData:=tNodeDATA(Node.Data);
-        if Assigned(nodeData) then begin
-            if nodeData.NodeDLTD
-            then Sender.Canvas.Font.Style:=Sender.Canvas.Font.Style+[fsStrikeOut]
-            else Sender.Canvas.Font.Style:=Sender.Canvas.Font.Style-[fsStrikeOut];
-            if nodeData.NodeENBL
-            then Sender.Canvas.Font.Style:=Sender.Canvas.Font.Style+[fsBold]
-            else Sender.Canvas.Font.Style:=Sender.Canvas.Font.Style-[fsBold];
-            {if not node.Selected then begin
-                Sender.Canvas.Font.Color:=clGrayText;
-            end; }
-            //---
-            {TextStyle:=sender.Canvas.TextStyle;
-            TextStyle.Alignment:=taCenter;
-            TextStyle.Layout   :=tlCenter;
+    if Stage=cdPostPaint then begin
+        nodeData:=_treeNodeDATA_(Node);
+        if Assigned(nodeData) and nodeData.PRJ_exist then begin
             Rect:=Node.DisplayRect(True);
-            Sender.Canvas.TextRect(Rect,Rect.Left,Rect.Top,Node.Text,TextStyle);}
+            if nodeData.NodeDLTD then begin
+                i:=(Rect.Bottom-Rect.Top) div 2;
+                Rect.Bottom:=i;
+                Rect.Top   :=i;
+                Sender.Canvas.Pen.Color:=clGrayText;
+                Sender.Canvas.Rectangle(Rect);
+            end
+            else begin
+                i:=(Rect.Bottom-Rect.Top) div 4;
+                Rect.Bottom:=Rect.Bottom-i;
+                Rect.Top   :=Rect.Top+i;
+                i:=(Rect.Bottom-Rect.Top) div 4;
+                Rect.Right :=Rect.Left+i;
+                Rect.Left  :=Rect.Left-i;
+                //---
+                if not nodeData.IS_NotDEF then begin
+                    Sender.Canvas.Pen.Color:=clGrayText;
+                    Sender.Canvas.Brush.Color:=clRed;
+                end
+               else
+                if not nodeData.NodeENBL then begin
+                    Sender.Canvas.Pen.Color:=clGrayText;
+                    Sender.Canvas.Brush.Color:=clWindow;
+                end
+               else
+                {if not nodeData.NodeENBL then} begin
+                    Sender.Canvas.Pen.Color:=clHighlight;
+                    Sender.Canvas.Brush.Color:=clHighlightText;
+                end;
+                Sender.Canvas.Rectangle(Rect);
+            end;
         end;
     end;
 end;
@@ -851,15 +883,10 @@ begin
         end;
         // готовим новый
         if Assigned(FRM) then begin
-
-            {if FRM.NodeEnabled
-            then ShowMessage(FRM.ClassName+' '+ IntToHex(integer(pointer(FRM)),8)+'FRM.NodeEnabled  - TRUE' )
-            else ShowMessage(FRM.ClassName+' '+ IntToHex(integer(pointer(FRM)),8)+'FRM.NodeEnabled  - FALSE' );
-            }
             chb_nodeEnabled.Checked:=FRM.NodeEnabled;
             FRM.Parent:=Panel3;
-            FRM.Align:=alClient;
             FRM.SendToBack;
+            FRM.Align:=alClient;
             FRM.Show;
         end;
         // убираем старый
@@ -927,9 +954,9 @@ begin
     if Enumerator.MoveNext then begin //< значит туть БОЛЬШЕ одного;
         node:=Enumerator.Current;
         while Assigned(node) do begin
-            data:=tNodeDATA(node.Data);
+            data:=_treeNodeDATA_(Node);
             if Assigned(data) and (data.IDE_based) then begin
-//                data.Node_PRJ_clean;
+                data.Node_PRJ_clean;
                 if not Enumerator.MoveNext then break;
             end
             else begin
@@ -956,7 +983,7 @@ begin
     if Enumerator.MoveNext then begin //< значит туть БОЛЬШЕ одного;
         while Assigned(node) do begin
             node:=Enumerator.Current;
-            data:=tNodeDATA(node.Data);
+            data:=_treeNodeDATA_(Node);
             if Assigned(data) then data.Was_Loaded_CLEAR;
             if not Enumerator.MoveNext then break;
         end;
@@ -1005,7 +1032,7 @@ begin
     if Enumerator.MoveNext then begin //< значит туть БОЛЬШЕ одного;
         while Assigned(node) do begin
             node:=Enumerator.Current;
-            data:=tNodeDATA(node.Data);
+            data:=_treeNodeDATA_(Node);
             if Assigned(data) then data.EDITOR_Settings_READ;
             if not Enumerator.MoveNext then break;
         end;
@@ -1023,7 +1050,7 @@ begin
     if Enumerator.MoveNext then begin //< значит туть БОЛЬШЕ одного;
         while Assigned(node) do begin
             node:=Enumerator.Current;
-            data:=tNodeDATA(node.Data);
+            data:=_treeNodeDATA_(Node);
             if Assigned(data) then begin
                 result:=data.EDITOR_Settings_WRITE;
             end;
@@ -1057,7 +1084,7 @@ procedure tLazExt_extIDEM_frmPrjOptionEdit.TreeView1Deletion(Sender: TObject;
 begin
     if Assigned(node) then begin
         if Assigned(node.Data) then begin
-            tNodeDATA(node.Data).FREE;
+            _treeNodeDATA_(Node).FREE;
             node.Data:=nil;
         end;
         //node.free;
@@ -1176,7 +1203,7 @@ begin
         if (not Assigned(NodeEdit))and(Assigned(NodeDATA.NodeTEDT))
         then begin
             NodeEdit:=NodeDATA.NodeTEDT.Create(SELF);
-            //ShowMessage('NodeDATA.NodeTEDT.Create');
+            ShowMessage('NodeDATA.NodeTEDT.Create'+NodeEdit.ClassName);
             NodeDATA.Node_EDT_SET(NodeEdit);
         end;
         //
@@ -1264,11 +1291,10 @@ end;
 procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_(const treeNode:TTreeNode);
 begin
    _chb_nodeEnabled_eventCLR;
-   _rePlace_TreeNODE_Editor_(treeNode);
-   _rePlace_TreeNODE_Labels_(treeNode);
-   _rePlace_TreeNODE_enblCh_(treeNode);
-    //---
-   _nodeTree_:=treeNode;
+       _rePlace_TreeNODE_Editor_(treeNode);
+       _rePlace_TreeNODE_Labels_(treeNode);
+       _rePlace_TreeNODE_enblCh_(treeNode);
+       _nodeTree_:=treeNode;
    _chb_nodeEnabled_eventSET;
 end;
 

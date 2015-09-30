@@ -1,10 +1,10 @@
-unit lazExt_extIDEM_frm_sub_RESULT;
+unit ExtIDEM_frm_sub_RESULT;
 
 {$mode objfpc}{$H+}
 
 interface
 
-uses  lazExt_extIDEM_frm_sub,
+uses extIDEM_frm_sub,
   Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls;
 
 type

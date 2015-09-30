@@ -14,9 +14,9 @@ interface
 
 uses Laz2_XMLCfg,  Dialogs,
     extIDEM_coreObject, extIDEM_McrPRM_Intf,
-    lazExt_extIDEM_frm_sub_COMMENTs,
-    lazExt_extIDEM_frm_sub_RESULT,
-    lazExt_extIDEM_frm_sub_valFILE;
+    extIDEM_frm_sub_COMMENTs,
+    extIDEM_frm_sub_RESULT,
+    extIDEM_frm_sub_valFILE;
 
 type
 

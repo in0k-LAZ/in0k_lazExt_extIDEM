@@ -1,4 +1,4 @@
-unit lazExt_extIDEM_frm_sub;
+unit ExtIDEM_frm_sub;
 
 {$mode objfpc}{$H+}
 

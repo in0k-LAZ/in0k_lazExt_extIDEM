@@ -1,10 +1,10 @@
-unit lazExt_extIDEM_frm_sub_valFILE;
+unit ExtIDEM_frm_sub_valFILE;
 
 {$mode objfpc}{$H+}
 
 interface
 
-uses lazExt_extIDEM_frm_sub, StringsPropEditDlg,
+uses extIDEM_frm_sub, StringsPropEditDlg,
   Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, Buttons;
 
 type

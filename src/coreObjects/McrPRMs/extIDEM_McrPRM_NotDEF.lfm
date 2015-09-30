@@ -1,4 +1,4 @@
-inherited lazExt_extIDEM_maCRO_NDF_edit: TlazExt_extIDEM_maCRO_NDF_edit
+inherited ExtIDEM_McrPRM_NotDEF_edit: TExtIDEM_McrPRM_NotDEF_edit
   Height = 259
   Width = 895
   AutoSize = True
@@ -40,6 +40,7 @@ inherited lazExt_extIDEM_maCRO_NDF_edit: TlazExt_extIDEM_maCRO_NDF_edit
     Lines.Strings = (
       'Memo1'
     )
+    ReadOnly = True
     ScrollBars = ssAutoBoth
     TabOrder = 0
   end

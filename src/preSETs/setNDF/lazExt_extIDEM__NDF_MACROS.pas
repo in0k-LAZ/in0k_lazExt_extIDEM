@@ -27,7 +27,7 @@ implementation
 
 {$R *.lfm}
 
-{function TextIDEM_NDF_MACROS_edit.GetTitle:string;
+{function TExtIDEM_NDF_MACROS_edit.GetTitle:string;
 begin
     result:=tExtIDEM_NDF_MACROS_node.obj_Name;
 end; }
@@ -36,7 +36,7 @@ end; }
 
 class function tExtIDEM_NDF_MACROS_node.ObjTEdit:tExtIDEM_core_objEditTYPE;
 begin
-    result:=TextIDEM_NDF_MACROS_edit;
+    result:=TExtIDEM_NDF_MACROS_edit;
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

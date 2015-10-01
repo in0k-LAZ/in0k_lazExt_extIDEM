@@ -16,11 +16,9 @@ type
   { tExtIDEM__USER_mcrPRM__TEXT_frm }
 
   tExtIDEM__USER_mcrPRM__TEXT_frm = class(TlazExt_extIDEM_maCRO_Text_CORE_edit)
-    ExtIDEM_sub_UserPrmName_frm1: TExtIDEM_sub_UserPrmName_frm;
-  private
-    { private declarations }
   public
-    { public declarations }
+    procedure Settings_Read (const node:tExtIDEM_core_objNODE);  override;
+    procedure Settings_Write(const node:tExtIDEM_core_objNODE);  override;
   end;
 
   tExtIDEM__USER_mcrPRM__TEXT_itm=class(tLazExt_extIDEM_maCRO_Text_CORE_node)
@@ -36,6 +34,19 @@ type
 implementation
 
 {$R *.lfm}
+
+procedure tExtIDEM__USER_mcrPRM__TEXT_frm.Settings_Read (const node:tExtIDEM_core_objNODE);
+begin
+    inherited;
+end;
+
+procedure tExtIDEM__USER_mcrPRM__TEXT_frm.Settings_Write(const node:tExtIDEM_core_objNODE);
+begin
+    inherited;
+end;
+
+//------------------------------------------------------------------------------
+
 
 class function tExtIDEM__USER_mcrPRM__TEXT_itm.ObjTEdit:tExtIDEM_core_objEditTYPE;
 begin

@@ -1,10 +1,10 @@
 object lazExt_extIDEM_nodeName_frm: TlazExt_extIDEM_nodeName_frm
   Left = 0
-  Height = 16
+  Height = 20
   Top = 0
   Width = 124
   AutoSize = True
-  ClientHeight = 16
+  ClientHeight = 20
   ClientWidth = 124
   TabOrder = 0
   DesignLeft = 538

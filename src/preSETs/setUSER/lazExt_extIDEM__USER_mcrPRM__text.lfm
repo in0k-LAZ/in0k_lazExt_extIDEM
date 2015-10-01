@@ -7,7 +7,7 @@ inherited ExtIDEM__USER_mcrPRM__TEXT_frm: TExtIDEM__USER_mcrPRM__TEXT_frm
   DesignTop = 199
   inherited sub_RESULT: TextIDEM_sub_RESULT_frm
     Height = 38
-    Top = 99
+    Top = 38
     Width = 320
     Align = alTop
     ClientHeight = 38
@@ -38,7 +38,6 @@ inherited ExtIDEM__USER_mcrPRM__TEXT_frm: TExtIDEM__USER_mcrPRM__TEXT_frm
   end
   inherited sub_valTEXT: TextIDEM_sub_valTEXT_frm
     Height = 38
-    Top = 61
     Align = alTop
     AutoSize = True
     ClientHeight = 38
@@ -52,23 +51,6 @@ inherited ExtIDEM__USER_mcrPRM__TEXT_frm: TExtIDEM__USER_mcrPRM__TEXT_frm
     inherited frm_Data: TPanel
       AnchorSideLeft.Control = sub_valTEXT
       AnchorSideRight.Control = sub_valTEXT
-    end
-  end
-  inline ExtIDEM_sub_UserPrmName_frm1: TExtIDEM_sub_UserPrmName_frm[2]
-    Height = 61
-    Align = alTop
-    ClientHeight = 61
-    TabOrder = 2
-    inherited frm_Caption: TLabel
-      AnchorSideLeft.Control = ExtIDEM_sub_UserPrmName_frm1
-      AnchorSideTop.Control = ExtIDEM_sub_UserPrmName_frm1
-    end
-    inherited frm_Data: TPanel
-      AnchorSideLeft.Control = ExtIDEM_sub_UserPrmName_frm1
-      AnchorSideRight.Control = ExtIDEM_sub_UserPrmName_frm1
-      AnchorSideBottom.Control = ExtIDEM_sub_UserPrmName_frm1
-      Height = 46
-      ClientHeight = 46
     end
   end
 end

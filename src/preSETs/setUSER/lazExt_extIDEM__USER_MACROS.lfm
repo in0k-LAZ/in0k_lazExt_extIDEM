@@ -3,60 +3,65 @@ inherited extIDEM_USER_MACROS_edit: TextIDEM_USER_MACROS_edit
   ClientWidth = 545
   DesignLeft = 415
   DesignTop = 205
-  object Label1: TLabel[0]
-    AnchorSideLeft.Control = Label2
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = ComboBox1
-    AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = Button1
-    Left = 36
-    Height = 15
-    Top = 23
-    Width = 432
-    Anchors = [akTop, akLeft, akRight]
-    BorderSpacing.Left = 2
-    BorderSpacing.Right = 2
-    Caption = 'Label1'
-    ParentColor = False
-    WordWrap = True
-  end
-  object Label2: TLabel[1]
-    AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = ComboBox1
-    AnchorSideTop.Side = asrBottom
-    Left = 0
-    Height = 15
-    Top = 23
-    Width = 34
-    Caption = 'Label2'
-    ParentColor = False
-  end
-  object ComboBox1: TComboBox[2]
+  object GroupBox1: TGroupBox[0]
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 0
-    Height = 23
+    Height = 68
     Top = 0
     Width = 545
     Anchors = [akTop, akLeft, akRight]
-    ItemHeight = 15
-    OnChange = ComboBox1Change
-    Style = csDropDownList
+    AutoSize = True
+    Caption = 'Новый праметр'
+    ClientHeight = 48
+    ClientWidth = 541
     TabOrder = 0
-  end
-  object Button1: TButton[3]
-    AnchorSideTop.Control = ComboBox1
-    AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = Owner
-    AnchorSideRight.Side = asrBottom
-    Left = 470
-    Height = 25
-    Top = 23
-    Width = 75
-    Anchors = [akTop, akRight]
-    Caption = 'Добавить'
-    TabOrder = 1
+    object Button1: TButton
+      AnchorSideTop.Control = ComboBox1
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Control = GroupBox1
+      AnchorSideRight.Side = asrBottom
+      Left = 466
+      Height = 25
+      Top = 23
+      Width = 75
+      Anchors = [akTop, akRight]
+      Caption = 'Добавить'
+      OnClick = Button1Click
+      TabOrder = 0
+    end
+    object Label1: TLabel
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = ComboBox1
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Control = Button1
+      Left = 2
+      Height = 15
+      Top = 23
+      Width = 462
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 2
+      BorderSpacing.Right = 2
+      Caption = 'Label1'
+      ParentColor = False
+      WordWrap = True
+    end
+    object ComboBox1: TComboBox
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = GroupBox1
+      AnchorSideRight.Control = GroupBox1
+      AnchorSideRight.Side = asrBottom
+      Left = 0
+      Height = 23
+      Top = 0
+      Width = 541
+      Anchors = [akTop, akLeft, akRight]
+      ItemHeight = 15
+      OnChange = ComboBox1Change
+      Style = csDropDownList
+      TabOrder = 1
+    end
   end
 end

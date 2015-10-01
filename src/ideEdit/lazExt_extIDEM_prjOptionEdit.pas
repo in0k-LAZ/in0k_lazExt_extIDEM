@@ -20,11 +20,12 @@ Graphics,
 //lazExt_extIDEM_mcrPRM_NotDEF,
 
 //lazExt_extIDEM__NDF_MACROS,
-     Dialogs,    lazExt_extIDEM__NDF_MACROS,
+     Dialogs,    lazExt_extIDEM__NDF_MACROS, lazExt_extIDEM__USER_MACROS,
 //lazExt_extIDEM_maCRO_node,
 extIDEM_coreObject,
 //lazExt_extIDEM_preSet_node,
-Classes,                    extIDEM_MACROS_node,extIDEM_McrPRM_node,
+ExtIDEM_frm_sub_UserPrmName,
+Classes,                    extIDEM_MACROS_node,extIDEM_McrPRM_node, //extIDEM_MACROS_node,
   SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, ComCtrls,
   lazExt_extIDEM_prjResource, extIDEM_frm_nodeName, types;
 
@@ -79,6 +80,17 @@ type
     procedure _ui_ExtIDEM_Enablede_eventCLR_;
     procedure _ui_ExtIDEM_Enablede_eventSET_;
  private
+    function _ExtIDEM_coreObj__getNameForTree_(const node:tExtIDEM_core_objNODE):string;
+ private
+   _frmUsrPRM_:tExtIDEM_sub_UserPrmName_frm;
+    function _frmUsrPRM_GET_:tExtIDEM_sub_UserPrmName_frm;
+
+    procedure _frmUsrPRM_SHOW_(const treeNode:tTreeNode; const nodeData:tExtIDEM_core_objNODE);
+    procedure _frmUsrPRM_HIDE_;
+    function  _frmUsrPRM_onTestName_(const treeNode:tTreeNode; const nodeData:tExtIDEM_core_objNODE):boolean;
+
+
+ private
    _nodeTree_ :TtreeNode;
    _nodeFrame_:tExtIDEM_core_objEDIT;
     procedure _rePlace_setFRM_(const FRM:tExtIDEM_core_objEDIT);
@@ -89,10 +101,18 @@ type
     procedure _chb_nodeEnabled_eventCLR;
     procedure _chb_nodeEnabled_eventSET;
 
+
+ private
+    function  _MACROS_UsrSET_:tTreeNode;
+    function  _MACROS_UsrSET_toPRJ_(const TreeNode_UsrSET:tTreeNode; const UsrSET_NodeDATA:pointer):boolean;
+    procedure _MACROS_UsrSET_addInUserSER(const NodePRM:tExtIDEM_McrPRM_node);
+    function  _MACROS_UsrSET_validateName(const node:tExtIDEM_core_objNODE):boolean;
+
  private
     procedure _rePlace_TreeNODE_enblCh_(const treeNode:TTreeNode);
     procedure _rePlace_TreeNODE_Labels_(const treeNode:TTreeNode);
     procedure _rePlace_TreeNODE_Editor_(const treeNode:TTreeNode);
+    procedure _rePlace_TreeNODE_usrPRM_(const treeNode:TTreeNode);
     procedure _rePlace_TreeNODE_(const treeNode:TTreeNode);
 
  private
@@ -100,6 +120,8 @@ type
     function  _treePreSets_node_is_MACRO (const treeNode:TTreeNode):boolean;
     function  _treePreSets_node_get_IDENT(const treeNode:TTreeNode):string;
 
+ private
+    function  _treePreSets_node_get_MACROS(const treeNode:TTreeNode):TTreeNode;
  private
     procedure  _treePreSets_clear_not_IDE;
     procedure  _treePreSets_clear_forFREE;
@@ -187,6 +209,7 @@ type
     property  Node_EDT:tExtIDEM_core_objEDIT read _edit_frm_;
     property  Node_IDE:tExtIDEM_core_objNODE read _node_ide_;
     property  Node_PRJ:tExtIDEM_core_objNODE read _node_prj_;
+    property  Node_ACT:tExtIDEM_core_objNODE read _node_getACTV_;
   public
     procedure Node_PRJ_clean;
     procedure Node_PRJ_SET(const value:tExtIDEM_core_objNODE);
@@ -463,7 +486,7 @@ begin
         prjMARCOSES.PreSETs_ADD(tLazExt_extIDEM_preSet_Node(_node_prj_));
         tLazExt_extIDEM_preSet_Node(_node_prj_).Enabled:=TRUE;
 
-        ShowMessage('COPY_toPRJ_MacroITM');
+    //    ShowMessage('COPY_toPRJ_MacroITM');
     end;
 end;
 
@@ -487,7 +510,7 @@ begin
         // prjMARCOSES.PreSETs_ADD(tmpNode);
         tLazExt_extIDEM_preSet_Node(MacroITM.Node_PRJ).Param_INS(tExtIDEM_McrPRM_node(_node_prj_));
         tExtIDEM_McrPRM_node(_node_prj_).Enabled:=TRUE;
-        ShowMessage('COPY_toPRJ_MacroPRM');
+     //   ShowMessage('COPY_toPRJ_MacroPRM');
     end;
 
 
@@ -580,9 +603,31 @@ begin
         tmp:=PreSETs_enumFIRST;
         while Assigned(tmp) do begin
             itm:=TreeView1.Items.AddChildObject(nil,tmp.node_Name,tNodeDATA.Create_IDE(tmp));
-           _treePreSets_setUp_ide_ideMCRs_(itm,tmp);
+            if not (tmp is tExtIDEM_USER_MACROS_node)
+            then _treePreSets_setUp_ide_ideMCRs_(itm,tmp);
             tmp:=PreSETs_enum_NEXT(tmp);
         end;
+    end;
+end;
+
+
+//------------------------------------------------------------------------------
+
+function tLazExt_extIDEM_frmPrjOptionEdit._ExtIDEM_coreObj__getNameForTree_(const node:tExtIDEM_core_objNODE):string;
+begin
+    if not Assigned(node) then result:='is NILL'
+   else
+    if node is tLazExt_extIDEM_preSet_Node then begin
+        {todo: сделать настройку для выбора иммени}
+        result:=node.node_Name;
+    end
+   else
+    if node is tExtIDEM_McrPRM_node then begin
+        {todo: сделать настройку для выбора иммени}
+        result:=node.node_IDNT;
+    end
+   else begin
+        result:='not DEFINE';
     end;
 end;
 
@@ -596,7 +641,7 @@ begin
         tmp:=Param_First;
         while Assigned(tmp) do begin
             lNode:=_treePreSets_find_ideMCR_(treeNode,tmp.node_IDNT);
-            if Assigned(lNode) and Assigned(lNode.Data) then begin
+            if (not (preSet is tExtIDEM_USER_MACROS_node))and Assigned(lNode) and Assigned(lNode.Data) then begin
                 tNodeDATA(lNode.Data).Node_PRJ_SET(tmp);
             end
             else begin
@@ -620,7 +665,7 @@ begin
                 tNodeDATA(lNode.Data).Node_PRJ_SET(tmp);
             end
             else begin
-                lNode:=TreeView1.Items.AddChildObject(nil,tmp.node_Name,tNodeDATA.Create_PRJ(tmp));
+                lNode:=TreeView1.Items.AddChildObject(nil,_ExtIDEM_coreObj__getNameForTree_(tmp),tNodeDATA.Create_PRJ(tmp));
             end;
             //---
            _treePreSets_setUp_prj_ideMCRs_(lNode,tmp);
@@ -842,6 +887,17 @@ begin
                     Sender.Canvas.Brush.Color:=clHighlightText;
                 end;
                 Sender.Canvas.Rectangle(Rect);
+                //---
+                if (node=_nodeTree_)and (_MACROS_UsrSET_=Node.Parent) then begin
+                    if not _frmUsrPRM_onTestName_(node,nodeData.Node_ACT) then begin
+                        Rect:=Node.DisplayRect(True);
+                        i:=(Rect.Bottom-Rect.Top) div 2;
+                        Rect.Bottom:=i;
+                        Rect.Top   :=i;
+                        Sender.Canvas.Pen.Color:=clRed;
+                        Sender.Canvas.Rectangle(Rect);
+                    end;
+                end;
             end;
         end;
     end;
@@ -866,6 +922,55 @@ end;
 
 //------------------------------------------------------------------------------
 
+function tLazExt_extIDEM_frmPrjOptionEdit._frmUsrPRM_GET_:tExtIDEM_sub_UserPrmName_frm;
+begin
+    result:=_frmUsrPRM_;
+    if not Assigned(result) then begin
+        result:=tExtIDEM_sub_UserPrmName_frm.Create(self);
+        //---
+        result.Parent:=Panel3;
+        result.SendToBack;
+        result.Align:=alTop;
+    end;
+   _frmUsrPRM_:=result;
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._frmUsrPRM_SHOW_(const treeNode:tTreeNode; const nodeData:tExtIDEM_core_objNODE);
+begin
+    with _frmUsrPRM_GET_ do begin
+        INIT(treeNode,nodeData,@_frmUsrPRM_onTestName_);
+        Show;
+    end;
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._frmUsrPRM_HIDE_;
+begin
+    if Assigned(_frmUsrPRM_) then begin
+        _frmUsrPRM_.Hide;
+        _frmUsrPRM_.Enabled:=FALSE;
+        _frmUsrPRM_.INIT(nil,nil,nil);
+    end;
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function tLazExt_extIDEM_frmPrjOptionEdit._frmUsrPRM_onTestName_(const treeNode:tTreeNode; const nodeData:tExtIDEM_core_objNODE):boolean;
+begin
+    result:=_MACROS_UsrSET_validateName(nodeData);
+    if result then begin
+        frm_nodeName.setErName(False);
+       _rePlace_TreeNODE_Labels_(treeNode);
+    end
+    else begin
+       _rePlace_TreeNODE_Labels_(treeNode);
+       frm_nodeName.setErName(true);
+    end;
+    treeNode.Text:=nodeData.node_IDNT;
+    TreeView1.Invalidate;
+end;
+
+//------------------------------------------------------------------------------
+
 procedure tLazExt_extIDEM_frmPrjOptionEdit.lst_preSetDrawItem(
   Control: TWinControl; Index: Integer; ARect: TRect; State: TOwnerDrawState);
 begin
@@ -884,6 +989,11 @@ begin
         // готовим новый
         if Assigned(FRM) then begin
             chb_nodeEnabled.Checked:=FRM.NodeEnabled;
+
+            if FRM is tExtIDEM_USER_MACROS_edit then begin
+                tExtIDEM_USER_MACROS_edit(FRM).doAddNewNode:=@_MACROS_UsrSET_addInUserSER;
+            end;
+
             FRM.Parent:=Panel3;
             FRM.SendToBack;
             FRM.Align:=alClient;
@@ -933,6 +1043,21 @@ begin
             else result:=tNodeDATA(treeNode.Data).Node_IDE is tExtIDEM_McrPRM_node;
         end;
     end;
+end;
+
+function tLazExt_extIDEM_frmPrjOptionEdit._treePreSets_node_get_MACROs(const treeNode:TTreeNode):tTreeNode;
+var tmp:tTreeNode;
+begin
+    result:=nil;
+    tmp:=treeNode;
+    while Assigned(tmp) do begin
+        if _treePreSets_node_is_PreSET(treeNode) then begin
+            result:=tmp;
+        end;
+        //-->
+        tmp:=tmp.Parent;
+    end;
+
 end;
 
 function tLazExt_extIDEM_frmPrjOptionEdit._treePreSets_node_get_IDENT(const treeNode:TTreeNode):string;
@@ -1182,6 +1307,8 @@ constructor tLazExt_extIDEM_frmPrjOptionEdit.Create(AOwner: TComponent);
 begin
     Inherited;
    _ExtIDEM_:=nil;
+   _nodeFrame_:=nil;
+   _frmUsrPRM_:=nil;
 end;
 
 destructor tLazExt_extIDEM_frmPrjOptionEdit.DESTROY;
@@ -1191,6 +1318,18 @@ begin
 end;
 
 //------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_usrPRM_(const treeNode:TTreeNode);
+var NodeDATA:tNodeDATA;
+begin
+    NodeDATA:=_treeNodeDATA_(treeNode);
+    if Assigned(NodeDATA)and(_MACROS_UsrSET_=treeNode.Parent) then begin
+       _frmUsrPRM_SHOW_(treeNode,NodeDATA.Node_PRJ);
+    end
+    else begin
+       _frmUsrPRM_HIDE_;
+    end;
+end;
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_Editor_(const treeNode:TTreeNode);
 var NodeDATA:tNodeDATA;
@@ -1203,7 +1342,7 @@ begin
         if (not Assigned(NodeEdit))and(Assigned(NodeDATA.NodeTEDT))
         then begin
             NodeEdit:=NodeDATA.NodeTEDT.Create(SELF);
-            ShowMessage('NodeDATA.NodeTEDT.Create'+NodeEdit.ClassName);
+            //ShowMessage('NodeDATA.NodeTEDT.Create'+NodeEdit.ClassName);
             NodeDATA.Node_EDT_SET(NodeEdit);
         end;
         //
@@ -1291,14 +1430,74 @@ end;
 procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_TreeNODE_(const treeNode:TTreeNode);
 begin
    _chb_nodeEnabled_eventCLR;
+       _nodeTree_:=treeNode;
+       _rePlace_TreeNODE_usrPRM_(treeNode);
        _rePlace_TreeNODE_Editor_(treeNode);
        _rePlace_TreeNODE_Labels_(treeNode);
        _rePlace_TreeNODE_enblCh_(treeNode);
-       _nodeTree_:=treeNode;
    _chb_nodeEnabled_eventSET;
 end;
 
 //------------------------------------------------------------------------------
+
+function tLazExt_extIDEM_frmPrjOptionEdit._MACROS_UsrSET_:tTreeNode;
+var tmpData:tNodeDATA;
+begin
+    result:=TreeView1.Items.GetFirstNode;
+    while Assigned(result) do begin
+        tmpData:=_treeNodeDATA_(result);
+        if Assigned(tmpData) then begin
+            if tmpData.Node_ACT is tExtIDEM_USER_MACROS_node then BREAK;
+        end;
+        //-->
+        result:=result.GetNextSibling;
+    end;
+end;
+
+function tLazExt_extIDEM_frmPrjOptionEdit._MACROS_UsrSET_toPRJ_(const TreeNode_UsrSET:tTreeNode; const UsrSET_NodeDATA:pointer):boolean;
+begin
+    result:= Assigned(TreeNode_UsrSET) and Assigned(UsrSET_NodeDATA);
+    if result then begin
+        {todo:write}
+    end;
+    result:=result and tNodeDATA(UsrSET_NodeDATA).PRJ_exist;
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._MACROS_UsrSET_addInUserSER(const NodePRM:tExtIDEM_McrPRM_node);
+var TreeNode_UsrSET:tTreeNode;
+    UsrSET_NodeDATA:tNodeDATA;
+begin
+    ShowMessage('_MACROS_UsrSET_addInUserSER');
+    TreeNode_UsrSET:=_MACROS_UsrSET_;
+    UsrSET_NodeDATA:=_treeNodeDATA_(TreeNode_UsrSET);
+    if _MACROS_UsrSET_toPRJ_(TreeNode_UsrSET,UsrSET_NodeDATA) then begin
+        if tLazExt_extIDEM_preSet_Node(UsrSET_NodeDATA.Node_PRJ).Param_INS(NodePRM)
+        then begin
+            TreeView1.Items.AddChildObject(TreeNode_UsrSET,_ExtIDEM_coreObj__getNameForTree_(NodePRM),tNodeDATA.Create_PRJ(NodePRM));
+            TreeNode_UsrSET.Expanded:=TRUE;
+        end
+        else NodePRM.FREE; //< неудачка :-(
+    end
+    else NodePRM.FREE; //< неудачка :-(
+end;
+
+function tLazExt_extIDEM_frmPrjOptionEdit._MACROS_UsrSET_validateName(const node:tExtIDEM_core_objNODE):boolean;
+var TreeNode_UsrSET:tTreeNode;
+    UsrSET_NodeDATA:tNodeDATA;
+begin
+    {todo: проверить на валидность само имя, типа пробелы, символы и т.д.}
+    TreeNode_UsrSET:=_MACROS_UsrSET_;
+    UsrSET_NodeDATA:=_treeNodeDATA_(TreeNode_UsrSET);
+    if Assigned(UsrSET_NodeDATA) and Assigned(node) then begin
+        if UsrSET_NodeDATA.PRJ_exist then begin
+            result:=not Assigned(tLazExt_extIDEM_preSet_Node(UsrSET_NodeDATA.Node_PRJ).Param_FND(node.node_IDNT,tExtIDEM_McrPRM_node(node)));
+        end
+        else begin
+            result:=true;
+        end;
+    end
+    else result:=false;
+end;
 
 //==============================================================================
 

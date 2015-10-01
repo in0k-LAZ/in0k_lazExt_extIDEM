@@ -20,6 +20,7 @@ inherited ExtIDEM_sub_UserPrmName_frm: TExtIDEM_sub_UserPrmName_frm
       Top = 0
       Width = 295
       Anchors = [akTop, akLeft, akRight]
+      OnChange = Edit1Change
       TabOrder = 0
       Text = 'Edit1'
     end
@@ -45,6 +46,7 @@ inherited ExtIDEM_sub_UserPrmName_frm: TExtIDEM_sub_UserPrmName_frm
       Top = 23
       Width = 272
       Anchors = [akTop, akLeft, akRight]
+      OnChange = Edit2Change
       TabOrder = 1
       Text = 'Edit2'
     end

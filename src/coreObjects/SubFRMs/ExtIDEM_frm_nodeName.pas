@@ -22,6 +22,7 @@ type
   public
      procedure setNames(const Macros,mcrPRM:string);
      procedure setUsed   (const value:boolean);
+     procedure setErName (const value:boolean);
      procedure setDELETED(const value:boolean);
   public
     constructor Create(AOwner: TComponent); override;
@@ -102,6 +103,22 @@ begin
         with label4.Font do Style:=Style-[fsStrikeOut];
         with label5.Font do Style:=Style-[fsStrikeOut];
         with label6.Font do Style:=Style-[fsStrikeOut];
+    end;
+end;
+
+procedure TlazExt_extIDEM_nodeName_frm.setErName(const value:boolean);
+begin
+    if value then begin
+        with label5.Font do begin
+            Style:=Style+[fsStrikeOut];
+            Color:=clRed;
+            Invalidate;
+        end;
+    end
+    else begin
+        with label5.Font do begin
+            Style:=Style-[fsStrikeOut];
+        end;
     end;
 end;
 

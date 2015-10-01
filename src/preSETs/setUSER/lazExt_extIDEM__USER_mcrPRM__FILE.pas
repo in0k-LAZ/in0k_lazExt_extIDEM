@@ -19,7 +19,6 @@ type
   { TExtIDEM__USER_mcrPRM__FILE_frm }
 
   TExtIDEM__USER_mcrPRM__FILE_frm = class(TlazExt_extIDEM_maCRO_File_CORE_edit)
-    sub_UserPrmName: TExtIDEM_sub_UserPrmName_frm;
   private
     { private declarations }
   public

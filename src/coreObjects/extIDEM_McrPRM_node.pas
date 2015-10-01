@@ -21,6 +21,7 @@ type
   private
    _next_:tExtIDEM_McrPRM_node;
    _edit_:tExtIDEM_core_objEditTYPE; //< выбранный редактор (может отличаться от defEditor)
+  protected
    _IDNT_:string;
   private
    _rIDE_:integer;
@@ -69,7 +70,7 @@ type
   protected
     procedure _nodes_CLR_;
     function  _nodes_LST_:tExtIDEM_McrPRM_node;
-    function  _nodes_FND_(const IDNT:string):tExtIDEM_McrPRM_node;
+    function  _nodes_FND_(const IDNT:string; const withOut:tExtIDEM_McrPRM_node=nil):tExtIDEM_McrPRM_node;
     procedure _nodes_INS_(const node:tExtIDEM_McrPRM_node);
   protected
     procedure _nodes_CP_ (const Target:tLazExt_extIDEM_nodesList_core);
@@ -84,6 +85,7 @@ type
     function ADD(const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
 
     function FND(const prmName:string):tExtIDEM_McrPRM_node;
+    function FND(const prmName:string; const withOut:tExtIDEM_McrPRM_node):tExtIDEM_McrPRM_node;
 
 
   public
@@ -260,6 +262,11 @@ begin
     result:=_nodes_FND_(prmName);
 end;
 
+function tLazExt_extIDEM_nodesList_core.FND(const prmName:string; const withOut:tExtIDEM_McrPRM_node):tExtIDEM_McrPRM_node;
+begin
+    result:=_nodes_FND_(prmName,withOut);
+end;
+
 function tLazExt_extIDEM_nodesList_core.Nodes_First:tExtIDEM_McrPRM_node;
 begin
     result:=_nodes_;
@@ -324,14 +331,14 @@ begin
 end;
 
 // поиск в спискае узла с совпадающим идентификатором
-function tLazExt_extIDEM_nodesList_core._nodes_FND_(const IDNT:string):tExtIDEM_McrPRM_node;
+function tLazExt_extIDEM_nodesList_core._nodes_FND_(const IDNT:string; const withOut:tExtIDEM_McrPRM_node=nil):tExtIDEM_McrPRM_node;
 begin
     {$ifDef _TSTPRM_}
         Assert(IDNT='','IDNT === NIL string');
     {$endIF}
     result:=_nodes_;
     while Assigned(result) do begin
-        if result.Node_IDNT=IDNT then BREAK;
+        if (result.Node_IDNT=IDNT)and(withOut<>result) then BREAK;
         result:=result._next_;
     end;
 end;

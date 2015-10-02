@@ -1,10 +1,14 @@
 unit lazExt_extIDEM_prjResource;
 
 {$mode objfpc}{$H+}
-
 interface
 {$I in0k_lazExt_extIDEM_INI.inc}
+{$ifDef lazExt_extIDEM_EventLOG_mode}
+    {$define _DbgFileInUSES_}
+    {$define _EventLOG_}
+{$endIf}
 {$ifDef lazExt_extIDEM_DEBUG_mode}
+    {$define _DbgFileInUSES_}
     {$define _DEBUG_}
     {$define _TSTPRM_}
     {$define _TSTABS_}
@@ -12,7 +16,7 @@ interface
     {$define _INLINE_}
 {$endIf}
 
-uses {$ifDef lazExt_Sub6_EventLOG_mode}Sub6_wndDebug,{$endIf}
+uses {$ifDef _DbgFileInUSES_}ExtIDEM_DEBUG,{$endIf}
    Laz2_XMLCfg, Laz2_DOM, //< !!! для работы ОБЯЗАТЕЛЬНО пользоваться этой библиотекой
    ProjectResourcesIntf,            Dialogs,   lazExt_extIDEM,
    extIDEM_coreObject, extIDEM_MACROS_node, extIDEM_McrPRM_node,
@@ -238,8 +242,10 @@ var dom_Node:TDomNode;
     ide__PRM:tExtIDEM_McrPRM_node;
     //cccITM:tLazExt_extIDEM_preSet_Node;
 begin
-    ShowMessage('_MacroPRMs_Load_ :'+_MacroPRMs_PATH_(prntPath));
-
+    {$ifDef _EventLOG_}
+    DEBUG('lpi LOAD','_MacroPRMs_Load_ : '+_MacroPRMs_PATH_(prntPath));
+    {$endIf}
+    //---
     dom_Node:=AConfig.FindNode(_MacroPRMs_PATH_(prntPath),false);
     if Assigned(dom_Node) then begin
         dom_Node:=dom_Node.FirstChild;
@@ -247,15 +253,12 @@ begin
             macroPRM:=macroITM.Param_FND(dom_Node.NodeName);
             if not Assigned(macroPRM) then begin //< такого еще нет
                 ide__PRM:=extIDEM.FIND_IDNT(macroITM.node_IDNT,dom_Node.NodeName);
-                if Assigned(ide__PRM) then begin
-                    ShowMessage('_MacroPRMs_Load_ : COPY ===');
-                    macroPRM:=tLazExt_extIDEM_nodeTYPE(ide__PRM.ClassType).Create;
-                    macroPRM.Copy(ide__PRM);
-                    ShowMessage('_MacroPRMs_Load_ : COPY +++');
-                end
-                else begin
-                    macroPRM:=tExtIDEM_McrPRM_NotDEF_node.Create(dom_Node.NodeName);
-                end;
+                if Assigned(ide__PRM)
+                then macroPRM:=tLazExt_extIDEM_nodeTYPE(ide__PRM.ClassType).Create(macroITM,ide__PRM)
+                else macroPRM:=tExtIDEM_McrPRM_NotDEF_node.Create(macroITM,dom_Node.NodeName);
+                {$ifDef _EventLOG_}
+                DEBUG('[lpi LOAD]','_MacroPRMs_Load_ : create '+macroPRM.ClassName+'('+macroITM.node_IDNT+')'+addr2txt(macroPRM));
+                {$endIf}
                 if Assigned(macroPRM) then begin
                     macroITM.Param_INS(macroPRM);
                 end;

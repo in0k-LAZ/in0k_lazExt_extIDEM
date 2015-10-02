@@ -20,26 +20,26 @@ uses extIDEM_MACROS_Intf, extIDEM_coreObject, Dialogs,
 
 type
 
- tExtIDEM_USER_MACROS_edit__doAddNewNodePRM=procedure(const NodePRM:tExtIDEM_McrPRM_node) of object;
-
+ tExtIDEM_USER_MACROS_edit__doAddNewNode=procedure(const templateNode:tExtIDEM_McrPRM_node) of object;
 
  tExtIDEM_USER_MACROS_node=class;
 
  { tExtIDEM_USER_MACROS_edit }
 
  tExtIDEM_USER_MACROS_edit=class(TExtIDEM_MACROS_edit_custom)
-    Button1: TButton;
+    btn_ADD: TButton;
     ComboBox1: TComboBox;
     GroupBox1: TGroupBox;
     Label1: TLabel;
-    procedure Button1Click(Sender: TObject);
+    procedure btn_ADDClick(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
   private
-   _node_:tExtIDEM_USER_MACROS_node;
-   _fDoAddNewNode_:tExtIDEM_USER_MACROS_edit__doAddNewNodePRM;
-    procedure _fDoAddNewNode_SET_(const value:tExtIDEM_USER_MACROS_edit__doAddNewNodePRM);
+   _node_:tExtIDEM_USER_MACROS_node; //< это СПИОК где мы берем ШАБЛОНЫ
     procedure _node_SET_(const value:tExtIDEM_USER_MACROS_node);
-    function  _node_fndNewName_(const prmName:string; out NewName:string):boolean;
+  private //< сообщить наверх, чтобы вставили НОВОЕ
+   _fnk_doAddNewNode_:tExtIDEM_USER_MACROS_edit__doAddNewNode;
+    procedure _fnk_doAddNewNode_SET_(const value:tExtIDEM_USER_MACROS_edit__doAddNewNode);
+    procedure _doAddNewNode_(const templateNode:tExtIDEM_McrPRM_node);
   private
     procedure _cmb_LST_CLEAR_;
     procedure _cmb_LST_reSet_;
@@ -53,7 +53,7 @@ type
     procedure Settings_Write(const node:tExtIDEM_core_objNODE); override;
     {$endIf}
   public
-    property doAddNewNode:tExtIDEM_USER_MACROS_edit__doAddNewNodePRM write _fDoAddNewNode_;
+    property fDoAddNewNode:tExtIDEM_USER_MACROS_edit__doAddNewNode write _fnk_doAddNewNode_SET_;
   end;
 
  tExtIDEM_USER_MACROS_node=class(tExtIDEM_MACROS_node_custom)
@@ -96,7 +96,7 @@ begin
     else _cmb_LST_CLEAR_;
 end;
 
-function tExtIDEM_USER_MACROS_edit._node_fndNewName_(const prmName:string; out NewName:string):boolean;
+{function tExtIDEM_USER_MACROS_edit._node_fndNewName_(const prmName:string; out NewName:string):boolean;
 var i:integer;
 begin
     result:=false;
@@ -112,15 +112,21 @@ begin
         end;
     end;
     ShowMessage('_node_fndNewName_:'+NewName);
-end;
+end;}
 
 //------------------------------------------------------------------------------
 
-procedure tExtIDEM_USER_MACROS_edit._fDoAddNewNode_SET_(const value:tExtIDEM_USER_MACROS_edit__doAddNewNodePRM);
+
+procedure tExtIDEM_USER_MACROS_edit._fnk_doAddNewNode_SET_(const value:tExtIDEM_USER_MACROS_edit__doAddNewNode);
 begin
-   _fDoAddNewNode_:=value;
+   _fnk_doAddNewNode_:=value;
    _btn_Add__reSet_;
    _lbl_DSC__reSet_;
+end;
+
+procedure tExtIDEM_USER_MACROS_edit._doAddNewNode_(const templateNode:tExtIDEM_McrPRM_node);
+begin
+    if Assigned(_fnk_doAddNewNode_) then _fnk_doAddNewNode_(templateNode);
 end;
 
 //------------------------------------------------------------------------------
@@ -178,33 +184,19 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure tExtIDEM_USER_MACROS_edit.Button1Click(Sender: TObject);
-var newName:string;
-    newNode:tExtIDEM_McrPRM_node;
+procedure tExtIDEM_USER_MACROS_edit.btn_ADDClick(Sender: TObject);
+var templateNode:tExtIDEM_McrPRM_node;
 begin
-    if Assigned(_node_) and Assigned(_fDoAddNewNode_) then begin
-        newNode:=_cmb_LST_get_selected_;
-        if Assigned(newNode) then begin
-            if _node_fndNewName_(newNode.node_IDNT,newName) then begin
-                // ну все ... надо создавать
-                newNode:=tLazExt_extIDEM_nodeTYPE(newNode.ClassType).Create(newName,newNode.nodeTEdit);
-               _fDoAddNewNode_(newNode);
-            end
-            else begin
-                // Не найдено новое имя для параметра // шаблон имени
-                MessageDlg('Not found a new name for the parameter.'+LineEnding+'Generic name: '+newNode.node_IDNT+'_xxx',mtError,[mbOK],0);
-            end;
-        end
-        else begin
-            // не выбран шаблон для параметра
-            MessageDlg('Do not select a template parameter.',mtError,[mbOK],0);
-        end;
+    if Assigned(_node_) then begin
+        templateNode:=_cmb_LST_get_selected_;
+        if Assigned(templateNode) then _doAddNewNode_(templateNode);
     end;
 end;
 
 procedure tExtIDEM_USER_MACROS_edit._btn_Add__reSet_;
 begin
-    Button1.Enabled:=Assigned(_node_)and Assigned(_fDoAddNewNode_) and Assigned(_cmb_LST_get_selected_);
+    btn_ADD.Enabled:=Assigned(_fnk_doAddNewNode_)      //< есть ЧЕМ работать
+                 and Assigned(_cmb_LST_get_selected_); //< есть НАД чем работать
 end;
 
 //------------------------------------------------------------------------------

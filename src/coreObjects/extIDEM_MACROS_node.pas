@@ -21,7 +21,7 @@ type
 
  tLazExt_extIDEM_preSet_Node=class(tExtIDEM_core_objNODE)
   private
-   _param_list_:tLazExt_extIDEM_nodesList_core;
+   _PRMs_:tLazExt_extIDEM_nodesList_core;
   private
    _next_:tLazExt_extIDEM_preSet_Node;
 //   _indx_:Integer; //< TIDEOptionsEditorRec.Index
@@ -35,6 +35,8 @@ type
     constructor Create; virtual;
     destructor DESTROY; override;
   public
+
+
     function Param_INS(const prmNode:tExtIDEM_McrPRM_node):boolean;
     function Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE; const prmEdit:tExtIDEM_core_objEditTYPE):boolean;
     function Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
@@ -75,12 +77,12 @@ implementation
 
 constructor tLazExt_extIDEM_preSet_Node.Create;
 begin
-   _param_list_:=tLazExt_extIDEM_nodesList_core.Create;
+   _PRMs_:=tLazExt_extIDEM_nodesList_core.Create;
 end;
 
 destructor tLazExt_extIDEM_preSet_Node.DESTROY;
 begin
-   _param_list_.FREE;
+   _PRMs_.FREE;
     inherited;
 end;
 
@@ -130,12 +132,12 @@ end;}
 
 function tLazExt_extIDEM_preSet_Node.Param_INS(const prmNode:tExtIDEM_McrPRM_node):boolean;
 begin
-   _param_list_.INS(prmNode);
+   _PRMs_.INS(prmNode);
 end;
 
 function tLazExt_extIDEM_preSet_Node.Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE; const prmEdit:tExtIDEM_core_objEditTYPE):boolean;
 begin
-     result:=_param_list_.ADD(prmName,prmType,prmEdit);
+     result:=_PRMs_.ADD(self,prmType,prmName,prmEdit);
 end;
 
 function tLazExt_extIDEM_preSet_Node.Param_ADD(const prmName:string; const prmType:tLazExt_extIDEM_nodeTYPE):boolean;
@@ -150,24 +152,24 @@ end;
 
 function tLazExt_extIDEM_preSet_Node.Param_FND(const prmName:string):tExtIDEM_McrPRM_node;
 begin
-   _param_list_.FND(prmName);
+    result:=_PRMs_.FND(prmName);
 end;
 
 function tLazExt_extIDEM_preSet_Node.Param_FND(const prmName:string; const withOut:tExtIDEM_McrPRM_node):tExtIDEM_McrPRM_node;
 begin
-   _param_list_.FND(prmName,withOut);
+    result:=_PRMs_.FND(prmName,withOut);
 end;
 
 //------------------------------------------------------------------------------
 
 function tLazExt_extIDEM_preSet_Node.Param_First:tExtIDEM_McrPRM_node;
 begin
-    result:=_param_list_.Nodes_First;
+    result:=_PRMs_.Nodes_First;
 end;
 
 function tLazExt_extIDEM_preSet_Node.Param_Next(const node:tExtIDEM_McrPRM_node):tExtIDEM_McrPRM_node;
 begin
-    result:=_param_list_.Nodes_Next(node);
+    result:=_PRMs_.Nodes_Next(node);
 end;
 
 

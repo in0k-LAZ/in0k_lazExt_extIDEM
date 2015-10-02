@@ -52,7 +52,7 @@ type
     procedure node_Save(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); override;
     procedure node_Load(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); override;
   public
-    constructor Create(const prmNAME:string; const EDITor:tExtIDEM_core_objEditTYPE=nil); override;
+    procedure SetUp;
   public
     property ResultForIDE;
     property ResultForSRC;
@@ -114,9 +114,8 @@ end;
 
 //==============================================================================
 
-constructor tLazExt_extIDEM_maCRO_File_CORE_node.Create(const prmNAME:string; const EDITor:tExtIDEM_core_objEditTYPE=nil);
+procedure tLazExt_extIDEM_maCRO_File_CORE_node.SetUp;
 begin
-    inherited Create(prmNAME,EDITor);
    _fName_:='';
 end;
 

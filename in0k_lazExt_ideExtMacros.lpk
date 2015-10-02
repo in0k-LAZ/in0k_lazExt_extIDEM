@@ -8,11 +8,11 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <OtherUnitFiles Value="src;src\coreObjects;src\coreObjects\SubFRMs;src\coreObjects\McrPRMs;Intf;src\preSet;src\ideEdit;src\ideEdit\sub_frames;src\preSETs\setNDF;src\preSETs\setSUB6;src\preSETs\setUSER"/>
+        <OtherUnitFiles Value="src;src\coreObjects;src\coreObjects\SubFRMs;src\coreObjects\McrPRMs;Intf;src\preSet;src\ideEdit;src\ideEdit\sub_frames;src\preSETs\setNDF;src\preSETs\setSUB6;src\preSETs\setUSER;srcPKG\DEBUG"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="38">
+    <Files Count="39">
       <Item1>
         <Filename Value="in0k_lazExt_extIDEM_INI.inc"/>
         <Type Value="Binary"/>
@@ -199,6 +199,10 @@
         <UnitName Value="ExtIDEM_frm_sub_UserPrmName"/>
         <ResourceBaseClass Value="Frame"/>
       </Item38>
+      <Item39>
+        <Filename Value="srcPKG\DEBUG\ExtIDEM_DEBUG.pas"/>
+        <UnitName Value="ExtIDEM_DEBUG"/>
+      </Item39>
     </Files>
     <RequiredPkgs Count="3">
       <Item1>

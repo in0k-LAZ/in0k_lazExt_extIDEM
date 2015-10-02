@@ -1,10 +1,14 @@
 unit extIDEM_McrPRM_node;
 
 {$mode objfpc}{$H+}
-
 interface
 {$I in0k_lazExt_extIDEM_INI.inc}
+{$ifDef lazExt_extIDEM_EventLOG_mode}
+    {$define _DbgFileInUSES_}
+    {$define _EventLOG_}
+{$endIf}
 {$ifDef lazExt_extIDEM_DEBUG_mode}
+    {$define _DbgFileInUSES_}
     {$define _DEBUG_}
     {$define _TSTPRM_}
     {$define _TSTABS_}
@@ -12,17 +16,20 @@ interface
     {$define _INLINE_}
 {$endIf}
 
-uses extIDEM_coreObject, Laz2_XMLCfg,
+uses {$ifDef _DbgFileInUSES_}ExtIDEM_DEBUG,{$endIf}
+     extIDEM_coreObject, Laz2_XMLCfg,
   Classes, SysUtils;
 
 type
 
  tExtIDEM_McrPRM_node=class(tExtIDEM_core_objNODE)
   private
+   _prnt_:{tLazExt_extIDEM_preSet_Node}tExtIDEM_core_objNODE; //< папа МАКРОС
    _next_:tExtIDEM_McrPRM_node;
    _edit_:tExtIDEM_core_objEditTYPE; //< выбранный редактор (может отличаться от defEditor)
   protected
    _IDNT_:string;
+
   private
    _rIDE_:integer;
    _rSRC_:integer;
@@ -35,14 +42,19 @@ type
     property  ResultForSRC:integer read _rSRC_ write _rSRC_SET_;
     procedure AConfig_setResultValue(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String; const defIDE,defSRC:integer);
     procedure AConfig_getResultValue(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String; const defIDE,defSRC:integer);
+  private
+    //constructor {%H-}Create; override; //< прячем ...  сглаз долой
   public
-    constructor Create; override;
-    constructor Create(const prmIDNT:string; const EDITor:tExtIDEM_core_objEditTYPE=nil); virtual;
+    constructor Create(const MACROS:{tLazExt_extIDEM_preSet_Node}tExtIDEM_core_objNODE; const IDNT:string; const tEDIT:tExtIDEM_core_objEditTYPE=nil); virtual;
+    constructor Create(const MACROS:{tLazExt_extIDEM_preSet_Node}tExtIDEM_core_objNODE; const template:tExtIDEM_McrPRM_node);
+
+
+
     destructor DESTROY; override;
   protected
-    procedure SetUP;                                    virtual;
+    procedure SetUP; virtual;
   public
-    procedure Copy (const Source:tExtIDEM_McrPRM_node); virtual;
+//    procedure Copy (const Source:tExtIDEM_McrPRM_node); virtual;
     //property Next:tExtIDEM_McrPRM_node read _next_ write _next_;
     //property Node_EditTYPE:tExtIDEM_core_objEditTYPE read _edit_;
     //property Node_IDNT:string read _IDNT_;
@@ -73,21 +85,19 @@ type
     function  _nodes_FND_(const IDNT:string; const withOut:tExtIDEM_McrPRM_node=nil):tExtIDEM_McrPRM_node;
     procedure _nodes_INS_(const node:tExtIDEM_McrPRM_node);
   protected
-    procedure _nodes_CP_ (const Target:tLazExt_extIDEM_nodesList_core);
+    //procedure _nodes_CP_ (const Target:tLazExt_extIDEM_nodesList_core);
   public
     constructor Create; virtual;
     destructor DESTROY; override;
+  public // Вставить в список
+    function INS(const node:tExtIDEM_McrPRM_node):boolean;
+  public // СОЗДАТЬ и вставить в список
+    function ADD(const MACROS:{tLazExt_extIDEM_preSet_Node}tExtIDEM_core_objNODE; const tNODE:tLazExt_extIDEM_nodeTYPE; const nodeIDNT:string; const nodeTEdit:tExtIDEM_core_objEditTYPE):boolean;
+    function ADD(const MACROS:{tLazExt_extIDEM_preSet_Node}tExtIDEM_core_objNODE; const tNODE:tLazExt_extIDEM_nodeTYPE; const nodeIDNT:string):boolean;
+    function ADD(const MACROS:{tLazExt_extIDEM_preSet_Node}tExtIDEM_core_objNODE; const tNODE:tLazExt_extIDEM_nodeTYPE):boolean;
   public
-    procedure INS(const node:tExtIDEM_McrPRM_node);
-
-    function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tExtIDEM_core_objEditTYPE):boolean;
-    function ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
-    function ADD(const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
-
-    function FND(const prmName:string):tExtIDEM_McrPRM_node;
-    function FND(const prmName:string; const withOut:tExtIDEM_McrPRM_node):tExtIDEM_McrPRM_node;
-
-
+    function FND(const nodeIDNT:string):tExtIDEM_McrPRM_node;
+    function FND(const nodeIDNT:string; const withOut:tExtIDEM_McrPRM_node):tExtIDEM_McrPRM_node;
   public
     function Nodes_First:tExtIDEM_McrPRM_node;
     function Nodes_Next(const node:tExtIDEM_McrPRM_node):tExtIDEM_McrPRM_node;
@@ -97,19 +107,33 @@ type
 
 implementation
 
-constructor tExtIDEM_McrPRM_node.Create;
+{constructor tExtIDEM_McrPRM_node.Create;
 begin
-    Create('',nil);
+    Create(nil,'',nil);
+end; }
+
+constructor tExtIDEM_McrPRM_node.Create(const MACROS:tExtIDEM_core_objNODE; const IDNT:string; const tEDIT:tExtIDEM_core_objEditTYPE=nil);
+begin
+    {$ifDef _TSTPRM_}
+        Assert(Assigned(MACROS),self.ClassName+'.Create MACROS==NIL');
+    {$endIf}
+    inherited Create;
+    if IDNT<>''        then _IDNT_:=IDNT   else  _IDNT_:=Obj_IDNT;
+    if Assigned(tEDIT) then _edit_:=tEDIT  else  _edit_:=ObjTEdit;
+   _prnt_:=MACROS;
+   _next_:=nil;
    _rIDE_:=0;
    _rSRC_:=0;
+    //---
+    SetUP;
 end;
 
-constructor tExtIDEM_McrPRM_node.Create(const prmIDNT:string; const EDITor:tExtIDEM_core_objEditTYPE=nil);
+constructor tExtIDEM_McrPRM_node.Create(const MACROS:{tLazExt_extIDEM_preSet_Node}tExtIDEM_core_objNODE; const template:tExtIDEM_McrPRM_node);
 begin
-    if prmIDNT<>''      then _IDNT_:=prmIDNT else  _IDNT_:=Obj_IDNT;
-    if Assigned(EDITor) then _edit_:=EDITor  else  _edit_:=ObjTEdit;
-   _next_:=nil;
+    Create(MACROS,template.node_IDNT,template.nodeTEdit)
 end;
+
+
 
 destructor tExtIDEM_McrPRM_node.DESTROY;
 begin // наследие дельфей
@@ -130,17 +154,17 @@ end;
 
 class function tExtIDEM_McrPRM_node.PUBLISED:boolean;
 begin
-    result:=FALSE;
+    result:=TRUE;
 end;
 
 //------------------------------------------------------------------------------
 
 
-procedure tExtIDEM_McrPRM_node.Copy(const Source:tExtIDEM_McrPRM_node);
+{procedure tExtIDEM_McrPRM_node.Copy(const Source:tExtIDEM_McrPRM_node);
 begin
    _IDNT_:=Source._IDNT_;
    _edit_:=Source._edit_;
-end;
+end; }
 
 procedure tExtIDEM_McrPRM_node.SetUP;
 begin
@@ -222,50 +246,62 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure tLazExt_extIDEM_nodesList_core.INS(const node:tExtIDEM_McrPRM_node);
-begin
-   _nodes_INS_(node);
-end;
 
-function tLazExt_extIDEM_nodesList_core.ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE; const nodeEdit:tExtIDEM_core_objEditTYPE):boolean;
-var tmp:tExtIDEM_McrPRM_node;
+function tLazExt_extIDEM_nodesList_core.INS(const node:tExtIDEM_McrPRM_node):boolean;
 begin
     {$ifDef _TSTPRM_}
-       // Assert(Assigned(node),'NODE === NIL');
+        Assert(Assigned(node),'!TSTPRM! '+Self.ClassName+'.INS : '+'node === NIL');
     {$endIF}
-    tmp:=nodeType.Create(prmName,nodeEdit);
-    if Assigned(_nodes_FND_(tmp.node_Name)) then begin //< такой уже есть
-        result:=FALSE;
-        tmp.FREE;
-    end
-    else begin //< такого нет, вставляем
-       _nodes_INS_(tmp);
+    result:=false;
+    if NOT Assigned(_nodes_FND_(node.node_IDNT)) then begin //< такого нет, вставляем
+       _nodes_INS_(node);
         result:=true;
+    end
+    else begin //< такой идентификатор уже ЕСТЬ, всавлять НЕЛЬЗЯ
+        result:=FALSE;
     end;
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function tLazExt_extIDEM_nodesList_core.ADD(const MACROS:tExtIDEM_core_objNODE; const tNODE:tLazExt_extIDEM_nodeTYPE; const nodeIDNT:string; const nodeTEdit:tExtIDEM_core_objEditTYPE):boolean;
+var tmpNode:tExtIDEM_McrPRM_node;
+begin
     {$ifDef _TSTPRM_}
-         Assert(result, ClassName+'.ADD('+prmName+','+nodeType.ClassName+')'+'FALSE');
+        Assert(Assigned(MACROS),'!TSTPRM! '+Self.ClassName+'.ADD : '+'MACROS === NIL');
+        Assert(Assigned(tNODE) ,'!TSTPRM! '+Self.ClassName+'.ADD : '+'tNODE  === NIL');
     {$endIF}
+    // без создания оббъекта мы НЕ можем получить его ИДЕНТИФИКАТОР
+    tmpNode:=tNODE.Create(MACROS,nodeIDNT,nodeTEdit);
+    result :=INS(tmpNode);
+    if not result then begin //< не удачка
+        tmpNode.Free;
+    end;
 end;
 
-function tLazExt_extIDEM_nodesList_core.ADD(const prmName:string; const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
+function tLazExt_extIDEM_nodesList_core.ADD(const MACROS:tExtIDEM_core_objNODE; const tNODE:tLazExt_extIDEM_nodeTYPE; const nodeIDNT:string):boolean;
 begin
-    result:=ADD(prmName,nodeType,nil)
+    result:=ADD(MACROS,tNODE,nodeIDNT,nil);
 end;
 
-function tLazExt_extIDEM_nodesList_core.ADD(const nodeType:tLazExt_extIDEM_nodeTYPE):boolean;
+function tLazExt_extIDEM_nodesList_core.ADD(const MACROS:tExtIDEM_core_objNODE; const tNODE:tLazExt_extIDEM_nodeTYPE):boolean;
 begin
-    result:=ADD('',nodeType,nil)
+    result:=ADD(MACROS,tNODE,'',nil);
 end;
 
-function tLazExt_extIDEM_nodesList_core.FND(const prmName:string):tExtIDEM_McrPRM_node;
+//------------------------------------------------------------------------------
+
+function tLazExt_extIDEM_nodesList_core.FND(const nodeIDNT:string):tExtIDEM_McrPRM_node;
 begin
-    result:=_nodes_FND_(prmName);
+    result:=_nodes_FND_(nodeIDNT,nil);
 end;
 
-function tLazExt_extIDEM_nodesList_core.FND(const prmName:string; const withOut:tExtIDEM_McrPRM_node):tExtIDEM_McrPRM_node;
+function tLazExt_extIDEM_nodesList_core.FND(const nodeIDNT:string; const withOut:tExtIDEM_McrPRM_node):tExtIDEM_McrPRM_node;
 begin
-    result:=_nodes_FND_(prmName,withOut);
+    result:=_nodes_FND_(nodeIDNT,withOut);
 end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function tLazExt_extIDEM_nodesList_core.Nodes_First:tExtIDEM_McrPRM_node;
 begin
@@ -334,7 +370,7 @@ end;
 function tLazExt_extIDEM_nodesList_core._nodes_FND_(const IDNT:string; const withOut:tExtIDEM_McrPRM_node=nil):tExtIDEM_McrPRM_node;
 begin
     {$ifDef _TSTPRM_}
-        Assert(IDNT='','IDNT === NIL string');
+        Assert(IDNT<>'','!TSTPRM! '+Self.ClassName+'._nodes_FND_ : '+'IDNT==""');
     {$endIF}
     result:=_nodes_;
     while Assigned(result) do begin
@@ -346,7 +382,7 @@ end;
 procedure tLazExt_extIDEM_nodesList_core._nodes_INS_(const node:tExtIDEM_McrPRM_node);
 begin
     {$ifDef _TSTPRM_}
-        Assert(Assigned(node),'NODE === NIL');
+        Assert(Assigned(node),'!TSTPRM! '+Self.ClassName+'._nodes_INS_ : '+'node==nil');
     {$endIF}
     node._next_:=_nodes_LST_;
     if Assigned(node._next_) then begin
@@ -358,7 +394,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure tLazExt_extIDEM_nodesList_core._nodes_CP_(const Target:tLazExt_extIDEM_nodesList_core);
+{procedure tLazExt_extIDEM_nodesList_core._nodes_CP_(const Target:tLazExt_extIDEM_nodesList_core);
 var tmp:tExtIDEM_McrPRM_node;
     tmq:tExtIDEM_McrPRM_node;
 begin //
@@ -370,7 +406,7 @@ begin //
         //--->
         tmp:=Nodes_Next(tmp);
     end;
-end;
+end;}
 
 end.
 

@@ -1,11 +1,25 @@
 unit in0k_lazExt_extIDEM_REG;
 
 {$mode objfpc}{$H+}
-
 interface
+{$I in0k_lazExt_extIDEM_INI.inc}
+{$ifDef lazExt_extIDEM_EventLOG_mode}
+    {$define _DbgFileInUSES_}
+    {$define _EventLOG_}
+{$endIf}
+{$ifDef lazExt_extIDEM_DEBUG_mode}
+    {$define _DbgFileInUSES_}
+    {$define _DEBUG_}
+    {$define _TSTPRM_}
+    {$define _TSTABS_}
+{$else}
+    {$define _INLINE_}
+{$endIf}
 
-uses    lazExt_extIDEM,
+uses {$ifDef _DbgFileInUSES_}ExtIDEM_DEBUG,{$endIf}
+   lazExt_extIDEM,
 IDEOptionsIntf,  //lazExt_extIDEM_preSet_edit,
+
 
 //lazExt_extIDEM__NDF_MACROS,
 lazExt_extIDEM__USER_MACROS,
@@ -29,6 +43,10 @@ var OptionsGroup: Integer;
 procedure REGISTER;
 var edt:integer;
 begin
+    {$ifDef _EventLOG_}
+    ExtIDEM_DEBUG.RegisterInIdeLAZARUS;
+    {$endIf}
+
     RegisterProjectResource(tExtIDEM_prjResources);
     //---
     lazExt_extIDEM_CRT;

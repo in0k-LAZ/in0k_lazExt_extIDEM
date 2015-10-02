@@ -60,7 +60,7 @@ type
     procedure node_Save(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); virtual;
     procedure node_Load(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); virtual;
   public
-    constructor Create; virtual;
+    constructor Create;
   public
     property Enabled:boolean read _ENBL_ write _ENBL_SET_; //< участвует в событиях проекта
     property Changed:boolean read _CHNG_;                  //< данные были изменены

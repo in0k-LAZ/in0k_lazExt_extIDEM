@@ -32,8 +32,8 @@ type
   public
     procedure node_Save(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); override;
     procedure node_Load(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); override;
-  public
-    constructor Create(const prmNAME:string; const EDITor:tExtIDEM_core_objEditTYPE=nil); override;
+  protected
+    procedure SetUP; override;
   end;
 
 implementation
@@ -58,9 +58,8 @@ end;
 
 //==============================================================================
 
-constructor tExtIDEM_McrPRM_NotDEF_node.Create(const prmNAME:string; const EDITor:tExtIDEM_core_objEditTYPE=nil);
+procedure tExtIDEM_McrPRM_NotDEF_node.SetUP;
 begin
-    inherited Create(prmNAME,EDITor);
    _value_:='';
 end;
 

@@ -32,18 +32,18 @@ type
   private
    _value_:string;
     procedure _value_SET_(const newValue:string);
+  public
+    class function PUBLISED:boolean; override;
   protected
     class function ObjTEdit:tExtIDEM_core_objEditTYPE; override;
     class function Obj_IDNT:string;                    override;
     class function Obj_Name:string;                    override;
     class function Obj_Desc:string;                    override;
-  public
-    class function PUBLISED:boolean; override;
+  protected
+    procedure SetUP; override;
   public    //<
     procedure node_Save(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); override;
     procedure node_Load(const AConfig:Laz2_XMLCfg.TXMLConfig; const Path:String); override;
-  public
-    constructor Create(const prmNAME:string; const EDITor:tExtIDEM_core_objEditTYPE=nil); override;
   public
     property ResultForIDE;
     property ResultForSRC;
@@ -97,20 +97,9 @@ end;}
 
 //==============================================================================
 
-constructor tLazExt_extIDEM_maCRO_Text_CORE_node.Create(const prmNAME:string; const EDITor:tExtIDEM_core_objEditTYPE=nil);
+procedure tLazExt_extIDEM_maCRO_Text_CORE_node.SetUP;
 begin
-    inherited Create(prmNAME,EDITor);
    _value_:='';
-end;
-
-//------------------------------------------------------------------------------
-
-procedure tLazExt_extIDEM_maCRO_Text_CORE_node._value_SET_(const newValue:string);
-begin
-    if _value_<>newValue then begin
-       _value_:=newValue;
-        set_IsCHANGed;
-    end;
 end;
 
 //------------------------------------------------------------------------------
@@ -127,6 +116,16 @@ begin
     inherited;
    _value_:=AConfig.GetValue(Path+'/value','');
     AConfig_getResultValue  (AConfig,Path,0,0);
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_maCRO_Text_CORE_node._value_SET_(const newValue:string);
+begin
+    if _value_<>newValue then begin
+       _value_:=newValue;
+        set_IsCHANGed;
+    end;
 end;
 
 //------------------------------------------------------------------------------

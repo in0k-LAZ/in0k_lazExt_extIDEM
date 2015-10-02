@@ -18,7 +18,7 @@ inherited extIDEM_USER_MACROS_edit: TextIDEM_USER_MACROS_edit
     ClientHeight = 48
     ClientWidth = 541
     TabOrder = 0
-    object Button1: TButton
+    object btn_ADD: TButton
       AnchorSideTop.Control = ComboBox1
       AnchorSideTop.Side = asrBottom
       AnchorSideRight.Control = GroupBox1
@@ -29,14 +29,14 @@ inherited extIDEM_USER_MACROS_edit: TextIDEM_USER_MACROS_edit
       Width = 75
       Anchors = [akTop, akRight]
       Caption = 'Добавить'
-      OnClick = Button1Click
+      OnClick = btn_ADDClick
       TabOrder = 0
     end
     object Label1: TLabel
       AnchorSideLeft.Control = GroupBox1
       AnchorSideTop.Control = ComboBox1
       AnchorSideTop.Side = asrBottom
-      AnchorSideRight.Control = Button1
+      AnchorSideRight.Control = btn_ADD
       Left = 2
       Height = 15
       Top = 23

@@ -703,8 +703,13 @@ begin
    _ui_ExtIDEM_Enablede_eventCLR_;
    _ExtIDEM_:=Value;
     if Assigned(_ExtIDEM_) then begin
+        //
+        ui_ExtIDEM_Enabled.Enabled:=_ExtIDEM_.IsExist;
         ui_ExtIDEM_Enabled.Checked:=_ExtIDEM_.Enabled;
+        //
         ui_ExtIDEM_MustDEL.Checked:=_ExtIDEM_.MustDEL;
+        ui_ExtIDEM_MustDEL.Enabled:=_ExtIDEM_.Present;
+
         //---
         Panel2.Enabled:=_ExtIDEM_.Enabled;
         Panel3.Enabled:=_ExtIDEM_.Enabled;

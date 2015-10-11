@@ -27,12 +27,12 @@ type
    _prnt_:{tLazExt_extIDEM_preSet_Node}tExtIDEM_core_objNODE; //< папа МАКРОС
    _next_:tExtIDEM_McrPRM_node;
    _edit_:tExtIDEM_core_objEditTYPE; //< выбранный редактор (может отличаться от defEditor)
-  protected
-   _IDNT_:string;
-
-  private
-   _rIDE_:integer;
-   _rSRC_:integer;
+  protected //< для ПОЛЬЗОВАТЕЛЬСКИХ и унаследованных объектов
+   _IDNT_:string; //< идентификатор в МАКРОСЕ
+   _DESC_:string; //< описание
+  private //< "вид" резальтата
+   _rIDE_:integer; //< представление в IDE
+   _rSRC_:integer; //< представление в SRC
     procedure _rIDE_SET_(const value:integer);
     procedure _rSRC_SET_(const value:integer);
   protected
@@ -59,8 +59,11 @@ type
     //property Node_EditTYPE:tExtIDEM_core_objEditTYPE read _edit_;
     //property Node_IDNT:string read _IDNT_;
 
-    function nodeTEdit:tExtIDEM_core_objEditTYPE; override;
-    function node_IDNT:string; override;
+    function  nodeTEdit:tExtIDEM_core_objEditTYPE; override;
+    function  node_IDNT:string; override;
+    function  node_DESC:string; override;
+    procedure node_DESC_SET(const value:string);
+    function  node_DESC_Inherited:string;
   public
     //class function defEditor:tExtIDEM_core_objEditTYPE; virtual; {$ifNdef _TSTABS_}abstract;{$endif}
 
@@ -120,6 +123,7 @@ begin
     inherited Create;
     if IDNT<>''        then _IDNT_:=IDNT   else  _IDNT_:=Obj_IDNT;
     if Assigned(tEDIT) then _edit_:=tEDIT  else  _edit_:=ObjTEdit;
+   _DESC_:='';
    _prnt_:=MACROS;
    _next_:=nil;
    _rIDE_:=0;
@@ -183,6 +187,32 @@ begin
     result:=_IDNT_;
 end;
 
+function tExtIDEM_McrPRM_node.node_DESC:string;
+begin
+    result:=_DESC_;
+    if result='' then result:=Obj_Desc;
+end;
+
+procedure tExtIDEM_McrPRM_node.node_DESC_SET(const value:string);
+begin
+    if (value='')or(CompareText(value,Obj_Desc)=0) then begin
+        if _DESC_<>'' then begin
+           _DESC_:='';
+            set_IsCHANGed;
+        end;
+    end
+    else begin
+        if _DESC_<>value then begin
+            _DESC_:=value;
+             set_IsCHANGed;
+        end;
+    end;
+end;
+
+function tExtIDEM_McrPRM_node.node_DESC_Inherited:string;
+begin
+    result:=Obj_Desc;
+end;
 
 //------------------------------------------------------------------------------
 

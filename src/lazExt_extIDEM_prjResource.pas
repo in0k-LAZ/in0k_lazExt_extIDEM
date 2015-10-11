@@ -43,12 +43,14 @@ type
   private
    _mustDel_:boolean; //< должно быть стерто
    _enabled_:boolean; //< используется этот механизм
+   _present_:boolean; //< присутствует ли в файле `*.lpi`
     procedure _mustDel_set_(const value:boolean);
     procedure _enabled_set_(const value:boolean);
   protected
    _list_:tLazExt_extIDEM_preSetsList_core;
     procedure _list_clear_;
     procedure _list_reIni_;
+    function  _list_isExist:boolean;
   strict private
     function  _getConfigPATH_(const Path:string):string;{$ifDef _INLINE_}inline;{$endIf}
   strict private
@@ -87,6 +89,8 @@ type
     property preSets:tLazExt_extIDEM_preSetsList_core read _list_;
     property Enabled:boolean read _enabled_ write _enabled_set_;
     property MustDEL:boolean read _mustDel_ write _mustDel_set_;
+    property Present:boolean read _present_; //< объект представлен в lpi файле
+    property IsExist:boolean read _list_isExist; //< какие-то настройки присутствуют
   end;
 
 
@@ -118,7 +122,8 @@ begin
     inherited;
    _mustDel_:=false;
    _enabled_:=false;
-    //---
+   _present_:=false;
+   //---
    _list_:=NIL;
    _list_reIni_;
 end;
@@ -153,6 +158,8 @@ begin
         //--- а может и не надо?
         if (_mustDel_)or ( (not _enabled_)and(not HasChildPaths(_getConfigPATH_(Path))) )
         then DeletePath(_getConfigPATH_(Path));
+        //---
+       _present_:=HasPath(_getConfigPATH_(Path),false);
     end;
     {$ifDef lazExt_Sub6_EventLOG_mode}
         DEBUG(self.ClassName+'.WriteToProjectFile  : '+Path);
@@ -163,7 +170,9 @@ procedure tExtIDEM_prjResources.ReadFromProjectFile(AConfig: {TXMLConfig}TObject
 begin
    _list_reIni_; //< мы юудем его ПЕРЕЗАГРУЖАТЬ полностью
    _mustDel_:=FALSE;
+   _present_:=FALSE;
     with TXMLConfig(AConfig) do begin
+       _present_:=HasPath (_getConfigPATH_(Path),false); //< проверка ... а оно есть в lpi
        _enabled_:=GetValue(_getConfigPATH_(Path)+'Enabled',HasChildPaths(_getConfigPATH_(Path)));
        _MacroITMs_Load_(_list_, TXMLConfig(AConfig),_getConfigPATH_(Path));
     end;
@@ -415,6 +424,11 @@ begin
 
 
 
+end;
+
+function tExtIDEM_prjResources._list_isExist:boolean;
+begin
+    result:=(not Assigned(_list_)) or (_list_.IsEMPTY);
 end;
 
 //------------------------------------------------------------------------------

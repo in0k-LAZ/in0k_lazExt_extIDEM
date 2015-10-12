@@ -704,7 +704,7 @@ begin
    _ExtIDEM_:=Value;
     if Assigned(_ExtIDEM_) then begin
         //
-        ui_ExtIDEM_Enabled.Enabled:=_ExtIDEM_.IsExist;
+        ui_ExtIDEM_Enabled.Enabled:= true;//_ExtIDEM_.IsExist;
         ui_ExtIDEM_Enabled.Checked:=_ExtIDEM_.Enabled;
         //
         ui_ExtIDEM_MustDEL.Checked:=_ExtIDEM_.MustDEL;
@@ -901,7 +901,9 @@ procedure tLazExt_extIDEM_frmPrjOptionEdit.TreeView1AdvancedCustomDraw(
   var DefaultDraw: Boolean);
 begin
     if Stage=cdPostPaint then begin
-        if (not Assigned(_ExtIDEM_)) or (not _ExtIDEM_.Enabled) then begin
+        if (not Assigned(_ExtIDEM_)) or
+           ( _ExtIDEM_.IsExist and not _ExtIDEM_.Enabled)
+        then begin
             Sender.Canvas.Pen.Color:=clForm;
            _paint_left_(Sender.Canvas,ARect,1);
         end;

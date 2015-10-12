@@ -51,6 +51,7 @@ type
  tLazExt_extIDEM_preSetsList_core=class
   protected
    _nodes_:tLazExt_extIDEM_preSet_Node;
+    function _nodes_Present_:boolean;
     function _nodes_isEmpty_:boolean;
   protected
 //    procedure _node_setID_(const node:tLazExt_extIDEM_preSet_Node; const INDX:integer);
@@ -64,7 +65,7 @@ type
     destructor DESTROY; override;
   public
     property IsEMPTY:boolean read _nodes_isEmpty_;
-
+    property PRESENT:boolean read _nodes_Present_;
   public
     //function PreSETs_ADD_Node(const preSet:tLazExt_extIDEM_preSet_NodeTYPE):tLazExt_extIDEM_preSet_Node; virtual;
     function PreSETs_enumFIRST:tLazExt_extIDEM_preSet_Node;
@@ -279,9 +280,14 @@ end; }
 
 //------------------------------------------------------------------------------
 
+function tLazExt_extIDEM_preSetsList_core._nodes_Present_:boolean;
+begin
+    result:=Assigned(_nodes_);
+end;
+
 function tLazExt_extIDEM_preSetsList_core._nodes_isEmpty_:boolean;
 begin
-    result:=not Assigned(_nodes_);
+    result:=not _nodes_Present_;
 end;
 
 // получить указатель на последний элемент

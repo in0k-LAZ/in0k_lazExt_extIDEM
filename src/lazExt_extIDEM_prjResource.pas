@@ -89,7 +89,7 @@ type
     property preSets:tLazExt_extIDEM_preSetsList_core read _list_;
     property Enabled:boolean read _enabled_ write _enabled_set_;
     property MustDEL:boolean read _mustDel_ write _mustDel_set_;
-    property Present:boolean read _present_; //< объект представлен в lpi файле
+    property Present:boolean read _present_;     //< объект представлен в lpi файле
     property IsExist:boolean read _list_isExist; //< какие-то настройки присутствуют
   end;
 
@@ -428,7 +428,9 @@ end;
 
 function tExtIDEM_prjResources._list_isExist:boolean;
 begin
-    result:=(not Assigned(_list_)) or (_list_.IsEMPTY);
+
+   //result:=(not Assigned(_list_)) or (_list_.IsEMPTY);
+    result:=Assigned(_list_) and _list_.PRESENT;
 end;
 
 //------------------------------------------------------------------------------

@@ -711,7 +711,7 @@ begin
         ui_ExtIDEM_MustDEL.Enabled:=_ExtIDEM_.Present;
 
         //---
-        Panel2.Enabled:=_ExtIDEM_.Enabled;
+        //Panel//2.Enabled:=_ExtIDEM_.Enabled;
         Panel3.Enabled:=_ExtIDEM_.Enabled;
         //--- ставим "ЛОГО"
         if _ExtIDEM_.Enabled
@@ -722,7 +722,7 @@ begin
         else ui_ExtIDEM_LOGO.Font.Style:=ui_ExtIDEM_LOGO.Font.Style-[fsStrikeOut];
     end
     else begin //< чз ... надо ли вообще эту ветку
-        Panel2.Enabled:=false;
+        //Panel2.Enabled:=false;
         Panel3.Enabled:=false;
     end;
    _ui_ExtIDEM_Enablede_eventSET_;
@@ -1066,7 +1066,7 @@ begin
         end;
         // готовим новый
         if Assigned(FRM) then begin
-            chb_nodeEnabled.Checked:=FRM.NodeEnabled;
+            //chb_nodeEnabled.Checked:=FRM.NodeEnabled;
 
             if FRM is tExtIDEM_USER_MACROS_edit then begin
                 tExtIDEM_USER_MACROS_edit(FRM).fDoAddNewNode:=@_MACROS_UsrSET_DoAddNewNode;
@@ -1470,7 +1470,28 @@ var nodeData:tNodeDATA;
 begin
     if Assigned(treeNode)and Assigned(_nodeFrame_) then begin
         nodeData:=tNodeDATA(treeNode.Data);
-        if Assigned(nodeData)and(not nodeData.IS_NotDEF) then begin
+        if Assigned(nodeData)and(nodeData.IS_Macros or nodeData.IS_McrPRM) then begin
+            chb_nodeEnabled.Enabled:=true;
+            if nodeData.NodeENBL then begin
+                if _ExtIDEM_.Enabled
+                then chb_nodeEnabled.State:=cbChecked
+                else chb_nodeEnabled.State:=cbGrayed;
+            end
+            else chb_nodeEnabled.Checked:=FALSE;
+            exit;
+        end;
+    end;{
+
+
+
+
+            if nodeData.IS_Macros or nodeData.IS_McrPRM then begin
+                chb_nodeEnabled.Enabled:=true;
+                if _ExtIDEM_.Enabled
+
+
+
+
             chb_nodeEnabled.Checked:=nodeData.NodeENBL;
             if nodeData.IS_Macros then begin
                 chb_nodeEnabled.Enabled:=true;
@@ -1485,10 +1506,11 @@ begin
                 else begin
                     chb_nodeEnabled.Enabled:=false;
                 end;
+                chb_nodeEnabled.Enabled:=true;
                 Exit;
             end;
         end
-    end;
+    end;               }
     // !!! этот код сработает только если НЕ ВСТРЕТИТСЯ `exit` !!!
     chb_nodeEnabled.Enabled:=FALSE;
     chb_nodeEnabled.Checked:=FALSE;

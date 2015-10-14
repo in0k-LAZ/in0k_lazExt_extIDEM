@@ -6,8 +6,8 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
   ClientHeight = 406
   ClientWidth = 777
   TabOrder = 0
-  DesignLeft = 624
-  DesignTop = 146
+  DesignLeft = 298
+  DesignTop = 85
   object Panel1: TPanel
     Left = 0
     Height = 19

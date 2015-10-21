@@ -18,6 +18,7 @@ interface
 
 uses {$ifDef _DbgFileInUSES_}ExtIDEM_DEBUG,{$endIf}
     IDEOptionsIntf,
+    Themes, LCLType, LCLIntf,
 
 lazExt_extIDEM,  extIDEM_McrPRM_NotDEF,
 Graphics,
@@ -79,6 +80,23 @@ type
       var AllowChange: Boolean);
     procedure TreeView1Deletion(Sender: TObject; Node: TTreeNode);
     procedure ui_ExtIDEM_MustDELChange(Sender: TObject);
+
+ private
+    procedure _treeNode_Draw_Background_(const Sender:TCustomTreeView; const IsSelected:Boolean; const ARect:TRect); {$ifDef _INLINE_}inline;{$endIf}
+ private
+    procedure _treeNode_Draw_NodeText_        (const Sender:TCustomTreeView; const IsSelected,IsDisable:Boolean; var ARect:TRect; const AText:string); {$ifDef _INLINE_}inline;{$endIf}
+    procedure _treeNode_Draw_NodeText_Present_(const Sender:TCustomTreeView; const IsSelected:Boolean; ARect:TRect; const AText:string); {$ifDef _INLINE_}inline;{$endIf}
+    procedure _treeNode_Draw_NodeText_withOut_(const Sender:TCustomTreeView; const IsSelected:Boolean; ARect:TRect; const AText:string); {$ifDef _INLINE_}inline;{$endIf}
+    procedure _treeNode_Draw_NodeText_markDEL_(const Sender:TCustomTreeView; const IsSelected:Boolean; ARect:TRect; const AText:string); {$ifDef _INLINE_}inline;{$endIf}
+ private
+    procedure _treeNode_Draw_NodeMark_      (const Sender:TCustomTreeView; var ARect:TRect);{$ifDef _INLINE_}inline;{$endIf}
+    procedure _treeNode_Draw_NodeMark_ERRor_(const Sender:TCustomTreeView; ARect:TRect);    {$ifDef _INLINE_}inline;{$endIf}
+    procedure _treeNode_Draw_NodeMark_enabl_(const Sender:TCustomTreeView; ARect:TRect);    {$ifDef _INLINE_}inline;{$endIf}
+    procedure _treeNode_Draw_NodeMark_disbl_(const Sender:TCustomTreeView; ARect:TRect);    {$ifDef _INLINE_}inline;{$endIf}
+ private
+    procedure _treeNode_Draw_NodeERR_NAME   (const Sender:TCustomTreeView; ARect:TRect);{$ifDef _INLINE_}inline;{$endIf}
+
+
 
  private
    _ExtIDEM_:tExtIDEM_prjResources;
@@ -606,7 +624,13 @@ begin
     with preSet do begin
         tmp:=Param_First;
         while Assigned(tmp) do begin
-            TreeView1.Items.AddChildObject(treeNode,tmp.node_IDNT,tNodeDATA.Create_IDE(tmp));
+            //TreeView1.Items[];
+
+            with TreeView1.Items.AddChildObject(treeNode,tmp.node_IDNT,tNodeDATA.Create_IDE(tmp)) do begin
+
+               // Enabled:=false;
+               // States;
+            end;
             tmp:=Param_Next(tmp);
         end;
     end;
@@ -817,7 +841,7 @@ procedure tLazExt_extIDEM_frmPrjOptionEdit.chb_nodeEnabledChange(Sender: TObject
 var nodeData:tNodeDATA;
 begin {todo: перенести логику в отдельную проц}
     if Assigned(_nodeFrame_) then begin //< изменяем данные в самом фрейме
-        if not tCheckBox(Sender).Checked then begin
+        if tCheckBox(Sender).State=cbUnchecked then begin// not (tCheckBox(Sender).State=cbUnchecked){ Checked} then begin
             // тут все просто, надо в самом фрейме поправить
            _nodeFrame_.NodeEnabled:=FALSE;
         end
@@ -900,7 +924,7 @@ procedure tLazExt_extIDEM_frmPrjOptionEdit.TreeView1AdvancedCustomDraw(
   Sender: TCustomTreeView; const ARect: TRect; Stage: TCustomDrawStage;
   var DefaultDraw: Boolean);
 begin
-    if Stage=cdPostPaint then begin
+    if Stage=cdPostErase{cdPostPaint} then begin
         if (not Assigned(_ExtIDEM_)) or
            ( _ExtIDEM_.IsExist and not _ExtIDEM_.Enabled)
         then begin
@@ -918,27 +942,218 @@ begin
     end;
 end;
 
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_Background_(const Sender:TCustomTreeView; const IsSelected:Boolean; const ARect:TRect);
+var Details:TThemedElementDetails;
+  CurBackgroundColor:TColor;
+begin // пижено из TCustomTreeView.DoPaintNode(Node:TTreeNode)-DrawBackground
+    // выбор цвета
+    CurBackgroundColor:=clNone;
+    if (tvoRowSelect in sender.Options) and IsSelected then begin
+        if tvoThemedDraw in sender.Options then begin
+
+            if sender.Focused
+            then Details:=ThemeServices.GetElementDetails(ttItemSelected)
+            else Details:=ThemeServices.GetElementDetails(ttItemSelectedNotFocus);
+
+            if ThemeServices.HasTransparentParts(Details) then begin
+                Canvas.Brush.Color:=sender.BackgroundColor;
+                Canvas.FillRect(ARect);
+            end;
+
+            ThemeServices.DrawElement(sender.Canvas.Handle, Details, ARect, nil);
+            Exit; //< тоесть рисование через АПИ в пролёте
+        end
+        else CurBackgroundColor:=sender.SelectionColor
+    end
+    else CurBackgroundColor:=sender.BackgroundColor;
+    // это собственно рисование через АПИ, если сюда попали то рисуем НЕ "темой"
+    if CurBackgroundColor<>clNone then begin
+        sender.Canvas.Brush.Color:=CurBackgroundColor;
+        sender.Canvas.FillRect(ARect);
+    end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeText_(const Sender:TCustomTreeView; const IsSelected,IsDisable:Boolean; var ARect:TRect; const AText:String);
+var Details:TThemedElementDetails;
+begin // пижено из TCustomTreeView.DoPaintNode(Node:TTreeNode)-DrawNodeText
+    // выбор цвета
+    if IsSelected then begin
+        if sender.Focused
+        then Details:=ThemeServices.GetElementDetails(ttItemSelected)
+        else Details:=ThemeServices.GetElementDetails(ttItemSelectedNotFocus);
+        if not (tvoRowSelect in sender.Options) then begin
+            if (tvoThemedDraw in sender.Options)
+            then ThemeServices.DrawElement(sender.Canvas.Handle, Details, ARect, nil)
+            else begin
+                Canvas.Brush.Color :=sender.SelectionColor;
+                Canvas.Font.Color := InvertColor(Brush.Color);
+                Canvas.FillRect(ARect);
+            end
+        end
+        else begin
+            if not (tvoThemedDraw in sender.Options) then Canvas.Font.Color:=Font.Color;
+        end;
+    end
+    else begin
+        if IsDisable then begin
+            Details:=ThemeServices.GetElementDetails(ttItemDisabled);
+            Canvas.Font.Color:=clGrayText;
+        end
+        else begin
+            Details:=ThemeServices.GetElementDetails(ttItemNormal);
+            Canvas.Font.Color:=Font.Color;
+        end;
+    end;
+    // это собственно рисование
+    if (tvoThemedDraw in sender.Options)
+    then ThemeServices.DrawText(sender.Canvas, Details, AText, ARect, DT_CENTER or DT_VCENTER or DT_SINGLELINE or DT_NOPREFIX, 0)
+    else DrawText(sender.Canvas.Handle, PChar(AText), -1, ARect, DT_CENTER or DT_VCENTER or DT_SINGLELINE or DT_NOPREFIX);
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeText_Present_(const Sender:TCustomTreeView; const IsSelected:Boolean; ARect:TRect; const AText:string);
+begin
+   _treeNode_Draw_NodeText_(Sender,IsSelected,FALSE,ARect,AText);
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeText_withOut_(const Sender:TCustomTreeView; const IsSelected:Boolean; ARect:TRect; const AText:string);
+begin
+   _treeNode_Draw_NodeText_(Sender,IsSelected,TRUE,ARect,AText);
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeText_markDEL_(const Sender:TCustomTreeView; const IsSelected:Boolean; ARect:TRect; const AText:string);
+var oldFontStyles:TFontStyles;
+begin
+    oldFontStyles:=sender.Font.Style;
+    sender.Font.Style:=sender.Font.Style+[fsStrikeOut];
+   _treeNode_Draw_NodeText_(Sender,IsSelected,TRUE,ARect,AText);
+    sender.Font.Style:=oldFontStyles;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeMark_(const Sender:TCustomTreeView; var ARect:TRect);
+var i:integer;
+begin
+    i:=(ARect.Bottom-ARect.Top) div 4;
+    ARect.Bottom:=ARect.Bottom-i;
+    ARect.Top   :=ARect.Top+i;
+    i:=(ARect.Bottom-ARect.Top) div 4;
+    ARect.Right :=ARect.Left+i;
+    ARect.Left  :=ARect.Left-i;
+    //---
+    Sender.Canvas.Rectangle(ARect);
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeMark_ERRor_(const Sender:TCustomTreeView; ARect:TRect);
+begin
+    Sender.Canvas.Pen.Color  :=clRed;
+    Sender.Canvas.Brush.Color:=self.Color;
+   _treeNode_Draw_NodeMark_(sender,ARect);
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeMark_enabl_(const Sender:TCustomTreeView; ARect:TRect);
+begin
+    Sender.Canvas.Pen.Color:=clGrayText;
+    Sender.Canvas.Brush.Color:=self.Color;
+   _treeNode_Draw_NodeMark_(sender,ARect);
+end;
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeMark_disbl_(const Sender:TCustomTreeView; ARect:TRect);
+var i:integer;
+begin
+    Sender.Canvas.Pen.Color:=sender.SelectionColor;// clHighlight;
+    Sender.Canvas.Brush.Color:=self.Color;
+   _treeNode_Draw_NodeMark_(sender,ARect);
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeERR_NAME(const Sender:TCustomTreeView; ARect:TRect);
+begin
+    Rect:=Node.DisplayRect(True);
+    i:=(Rect.Bottom-Rect.Top) div 2;
+    i:= Rect.Top+i+1;
+    Sender.Canvas.Pen.Color:=clRed;
+    Sender.Canvas.Line(Rect.Left,i,Rect.Right,i);
+end;
+
+//------------------------------------------------------------------------------
+
 procedure tLazExt_extIDEM_frmPrjOptionEdit.TreeView1AdvancedCustomDrawItem(
   Sender: TCustomTreeView; Node: TTreeNode; State: TCustomDrawState;
   Stage: TCustomDrawStage; var PaintImages, DefaultDraw: Boolean);
 var nodeData:tNodeDATA;
+    nodeSLCT:boolean;
 var Rect:tRect;
     i:integer;
 var TextStyle:TTextStyle;
 begin
     DefaultDraw := true;
+    if Stage=cdPrePaint then begin
+
+       //sender.Font.Style:=;
+
+    end;
     if Stage=cdPostPaint then begin
         nodeData:=_treeNodeDATA_(Node);
+        nodeSLCT:= Node.Selected or Node.MultiSelected;
+        Rect    := Node.DisplayRect(True); //< берем ТОЛЬКО текст
+
+        // стираем ФОН, заного его перерисовав
+       _treeNode_Draw_Background_(Sender,nodeSLCT,Rect);
+
+        // пишем текст
+        if nodeData.IS_NotDEF then begin
+           // хз че за узел.. он не с нашего района!!!
+           _treeNode_Draw_NodeText_withOut_(Sender,nodeSLCT,Rect,Node.Text);
+           _treeNode_Draw_NodeMark_ERRor_(sender,Rect)
+        end
+       else
+        if nodeData.NodeDLTD then begin
+           _treeNode_Draw_NodeText_markDEL_(Sender,nodeSLCT,Rect,Node.Text);
+        end
+       else begin
+           if nodeData.PRJ_exist
+           then _treeNode_Draw_NodeText_Present_(Sender,nodeSLCT,Rect,Node.Text)
+           else _treeNode_Draw_NodeText_withOut_(Sender,nodeSLCT,Rect,Node.Text);
+           // и маркер еще
+
+
+        end;
+
+
+        if nodeData.NodeDLTD then begin
+           _treeNode_Draw_NodeText_markDEL_(Sender,nodeSLCT,Rect,Node.Text);
+        end
+       else
+        if nodeData.PRJ_based then begin
+           _treeNode_Draw_NodeText_Present_(Sender,nodeSLCT,Rect,Node.Text);
+        end
+       else begin
+           _treeNode_Draw_NodeText_withOut_(Sender,nodeSLCT,Rect,Node.Text);
+        end;
+
+
+
+
+        // проверяем
         if Assigned(nodeData) and nodeData.PRJ_exist then begin
             Rect:=Node.DisplayRect(True);
             if (_MACROS_UsrSET_=Node.Parent) and ( not _MACROS_UsrSET_validateName(tExtIDEM_McrPRM_node(nodeData.Node_ACT)))
             then begin
                 // пользовательский с НЕПРАВИЛЬНЫМ названием
-                Rect:=Node.DisplayRect(True);
+               _treeNode_Draw_NodeMark_disbl_sender,Rect);
+
+                {Rect:=Node.DisplayRect(True);
                 i:=(Rect.Bottom-Rect.Top) div 2;
                 i:= Rect.Top+i+1;
                 Sender.Canvas.Pen.Color:=clRed;
-                Sender.Canvas.Line(Rect.Left,i,Rect.Right,i);
+                Sender.Canvas.Line(Rect.Left,i,Rect.Right,i);}
             end;
             //---
             if nodeData.NodeDLTD then begin
@@ -949,29 +1164,26 @@ begin
                 Sender.Canvas.Line(Rect.Left,i,Rect.Right,i);
             end
             else begin
-                i:=(Rect.Bottom-Rect.Top) div 4;
+                {i:=(Rect.Bottom-Rect.Top) div 4;
                 Rect.Bottom:=Rect.Bottom-i;
                 Rect.Top   :=Rect.Top+i;
                 i:=(Rect.Bottom-Rect.Top) div 4;
                 Rect.Right :=Rect.Left+i;
-                Rect.Left  :=Rect.Left-i;
+                Rect.Left  :=Rect.Left-i;}
                 //---
                 if nodeData.IS_NotDEF then begin
                     // хз че за узел.. он не с нашего района!!!
-                    Sender.Canvas.Pen.Color  :=clRed;
-                    Sender.Canvas.Brush.Color:=self.Color;
+                   _treeNode_Draw_NodeMark_ERRor_(sender,Rect)
                 end
                else
                 if not nodeData.NodeENBL then begin
-                    Sender.Canvas.Pen.Color:=clGrayText;
-                    Sender.Canvas.Brush.Color:=self.Color;
+                   _treeNode_Draw_NodeMark_disbl_(sender,Rect)
                 end
                else
                 {if not nodeData.NodeENBL then} begin
-                    Sender.Canvas.Pen.Color:=clHighlight;
-                    Sender.Canvas.Brush.Color:=self.Color;
+                    _treeNode_Draw_NodeMark_enabl_(sender,Rect)
                 end;
-                Sender.Canvas.Rectangle(Rect);
+                //Sender.Canvas.Rectangle(Rect);
                 //---
             end;
             //---
@@ -1062,7 +1274,7 @@ begin
         // сохраняем значение для СТАРОГО
         if Assigned(_nodeFrame_) and (_nodeFrame_.InheritsFrom(tExtIDEM_core_objEDIT))
         then begin
-           _nodeFrame_.NodeEnabled:=chb_nodeEnabled.Checked;
+           _nodeFrame_.NodeEnabled:=chb_nodeEnabled.State<>cbUnchecked;
         end;
         // готовим новый
         if Assigned(FRM) then begin

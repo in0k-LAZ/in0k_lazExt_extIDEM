@@ -927,7 +927,7 @@ procedure tLazExt_extIDEM_frmPrjOptionEdit.TreeView1AdvancedCustomDraw(
   Sender: TCustomTreeView; const ARect: TRect; Stage: TCustomDrawStage;
   var DefaultDraw: Boolean);
 begin
-    if Stage=cdPostErase{cdPostPaint} then begin
+    if Stage=cdPostPaint{cdPostPaint} then begin
         if (not Assigned(_ExtIDEM_)) or
            ( _ExtIDEM_.IsExist and not _ExtIDEM_.Enabled)
         then begin

@@ -82,6 +82,9 @@ type
     procedure ui_ExtIDEM_MustDELChange(Sender: TObject);
 
  private
+    function  _treeNode_Data_Enable(treeNode:TTreeNode; const withParent:boolean):boolean;
+
+ private
     procedure _treeNode_Draw_Background_(const Sender:TCustomTreeView; const IsSelected:Boolean; const ARect:TRect); {$ifDef _INLINE_}inline;{$endIf}
  private
     procedure _treeNode_Draw_NodeText_        (const Sender:TCustomTreeView; const IsSelected,IsDisable:Boolean; var ARect:TRect; const AText:string); {$ifDef _INLINE_}inline;{$endIf}
@@ -1058,7 +1061,7 @@ end;
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeMark_enabl_(const Sender:TCustomTreeView; ARect:TRect);
 begin
-    Sender.Canvas.Pen.Color:=clGrayText;
+    Sender.Canvas.Pen.Color:=sender.SelectionColor; // clHighlight;
     Sender.Canvas.Brush.Color:=self.Color;
    _treeNode_Draw_NodeMark_(sender,ARect);
 end;
@@ -1066,20 +1069,21 @@ end;
 procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeMark_disbl_(const Sender:TCustomTreeView; ARect:TRect);
 var i:integer;
 begin
-    Sender.Canvas.Pen.Color:=sender.SelectionColor;// clHighlight;
+    Sender.Canvas.Pen.Color:=clGrayText;
     Sender.Canvas.Brush.Color:=self.Color;
    _treeNode_Draw_NodeMark_(sender,ARect);
 end;
 
 //------------------------------------------------------------------------------
 
-procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeERR_NAME(const Sender:TCustomTreeView; ARect:TRect);
+procedure tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Draw_NodeERR_NAME(const Sender:TCustomTreeView; aRect:TRect);
+var i:integer;
 begin
-    Rect:=Node.DisplayRect(True);
-    i:=(Rect.Bottom-Rect.Top) div 2;
-    i:= Rect.Top+i+1;
+    //aRect:=Node.DisplayRect(True);
+    i:=(aRect.Bottom-aRect.Top) div 2;
+    i:= aRect.Top+i+1;
     Sender.Canvas.Pen.Color:=clRed;
-    Sender.Canvas.Line(Rect.Left,i,Rect.Right,i);
+    Sender.Canvas.Line(aRect.Left,i,aRect.Right,i);
 end;
 
 //------------------------------------------------------------------------------
@@ -1100,6 +1104,11 @@ begin
 
     end;
     if Stage=cdPostPaint then begin
+
+        {
+            чтобы нарисовать серенькие строки приходится перерисовывать
+        }
+
         nodeData:=_treeNodeDATA_(Node);
         nodeSLCT:= Node.Selected or Node.MultiSelected;
         Rect    := Node.DisplayRect(True); //< берем ТОЛЬКО текст
@@ -1121,12 +1130,28 @@ begin
            if nodeData.PRJ_exist
            then _treeNode_Draw_NodeText_Present_(Sender,nodeSLCT,Rect,Node.Text)
            else _treeNode_Draw_NodeText_withOut_(Sender,nodeSLCT,Rect,Node.Text);
-           // и маркер еще
+           //----
+              if (_MACROS_UsrSET_=Node.Parent) and ( not _MACROS_UsrSET_validateName(tExtIDEM_McrPRM_node(nodeData.Node_ACT)))
+                          then begin
+                              // пользовательский с НЕПРАВИЛЬНЫМ названием
+                             _treeNode_Draw_NodeMark_disbl_(sender,Rect);
 
+                              {Rect:=Node.DisplayRect(True);
+                              i:=(Rect.Bottom-Rect.Top) div 2;
+                              i:= Rect.Top+i+1;
+                              Sender.Canvas.Pen.Color:=clRed;
+                              Sender.Canvas.Line(Rect.Left,i,Rect.Right,i);}
+                          end;
+                          //---
+                          if nodeData.NodeENBL then begin
+                              if _treeNode_Data_Enable(node,TRUE)
+                              then _treeNode_Draw_NodeMark_enabl_(sender,Rect)
+                              else _treeNode_Draw_NodeMark_disbl_(sender,Rect)
+                          end;
 
-        end;
+       end;
 
-
+       {
         if nodeData.NodeDLTD then begin
            _treeNode_Draw_NodeText_markDEL_(Sender,nodeSLCT,Rect,Node.Text);
         end
@@ -1137,17 +1162,17 @@ begin
        else begin
            _treeNode_Draw_NodeText_withOut_(Sender,nodeSLCT,Rect,Node.Text);
         end;
+               }
 
 
 
-
-        // проверяем
+      (*  // проверяем
         if Assigned(nodeData) and nodeData.PRJ_exist then begin
             Rect:=Node.DisplayRect(True);
             if (_MACROS_UsrSET_=Node.Parent) and ( not _MACROS_UsrSET_validateName(tExtIDEM_McrPRM_node(nodeData.Node_ACT)))
             then begin
                 // пользовательский с НЕПРАВИЛЬНЫМ названием
-               _treeNode_Draw_NodeMark_disbl_sender,Rect);
+               _treeNode_Draw_NodeMark_disbl_(sender,Rect);
 
                 {Rect:=Node.DisplayRect(True);
                 i:=(Rect.Bottom-Rect.Top) div 2;
@@ -1156,6 +1181,13 @@ begin
                 Sender.Canvas.Line(Rect.Left,i,Rect.Right,i);}
             end;
             //---
+            if nodeData.NodeENBL then begin
+                if _treeNode_Data_Enable(node,TRUE)
+                then _treeNode_Draw_NodeMark_enabl_(sender,Rect)
+                else _treeNode_Draw_NodeMark_disbl_(sender,Rect)
+            end;
+
+
             if nodeData.NodeDLTD then begin
                 // его хотят УДАЛИТЬ
                 i:=(Rect.Bottom-Rect.Top) div 2;
@@ -1181,14 +1213,14 @@ begin
                 end
                else
                 {if not nodeData.NodeENBL then} begin
-                    _treeNode_Draw_NodeMark_enabl_(sender,Rect)
+
                 end;
                 //Sender.Canvas.Rectangle(Rect);
                 //---
             end;
             //---
 
-        end;
+        end;        *)
     end;
 end;
 
@@ -1902,6 +1934,34 @@ begin
         result:=_MACROS_UsrSET_PRMs_unique_IDNT_(tExtIDEM_USER_MACROS_node(UsrSET_NodeDATA.Node_PRJ),node);
     end
     else result:=FALSE;
+end;
+
+//------------------------------------------------------------------------------
+
+function tLazExt_extIDEM_frmPrjOptionEdit._treeNode_Data_Enable(treeNode:TTreeNode; const withParent:boolean):boolean;
+var nodeData:tNodeDATA;
+begin
+    result:=false;
+    // проверим состояние самого узла
+    if Assigned(treeNode) then begin
+        nodeData:=tNodeDATA(treeNode.Data);
+        if Assigned(nodeData) then result:=nodeData.NodeENBL;
+    end;
+    // проверим активность ВЫШЕ стоящих узлов
+    if result and withParent then begin
+        // активность выше стоящих узлов
+        treeNode:=treeNode.Parent;
+        while result and Assigned(treeNode) do begin
+            nodeData:=tNodeDATA(treeNode.Data);
+            if Assigned(nodeData) then result:=nodeData.NodeENBL;
+            //---
+            treeNode:=treeNode.Parent;
+        end;
+        // активность САМОГО главного (его в дереве нет)
+        if result then begin
+            result:=_ExtIDEM_.Enabled;
+        end;
+    end;
 end;
 
 //==============================================================================

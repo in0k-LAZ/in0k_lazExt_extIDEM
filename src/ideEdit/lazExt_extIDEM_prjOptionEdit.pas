@@ -42,6 +42,18 @@ type
    class function GetInstance: TAbstractIDEOptions; override;
  end;
 
+ tUI_Canvas_DLUs=class
+  private
+   _aH_:word;
+   _aW_:word;
+   _dx_:Single;
+   _dy_:Single;
+    procedure _clc_dx_(const Canvas:TCanvas);
+    procedure _clc_dy_(const Canvas:TCanvas);
+  public
+    procedure Calculate(const Canvas:TCanvas);
+  end;
+
 
  { tLazExt_extIDEM_frmPrjOptionEdit }
 
@@ -62,7 +74,7 @@ type
     Splitter1: TSplitter;
     TreeView1: TTreeView;
     procedure chb_nodeEnabledChange(Sender: TObject);
-    procedure chb_nodeEnabledClick(Sender: TObject);
+    procedure FrameResize(Sender: TObject);
     procedure TreeView1AdvancedCustomDraw(Sender: TCustomTreeView;
       const ARect: TRect; Stage: TCustomDrawStage; var DefaultDraw: Boolean);
     procedure TreeView1AdvancedCustomDrawItem(Sender: TCustomTreeView;
@@ -70,10 +82,6 @@ type
       var PaintImages, DefaultDraw: Boolean);
     procedure ui_ExtIDEM_EnabledChange(Sender: TObject);
     procedure Label2Click(Sender: TObject);
-    procedure lst_preSetDragOver(Sender, Source: TObject; X, Y: Integer;
-      State: TDragState; var Accept: Boolean);
-    procedure lst_preSetDrawItem(Control: TWinControl; Index: Integer;
-      ARect: TRect; State: TOwnerDrawState);
     procedure lst_preSetSelectionChange(Sender: TObject; User: boolean);
     procedure TreeView1Change(Sender: TObject; Node: TTreeNode);
     procedure TreeView1Changing(Sender: TObject; Node: TTreeNode;
@@ -82,6 +90,9 @@ type
     procedure ui_ExtIDEM_MustDELChange(Sender: TObject);
 
  private
+    _UI_:tUI_Canvas_DLUs;
+
+
     function  _treeNode_Data_Enable(treeNode:TTreeNode; const withParent:boolean):boolean;
 
  private
@@ -189,6 +200,39 @@ type
   end;
 
 implementation
+
+procedure tUI_Canvas_DLUs._clc_dx_(const Canvas:TCanvas);
+begin
+    if true{Canvas.HandleAllocated} then begin
+      _dx_:=canvas.TextWidth('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')/52;
+      _aW_:=trunc(_dx_)+1;
+      _dx_:=_dx_/4;
+    end
+    else begin
+       _dx_:=2;
+       _aH_:=trunc(_dx_*4);
+    end;
+end;
+
+procedure tUI_Canvas_DLUs._clc_dy_(const Canvas:TCanvas);
+var tm:TLCLTextMetric;
+begin
+    if true{Canvas.HandleAllocated} and Canvas.GetTextMetrics(tm) then begin
+       _aH_:=tm.Height;
+       _dy_:=_aH_/8;
+    end
+    else begin
+       _dy_:=2;
+       _aH_:=trunc(_dy_*8);
+    end;
+end;
+
+procedure tUI_Canvas_DLUs.Calculate(const Canvas:TCanvas);
+begin
+   _clc_dx_(Canvas);
+   _clc_dy_(Canvas);
+end;
+
 
 {$R *.lfm}
 
@@ -827,12 +871,6 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure tLazExt_extIDEM_frmPrjOptionEdit.lst_preSetDragOver(Sender,
-  Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
-begin
-
-end;
-
 procedure tLazExt_extIDEM_frmPrjOptionEdit.Label2Click(Sender: TObject);
 begin
     tLabel(Sender).ShowHelp;
@@ -897,10 +935,11 @@ begin {todo: перенести логику в отдельную проц}
     end;
 end;
 
-procedure tLazExt_extIDEM_frmPrjOptionEdit.chb_nodeEnabledClick(Sender: TObject);
+procedure tLazExt_extIDEM_frmPrjOptionEdit.FrameResize(Sender: TObject);
 begin
-end;
+     _UI_.Calculate(self.Canvas);
 
+end;
 
 procedure _paint_left_(Const aCanvas:TCanvas; const aRect:tRect; const d:integer);
 var ddw,ddy:integer;
@@ -1044,9 +1083,18 @@ var i:integer;
 begin
     i:=(ARect.Bottom-ARect.Top) div 4;
     ARect.Bottom:=ARect.Bottom-i;
+    ARect.Top   :=ARect.Top+i-1;
+
+
+    {i:=(ARect.Bottom-ARect.Top-(_ui_._aH_)) div 2;
     ARect.Top   :=ARect.Top+i;
+    ARect.Bottom:=ARect.Top+_ui_._aH_;
+
+//    _UI_}
+
+
     i:=(ARect.Bottom-ARect.Top) div 4;
-    ARect.Right :=ARect.Left+i;
+    ARect.Right :=ARect.Left+i+1;
     ARect.Left  :=ARect.Left-i;
     //---
     Sender.Canvas.Rectangle(ARect);
@@ -1237,7 +1285,7 @@ procedure tLazExt_extIDEM_frmPrjOptionEdit._chb_nodeEnabled_eventSET;
 begin
     with chb_nodeEnabled do begin
         OnChange:=@chb_nodeEnabledChange;
-        OnClick :=@chb_nodeEnabledClick;
+        //OnClick :=@chb_nodeEnabledClick;
     end;
 end;
 
@@ -1292,13 +1340,6 @@ begin
 end;
 
 //------------------------------------------------------------------------------
-
-procedure tLazExt_extIDEM_frmPrjOptionEdit.lst_preSetDrawItem(
-  Control: TWinControl; Index: Integer; ARect: TRect; State: TOwnerDrawState);
-begin
-
-end;
-
 
 procedure tLazExt_extIDEM_frmPrjOptionEdit._rePlace_setFRM_(const FRM:tExtIDEM_core_objEDIT);
 begin
@@ -1662,6 +1703,7 @@ begin
    _ExtIDEM_:=nil;
    _nodeFrame_:=nil;
    _frmUsrPRM_:=nil;
+   _UI_:=tUI_Canvas_DLUs.Create;
 end;
 
 destructor tLazExt_extIDEM_frmPrjOptionEdit.DESTROY;

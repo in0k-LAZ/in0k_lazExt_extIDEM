@@ -5,6 +5,7 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
   Width = 777
   ClientHeight = 406
   ClientWidth = 777
+  OnResize = FrameResize
   TabOrder = 0
   DesignLeft = 299
   DesignTop = 85
@@ -122,7 +123,6 @@ object lazExt_extIDEM_frmPrjOptionEdit: TlazExt_extIDEM_frmPrjOptionEdit
       Width = 55
       Caption = 'Enable'
       OnChange = chb_nodeEnabledChange
-      OnClick = chb_nodeEnabledClick
       TabOrder = 0
     end
     object Label7: TLabel
